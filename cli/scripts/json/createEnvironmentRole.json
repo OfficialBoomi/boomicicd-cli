@@ -1,0 +1,4 @@
+{
+  "roleId" : "${roleId}",
+  "environmentId" : "${envId}"
+}

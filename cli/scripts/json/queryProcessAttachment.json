@@ -1,0 +1,26 @@
+{
+  "QueryFilter" :
+    {
+      "expression" :
+        {
+          "operator" : "and",
+          "nestedExpression": [
+            {
+              "argument" : ["${processId}"],
+              "operator":"EQUALS",
+              "property":"processId"
+            },
+            {
+              "argument":["${envId}"],
+              "operator":"EQUALS",
+              "property":"environmentId"
+            },
+            {
+              "argument":["${componentType}"],
+              "operator":"EQUALS",
+              "property":"componentType"
+            }
+          ]
+        }
+    }
+}

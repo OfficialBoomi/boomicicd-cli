@@ -1,0 +1,11 @@
+{
+  "QueryFilter" : 
+    {
+      "expression" : 
+        {
+         "argument":["%${packageVersion}%"],
+         "operator":"LIKE",
+         "property":"packageVersion"
+        }
+    }
+}

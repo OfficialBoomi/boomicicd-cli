@@ -1,0 +1,21 @@
+{
+  "QueryFilter" :
+    {
+      "expression" :
+         {
+           "operator" : "and",
+           "nestedExpression" : [
+             {
+               "argument" : ["${env}"],
+               "operator" : "EQUALS",
+               "property" : "name"
+             },
+             {
+               "argument" : ["${classification}"],
+               "operator" : "EQUALS",
+               "property" : "classification"
+             }
+           ]
+         }
+    }
+}

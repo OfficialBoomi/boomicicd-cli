@@ -1,0 +1,33 @@
+{
+  "QueryFilter" :
+    {
+      "expression" :
+        {
+		"operator" : "and",
+		"nestedExpression" : [
+		{
+			"argument" : ["${processName}"],
+			"operator" : "LIKE",
+			"property" : "processName"
+    },
+		{
+			"argument" : ["${processId}"],
+			"operator" : "LIKE",
+			"property" : "processId"
+    },
+		{
+			"argument" : ["${atomName}"],
+			"operator" : "EQUALS",
+			"property" : "atomName"
+        },
+		{
+				"argument" : ["${from}", "${to}"],
+				"operator" : "BETWEEN",
+				"property" : "executionTime"
+		}]
+      }
+   }
+}   
+
+
+

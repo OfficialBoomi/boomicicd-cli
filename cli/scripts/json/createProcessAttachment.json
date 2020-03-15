@@ -1,0 +1,5 @@
+{
+  "processId" : "${processId}",
+  "componentType" : "${componentType}",
+  "environmentId" : "${envId}"
+}

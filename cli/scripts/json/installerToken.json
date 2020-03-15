@@ -1,0 +1,5 @@
+{
+	"installType":"${atomType}",
+	"durationMinutes": 60
+}
+

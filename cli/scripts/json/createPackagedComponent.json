@@ -1,0 +1,7 @@
+{
+  "componentId" : "${componentId}",
+  "packageVersion" : "${packageVersion}",
+  "componentType" : "${componentType}",
+  "notes" : "${notes}",
+  "createdDate": "${createdDate}"
+}

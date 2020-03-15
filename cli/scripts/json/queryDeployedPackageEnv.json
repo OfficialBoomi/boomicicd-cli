@@ -1,0 +1,11 @@
+{
+  "QueryFilter" : 
+    {
+      "expression" : 
+        {
+           "argument" : ["${envId}"],
+           "operator":"EQUALS",
+           "property":"environmentId"
+        }
+    }
+}

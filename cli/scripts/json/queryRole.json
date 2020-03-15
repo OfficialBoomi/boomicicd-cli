@@ -1,0 +1,11 @@
+{
+  "QueryFilter" :
+    {
+      "expression" :
+        {
+          "argument" : ["${roleName}"],
+          "operator" : "EQUALS",
+          "property" : "name"
+        }
+    }
+}

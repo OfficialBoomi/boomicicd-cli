@@ -1,0 +1,6 @@
+{
+  "environmentId" : "${envId}",
+  "packageId" : "${packageId}",
+  "componentType" : "${componentType}",
+  "notes" : "${notes}"
+}

@@ -1,0 +1,21 @@
+{
+  "QueryFilter" : 
+    {
+      "expression" : 
+        {
+          "operator" : "and",
+          "nestedExpression": [
+            {
+              "argument" : ["${envId}"],
+              "operator":"EQUALS",
+              "property":"environmentId"
+            },
+            {
+              "argument":["${packageId}"],
+              "operator":"EQUALS",
+              "property":"packageId"
+            }           
+          ]
+        }
+    }
+}

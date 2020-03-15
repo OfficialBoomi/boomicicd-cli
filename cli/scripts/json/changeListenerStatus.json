@@ -1,0 +1,6 @@
+{
+   
+  "containerId" : "${atomId}",
+  "listenerId" : "${listenerId}",
+  "action" : "${action}"
+}

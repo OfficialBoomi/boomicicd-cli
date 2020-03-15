@@ -1,0 +1,11 @@
+{
+  "QueryFilter" :
+    {
+      "expression" :
+        {
+          "argument" : ["${processName}"],
+          "operator" : "LIKE",
+          "property" : "name"
+        }
+    }
+}

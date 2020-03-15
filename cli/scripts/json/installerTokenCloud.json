@@ -1,0 +1,6 @@
+{
+	"installType":"CLOUD",
+	"cloudId":"${cloudId}",
+	"durationMinutes": 60
+}
+

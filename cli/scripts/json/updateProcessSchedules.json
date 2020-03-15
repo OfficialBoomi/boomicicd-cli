@@ -1,0 +1,15 @@
+{
+  "Schedule" : [
+    {
+      "minutes" : "${minutes}",
+      "hours" : "${hours}",
+      "daysOfWeek" : "${daysOfWeek}",
+      "daysOfMonth" : "*",
+      "months" : "${months}",
+      "years" : "${years}"
+    }
+  ],
+  "processId" : "${processId}",
+  "atomId" : "${atomId}",
+  "id" : "${scheduleId}"
+}

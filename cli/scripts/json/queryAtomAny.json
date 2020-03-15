@@ -1,0 +1,16 @@
+{
+   "QueryFilter" :
+     {
+       "expression" :
+         {
+           "operator" : "and",
+           "nestedExpression" : [
+             {
+               "argument" : ["${atomName}"],
+               "operator" : "EQUALS",
+               "property" : "name"
+             }
+           ]
+         }
+     }
+}

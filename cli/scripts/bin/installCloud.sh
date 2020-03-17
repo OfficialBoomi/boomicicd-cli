@@ -60,3 +60,7 @@ while IFS= read -r line; do echo "$line" >> ${ATOM_HOME}/conf/container.properti
 echo "${JRE_HOME}" > $ATOM_HOME/.install4j/pref_jre.cfg
 
 ${ATOM_HOME}/bin/atom restart
+if [ "$ERROR" -gt "0" ]
+then
+   return 255;
+fi

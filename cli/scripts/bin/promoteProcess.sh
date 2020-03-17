@@ -33,3 +33,7 @@ curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL > out.json
 clean
 
 unset listenerStatus
+if [ "$ERROR" -gt "0" ]
+then
+   return 255;
+fi

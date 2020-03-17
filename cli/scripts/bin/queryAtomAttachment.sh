@@ -26,3 +26,7 @@ clean
 export atomId=${saveAtomId}
 export envId=${saveEnvId}
  
+if [ "$ERROR" -gt "0" ]
+then
+   return 255;
+fi

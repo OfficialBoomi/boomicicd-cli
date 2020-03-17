@@ -50,3 +50,7 @@ extract result[0].status status
 extract result[0].message message
  
 clean
+if [ "$ERROR" -gt "0" ]
+then
+   return 255;
+fi

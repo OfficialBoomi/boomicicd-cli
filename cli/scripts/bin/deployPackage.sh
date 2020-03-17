@@ -23,3 +23,7 @@ source bin/queryEnvironment.sh env="$env" classification="*"
 source bin/createDeployedPackage.sh envId=${envId} listenerStatus="${listenerStatus}" packageId=$packageId notes="$deployNotes"
 
 clean
+if [ "$ERROR" -gt "0" ]
+then
+   return 255;
+fi

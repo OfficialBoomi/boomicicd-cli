@@ -46,3 +46,7 @@ done
 
 printReportTail
 clean
+if [ "$ERROR" -gt "0" ]
+then
+   return 255;
+fi

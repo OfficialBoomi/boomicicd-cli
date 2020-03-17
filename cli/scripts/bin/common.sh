@@ -101,15 +101,15 @@ function clean {
 
 # call platform API
 function callAPI {
- 
- #echo "curl -s -X POST -u $authToken -H \"${h1}\" -H \"${h2}\" $URL -d@tmp.json > out.json"
+	unset ERROR ERROR_MESSAGE
+  #echo "curl -s -X POST -u $authToken -H \"${h1}\" -H \"${h2}\" $URL -d@tmp.json > out.json"
  if [[ $URL != *queryMore* ]]
   then
   curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL -d@"${WORKSPACE}"/tmp.json > "${WORKSPACE}"/out.json
-  error=`jq  -r . out.json  |  grep '"@type": "Error"' | wc -l`
-  if [[ $error -gt 0 ]]; then 
+  export ERROR=`jq  -r . out.json  |  grep '"@type": "Error"' | wc -l`
+  if [[ $ERROR -gt 0 ]]; then 
 	  export ERROR_MESSAGE=`jq -r .message out.json` 
-		echo $ERROR_MESSAGE  
+		echo $ERROR_MESSAGE 
 	 return 251
   fi
  
@@ -119,6 +119,12 @@ function callAPI {
   fi
   else
   curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL -d${queryToken} > "${WORKSPACE}"/out.json
+  export ERROR=`jq  -r . out.json  |  grep '"@type": "Error"' | wc -l`
+  if [[ $ERROR -gt 0 ]]; then 
+	  export ERROR_MESSAGE=`jq -r .message out.json` 
+		echo $ERROR_MESSAGE 
+	 return 251
+  fi
  fi
 
 }
@@ -186,3 +192,7 @@ function printReportRow {
 	printText="${printText} </tr>"
 	printf "${printFormat} ${printText}"
 }
+if [ "$ERROR" -gt "0" ]
+then
+   return 255;
+fi

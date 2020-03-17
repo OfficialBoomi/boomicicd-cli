@@ -26,3 +26,7 @@ saveAtomId=${atomId}
 source bin/updateAtom.sh atomId=${atomId} purgeHistoryDays=7
 source bin/createAtomAttachment.sh atomId=${saveAtomId} envId=${saveEnvId}
 clean
+if [ "$ERROR" -gt "0" ]
+then
+   return 255;
+fi

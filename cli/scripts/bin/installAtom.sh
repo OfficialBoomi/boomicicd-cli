@@ -30,3 +30,7 @@ ATOM_HOME=$installDir/Atom_$atomName
 -VinstallToken=$tokenId \
 -VatomName=$atomName \
 -dir $installDir 
+if [ "$ERROR" -gt "0" ]
+then
+   return 255;
+fi

@@ -12,3 +12,7 @@ i=0;
 export envs=`while [ "$i" -lt "${#names[@]}" ]; do printf  "%s\n" "${names[$i]}"; i=$(( $i + 1 )); done`
 	
 
+if [ "$ERROR" -gt "0" ]
+then
+   return 255;
+fi

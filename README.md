@@ -112,5 +112,8 @@ The CLI framework is built around the functions in the common.sh
 - Check the $WORKSPACE/out.json for the out.json
 - Call the API manually using
  curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL -d@"${WORKSPACE}"/tmp.json > "${WORKSPACE}"/out.json
+ 
+ # Support
+This image is not supported at this time. Please leave your comments at https://community.boomi.com/s/group/0F91W0000008r5WSAQ/devops-boomi
 
 

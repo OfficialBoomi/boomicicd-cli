@@ -1,4 +1,4 @@
-# Command Line Interface for Boomi CI/CD
+# Command Line Interface reference implementation for Boomi CI/CD
 
 The CLI utility wraps calls to [Boomi Atomsphere APIs](https://help.boomi.com/bundle/integration/page/r-atm-AtomSphere_API_6730e8e4-b2db-4e94-a653-82ae1d05c78e.html). Handles input and output JSON files and performance orchestration for deploying and managing Boomi runtimes, components and metadata required for CI/CD. 
   
@@ -47,7 +47,11 @@ createEnvironment.sh|env, classification|createEnvironment.json|Environment/crea
 createEnvironmentRole.sh|roleName, env|createEnvironmentRole.json|EnvironmentRole /create|Attach a Role to an Env
 createPackagedComponent.sh|componentId, componentType, packageVersion, notes, createdDate|createPackagedComponent.json|PackagedComponent/create|Create a Packaged Component 
 createProcessAttachment.sh|processId, envId, componentType|createProcessAttachment.json|ProcessEnvironmentAttachment /create|Attach Process to Environment (Legacy deployment)
+deployPackage.sh|env, packageVersion, notes, listenerStatus, componentId or processName|Muliple|Multiple|Creates and deploys a packaged component by processName or id in a given Env
+deployProcess.sh|processId, envId, componentType, notes|deployProcess.json|Deployment/|Deploys a process to an env (Legacy Deployment)
+executeProcess.sh|	atomName, atomType, componentId or processName| executeProcess.json|executeProcess| Executes a process on a named Boomi runtime
 installerToken.sh|atomType|installerToken.json|InstallerToken|Gets an installer token
+promoteProcess.sh|from, to, processName, current, version, listenerStatus|Muliple|Multiple|Promotes a process of a given version from an Env to another Env (Legacy deployment)
 queryAtom.sh|atomName, atomType, atomStatus|queryAtom.json|Atom/query|Queries Atom use atomType and atomStatus =* for wild card
 queryAtomAttachment.sh|atomId, envId|queryAtomAttachment.json|EnvironmentAtomAttachment /query|Queries an Atom/Env Attachment
 queryDeployedPackage.sh|envId, packageId|queryDeployedPackage.json|DeployedPackage /query|Queries a deployed Packaged Component in an Env
@@ -65,12 +69,6 @@ updateProcessScheduleStatus.sh|atomName, atomType, processName, status|updatePro
 updateProcessSchedules.sh|atomName, atomType, processName, years, months, daysOfMonth, daysOfWeek, hours, minutes|updateProcessSchedules.json|ProcessSchedules /$scheduleId /update|Updates Single Process Schedule (For advance options use the UI)
 updateSharedServer.sh|atomName, overrideUrl, apiType, auth, url|updateSharedServer.json|SharedServerInformation /$atomId /update|Updates Shared Web Server URL and APIType
 
-
-
-
-The following scripts perform orchestration by calling multiple APIs
-| **SCRIPT_NAME** | **ARGUMENTS** | **JSON FILE** |**API/Action**| **Notes**|
-| ------ | ------ | ------ | ------ | ------ |
 
 The following scripts publish html reports
 | **SCRIPT_NAME** | **ARGUMENTS** | **JSON FILE** |**API/Action**| **Notes**|

@@ -34,7 +34,7 @@ Set the following variables before the scripts are invoked.
     
 ## List of Interface
 
-The followings script/ calls a single API
+The followings script/ calls a single API. Arguments in *italics* are optional
 
 | **SCRIPT_NAME** | **ARGUMENTS** | **JSON FILE** |**API/Action**| **Notes**|
 | ------ | ------ | ------ | ------ | ------ |
@@ -49,14 +49,14 @@ createPackagedComponent.sh|componentId, componentType, packageVersion, notes, cr
 createProcessAttachment.sh|processId, envId, componentType|createProcessAttachment.json|ProcessEnvironmentAttachment /create|Attach Process to Environment (Legacy deployment)
 deployPackage.sh|env, packageVersion, notes, listenerStatus, componentId or processName|Muliple|Multiple|Creates and deploys a packaged component by processName or id in a given Env
 deployProcess.sh|processId, envId, componentType, notes|deployProcess.json|Deployment/|Deploys a process to an env (Legacy Deployment)
-executeProcess.sh|	atomName, atomType, componentId or processName| executeProcess.json|executeProcess| Executes a process on a named Boomi runtime
-installerToken.sh|atomType|installerToken.json|InstallerToken|Gets an installer token
+executeProcess.sh|	atomName, atomType, componentId or *processName*| executeProcess.json|executeProcess| Executes a process on a named Boomi runtime
+installerToken.sh|atomType, *cloudId*|installerToken.json|InstallerToken|Gets an installer token atomType must be one-of **ATOM**, **MOLECULE** or **CLOUD**. If atomType=CLOUD then the cloudId must be specified
 promoteProcess.sh|from, to, processName, current, version, listenerStatus|Muliple|Multiple|Promotes a process of a given version from an Env to another Env (Legacy deployment)
 queryAtom.sh|atomName, atomType, atomStatus|queryAtom.json|Atom/query|Queries Atom use atomType and atomStatus =* for wild card
 queryAtomAttachment.sh|atomId, envId|queryAtomAttachment.json|EnvironmentAtomAttachment /query|Queries an Atom/Env Attachment
 queryDeployedPackage.sh|envId, packageId|queryDeployedPackage.json|DeployedPackage /query|Queries a deployed Packaged Component in an Env
 queryDeployment.sh|processId, envId, current, version|queryDeployment.json|Deployment/query|Queries a deployment in an Env (Legacy deployment)
-queryEnvironment.sh|env, classification|queryEnvironment.json|Environment/query|Queries an Env in an Accout
+queryEnvironment.sh|env, classification|queryEnvironment.json|Environment/query|Queries an Env in an Account. Use classification=* for wildcard.
 queryExecutionRecord.sh|from, to, atomName|queryExecutionRecord.json|ExecutionRecord /query|Queries Process Execution records within a given time span
 queryPackagedComponent.sh|componentId, componentType, packageVersion|queryPackagedComponent.json|PackagedComponent /query|Queries a Packaged Component by version and Process Name
 queryProcess.sh|processName|queryProcess.json|Process/query|Queuries a process to get ComponentId 
@@ -71,13 +71,23 @@ updateSharedServer.sh|atomName, overrideUrl, apiType, auth, url|updateSharedServ
 
 
 The following scripts publish html reports
-| **SCRIPT_NAME** | **ARGUMENTS** | **JSON FILE** |**API/Action**| **Notes**|
-| ------ | ------ | ------ | ------ | ------ |
+| **SCRIPT_NAME** | **ARGUMENTS** | **REPORT HEADERS** | **Notes**|
+| ------ | ------ | ------ | ------ |
+publishAllEnvironments.sh|-|Id, Classification, Name|Publishes a list of  Environments in the account
+publishAtom.sh|-|Atom Id, Atom Name, Env, Name, Status|Publishes a list of Atoms and attached Env in the account
+publishDeployedPackage.sh|env=%env%|Component, Package Version, Environment, Component Type, Deployed Date, Deployed By, Notes|Publishes a list of Deployed Packaged in an Env
+publishPackagedComponent.sh|packageVersion=%version%|Component, Package Version, Component Type, Deployed Date, Deployed By, Notes|Publishes a list of Packaged Component for a given version
+publishProcess.sh|processName=%%|Process Id, Process Name|Publishes a list of Processes  in the account
 
 
-The following scripts installs Boomi runtime
-| **SCRIPT_NAME** | **ARGUMENTS** | **JSON FILE** |**API/Action**| **Notes**|
-| ------ | ------ | ------ | ------ | ------ |
+- The following scripts installs Boomi runtimes (local to the script location).
+- Before running the script set the tokenId variable by running the installerToke.sh CLI script.
+| **SCRIPT_NAME** | **Usage**|
+| ------ | ------ |
+installAtom.sh|bin/installAtom.sh atomName=${atomName} tokenId=${tokenId} *INSTALL_DIR=${INSTALL_DIR}*
+installMolecule.sh|bin/installMolecule.sh atomName=${atomName} tokenId=${tokenId} *INSTALL_DIR=${INSTALL_DIR} WORK_DIR=${WORK_DIR} JRE_HOME=${JRE_HOME} JAVA_HOME=${JAVA_HOME} TMP_DIR=${TMP_DIR}*||Installs the Molecule runtime locally
+installCloud.sh|bin/installCloud.sh atomName=${atomName} cloudId=${cloudId} tokenId=${tokenId} *INSTALL_DIR=${INSTALL_DIR} WORK_DIR=${WORK_DIR} JRE_HOME=${JRE_HOME} JAVA_HOME=${JAVA_HOME} TMP_DIR=${TMP_DIR}*||Publishes a list of Deployed Packaged in an Env
+
 
 ## common. sh
 

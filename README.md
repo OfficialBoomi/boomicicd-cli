@@ -13,9 +13,9 @@ The CLI utility wraps calls to [Boomi Atomsphere APIs](https://help.boomi.com/bu
 
 ## Set up
 Copy the scripts folder on to a Unix Machine. The scripts folder contains the following directories
-- bin has the bash scripts for CLI
-- conf has configuration files for Molecule installation 
-- json has json templates used in the Atomsphere API calls.
+- **bin** has the bash scripts for CLI
+- **conf** has configuration files for Molecule installation 
+- **json** has json templates used in the Atomsphere API calls.
 
 Set the following variables before the scripts are invoked.
 
@@ -82,6 +82,7 @@ publishProcess.sh|processName=%%|Process Id, Process Name|Publishes a list of Pr
 
 - The following scripts installs Boomi runtimes (local to the script location).
 - Before running the script set the tokenId variable by running the installerToke.sh CLI script.
+
 | **SCRIPT_NAME** | **Usage**|
 | ------ | ------ |
 installAtom.sh|bin/installAtom.sh atomName=${atomName} tokenId=${tokenId} *INSTALL_DIR=${INSTALL_DIR}*
@@ -90,5 +91,26 @@ installCloud.sh|bin/installCloud.sh atomName=${atomName} cloudId=${cloudId} toke
 
 
 ## common. sh
+The CLI framework is built around the functions in the common.sh
+| **Function** | **Usage**|
+| ------ | ------ |
+|callAPI| Invokes the AtomSphere API and captures the output in out.json|
+|clean| unsets input variables, retains output variables|
+|createJSON| Creates the input JSON from the template JSON and ARGUMENTS in a tmp.json |
+|extract| Exports specific variables in the envirnoment variable from out.json|
+|extractMap| Exports specific array in the envirnoment variable from out.json |
+|inputs|Parses the inputs and validates its against the mandatory ARGUMENTS |
+|printArgs|Prints all ARGUMENTS and input variables|
+|printReportHead| Prints report header. Called by the Publish report scripts|
+|printReportRow|  Prints row data. Called by the Publish report scripts|
+|printReportTail|  Prints report tail. Called by the Publish report scripts|
+|usage| Prints the script usage details|
+
+## Troubleshooting and help
+- If a script fails to run, it will print the ERROR_MESSAGE and exit with an ERROR_CODE i.e. $? > 0
+- Check the $WORKSPACE/tmp.json for the input.json
+- Check the $WORKSPACE/out.json for the out.json
+- Call the API manually using
+ curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL -d@"${WORKSPACE}"/tmp.json > "${WORKSPACE}"/out.json
 
 

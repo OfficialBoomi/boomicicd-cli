@@ -3,7 +3,7 @@
 source bin/common.sh
 # get atom id of the by atom name
 # mandatory arguments
-ARGUMENTS=( processId envId current version )
+ARGUMENTS=(processId envId current version)
 JSON_FILE=json/queryDeployment.json
 URL=$baseURL/Deployment/query
 id=result[0].id

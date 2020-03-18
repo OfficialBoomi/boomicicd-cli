@@ -12,7 +12,7 @@ fi
 URL=$baseURL/PackagedComponent/query
 JSON_FILE=json/queryPackagedComponentVersion.json
 REPORT_TITLE="List of Packaged Components"
-REPORT_HEADERS=("#" "Component" "Package Version" "Component Type" "Deployed Date" "Deployed By" "Notes")
+REPORT_HEADERS=("#" "Component" "Package Version" "Component Type" "Created Date" "Created By" "Notes")
 queryToken="new"
 createJSON
 
@@ -22,6 +22,10 @@ printReportHead
 while [ null != "${queryToken}" ] 
 do
 	callAPI
+	if [ "$ERROR" -gt "0" ]
+	then
+  	break; 
+	fi
 	i=0;
 	extractMap deploymentId ids
 	extractMap componentId cids
@@ -40,7 +44,7 @@ do
     printReportRow  "${h}" "${name}" "${pvs[$i]}" "${ctypes[$i]}" "${cdates[$i]}" "${cbys[$i]}" "${notes[$i]}"	
 		i=$(( $i + 1 )); 
 	done
-	queryToken=`jq -r .queryToken "$WORKSPACE/out.json"`
+  extract queryToken queryToken 	
 	URL=$baseURL/Process/queryMore
 done
 

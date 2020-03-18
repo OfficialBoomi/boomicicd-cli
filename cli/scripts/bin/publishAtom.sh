@@ -25,7 +25,10 @@ h=0
 while [ null != "${queryToken}" ]
 do
 		callAPI
-		
+		if [ "$ERROR" -gt "0" ]
+		then
+   		break;
+		fi
 		extractMap id ids
 		extractMap name names
 		extractMap status statuss

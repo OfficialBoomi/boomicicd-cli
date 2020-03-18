@@ -26,6 +26,10 @@ while [ null != "${queryToken}" ]
 do
 	i=0;
 	callAPI
+	if [ "$ERROR" -gt "0" ]
+	then
+   break
+	fi
 	extractMap deploymentId ids 
 	extractMap componentId cids 
 	extractMap packageVersion pvs 
@@ -47,7 +51,7 @@ do
     printReportRow  "${h}" "${name}" "${pvs[$i]}" "${env}" "${ctypes[$i]}" "${ddates[$i]}" "${dbys[$i]}" "${notes[$i]}"	
 		i=$(( $i + 1 )); 
 	done
-	queryToken=`jq -r .queryToken "$WORKSPACE/out.json"`
+	extract queryToken queryToken 
 	URL=$baseURL/Process/queryMore
 done
 

@@ -6,21 +6,34 @@ source bin/common.sh
 URL=$baseURL/Environment/query
 JSON_FILE=json/queryEnvironmentAny.json
 REPORT_TITLE="List of All Environments"
-REPORT_HEADERS=("ID" "Classification" "Name")
-callAPI
-
-extractMap id ids
-extractMap name names
-extractMap classification classifications
+REPORT_HEADERS=("#" "Id" "Classification" "Name")
+h=0
+queryToken="new"
 
 printReportHead
-i=0
 
-while [ "$i" -lt "${#ids[@]}" ]
- do 
-  printReportRow  "${ids[$i]}" "${classifications[$i]}" "${names[$i]}"
-  i=$(( $i + 1 ))
- done
+while [ null != "${queryToken}" ]
+do
+	callAPI
+	if [ "$ERROR" -gt "0" ]
+	then
+  	break; 
+	fi
+	extractMap id ids
+	extractMap name names
+	extractMap classification classifications
+
+	i=0
+
+	while [ "$i" -lt "${#ids[@]}" ]
+ 	do 
+  	printReportRow  "${h}" "${ids[$i]}" "${classifications[$i]}" "${names[$i]}"
+  	i=$(( $i + 1 ))
+  	h=$(( $h + 1 ))
+ 	done
+  extract queryToken queryToken
+	URL=$baseURL/Environment/queryMore
+done
 
 printReportTail
 clean

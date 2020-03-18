@@ -2,8 +2,6 @@
 # Usage : 
 # changeListenerStatus atomId listenerId action (pause|resume|restart)
 #!/bin/bash
-#sed -e "s/\${atomId}/$1/" -e "s/\${listenerId}/$2/" -e "s/\${action}/$3/" changeListenerStatus.json > tmp_cls.json
-#curl -X POST -u "$authToken" -H "${h1}" -H "${h2}" $baseURL/changeListenerStatus -d@tmp_cls.json > out.json
 
 source bin/common.sh
 

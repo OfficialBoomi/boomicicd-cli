@@ -32,7 +32,7 @@ Set the following variables before the scripts are invoked.
 
         $ source bin/publishAtom.sh > index.html
     
-## List of Interface
+## List of Interfaces
 
 The followings script/ calls a single API. Arguments in *italics* are optional
 
@@ -69,7 +69,7 @@ updateProcessScheduleStatus.sh|atomName, atomType, processName, status|updatePro
 updateProcessSchedules.sh|atomName, atomType, processName, years, months, daysOfMonth, daysOfWeek, hours, minutes|updateProcessSchedules.json|ProcessSchedules /$scheduleId /update|Updates Single Process Schedule (For advance options use the UI)
 updateSharedServer.sh|atomName, overrideUrl, apiType, auth, url|updateSharedServer.json|SharedServerInformation /$atomId /update|Updates Shared Web Server URL and APIType
 
-
+## List of Reports
 The following scripts publish html reports
 | **SCRIPT_NAME** | **ARGUMENTS** | **REPORT HEADERS** | **Notes**|
 | ------ | ------ | ------ | ------ |
@@ -79,7 +79,7 @@ publishDeployedPackage.sh|env=%env%|Component, Package Version, Environment, Com
 publishPackagedComponent.sh|packageVersion=%version%|Component, Package Version, Component Type, Deployed Date, Deployed By, Notes|Publishes a list of Packaged Component for a given version
 publishProcess.sh|processName=%%|Process Id, Process Name|Publishes a list of Processes  in the account
 
-
+## List of installation scripts
 - The following scripts installs Boomi runtimes (local to the script location).
 - Before running the script set the tokenId variable by running the installerToke.sh CLI script.
 

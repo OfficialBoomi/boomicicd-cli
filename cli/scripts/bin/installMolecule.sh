@@ -5,7 +5,7 @@ source bin/common.sh
 # mandatory arguments
 
 ARGUMENTS=(atomName tokenId INSTALL_DIR WORK_DIR JRE_HOME JAVA_HOME TMP_DIR)
-
+OPT_ARGUMENTS=(proxyHost proxyPort proxyUser proxyPassword)
 if [ -z "${INSTALL_DIR}" ]
 then
       INSTALL_DIR=/var/boomi 
@@ -41,15 +41,34 @@ fi
 installDir=${INSTALL_DIR}
 ATOM_HOME=$installDir/Molecule_$atomName
 
-#-VproxyHost=<proxy_host_name> -VproxyUser=<proxy_user_name> 
-#-VproxyPassword=<proxy_password> -VproxyPort=<proxy_port_number>
+proxyParams=""
+
+if [ ! -z "${proxyHost}" ]
+then
+	proxyParams="${proxyParams} -VproxyHost='${proxyHost}'"
+fi
+
+if [ ! -z "${proxyPort}" ]
+then
+	proxyParams="${proxyParams} -VproxyPort='${proxyPort}'"
+fi
+
+if [ ! -z "${proxyUser}" ]
+then
+	proxyParams="${proxyParams} -VproxyUser='${proxyUser}'"
+fi
+
+if [ ! -z "${proxyPassword}" ]
+then
+	proxyParams="${proxyParams} -VproxyPassword='${proxyPassword}'"
+fi
 
 ../molecule_install64.sh -q -console  \
 -VinstallToken=$tokenId \
 -VatomName=$atomName \
 -VlocalTempPath=${TMP_DIR} \
 -dir $installDir \
--VjdkPath=${JAVA_HOME} \
+-VjdkPath=${JAVA_HOME} ${proxyParams} \
 -VlocalPath=${WORK_DIR}
 
 # update container properties
@@ -59,7 +78,3 @@ while IFS= read -r line; do echo "$line" >> ${ATOM_HOME}/conf/container.properti
 echo "${JRE_HOME}" > $ATOM_HOME/.install4j/pref_jre.cfg
 
 ${ATOM_HOME}/bin/atom restart
-if [ "$ERROR" -gt "0" ]
-then
-   return 255;
-fi

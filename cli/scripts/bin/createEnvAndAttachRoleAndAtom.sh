@@ -15,6 +15,7 @@ then
         return 255;
 fi
 saveEnv=${env}
+saveAtomName="${atomName}"
 
 source bin/createEnvironment.sh env="${env}" classification="${classification}"
 saveEnvId=${envId}
@@ -28,9 +29,11 @@ then
 fi
 
 saveAtomId=${atomId}
-#source bin/updateAtom.sh atomId=${atomId} purgeHistoryDays=${purgeHistoryDays}
+source bin/updateAtom.sh atomId=${atomId} purgeHistoryDays="${purgeHistoryDays}"
 source bin/createAtomAttachment.sh atomId=${saveAtomId} envId=${saveEnvId}
 clean
+atomName="${saveAtomName}"
+
 if [ "$ERROR" -gt "0" ]
 then
    return 255;

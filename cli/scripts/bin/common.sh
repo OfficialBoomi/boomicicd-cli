@@ -106,9 +106,9 @@ function callAPI {
  if [[ $URL != *queryMore* ]]
   then
   curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL -d@"${WORKSPACE}"/tmp.json > "${WORKSPACE}"/out.json
-  export ERROR=`jq  -r . out.json  |  grep '"@type": "Error"' | wc -l`
+  export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
   if [[ $ERROR -gt 0 ]]; then 
-	  export ERROR_MESSAGE=`jq -r .message out.json` 
+	  export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 
 		echo $ERROR_MESSAGE 
 	 return 251
   fi
@@ -192,7 +192,3 @@ function printReportRow {
 	printText="${printText} </tr>"
 	printf "${printFormat} ${printText}"
 }
-if [ "$ERROR" -gt "0" ]
-then
-   return 255;
-fi

@@ -95,7 +95,7 @@ function clean {
 		do
 			unset $i
 	  done
-	 unset JSON_FILE ARGUMENTS id URL var ARGUMENT i exportVariable reportHeaders reportTitle
+	 unset JSON_FILE ARGUMENTS id URL var ARGUMENT i exportVariable reportHeaders reportTitle OPT_ARGUMENTS
 	 #rm -f "${WORKSPACE}"/*.json
 }
 

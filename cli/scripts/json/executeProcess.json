@@ -1,14 +1,8 @@
 {  
  "ProcessProperties" : {
-  	 "@type" : "ProcessProperties",
-    "ProcessProperty" : [
-      {
-         "@type" : "",
-         "Name" : "priority",
-         "Value": "medium"
-      }
-    ]
-  },
+  "@type" : "ProcessProperties",
+  "ProcessProperty" : ${processProperties}
+  }, 
   "processId" : "${processId}",
   "atomId" : "${atomId}"
 }

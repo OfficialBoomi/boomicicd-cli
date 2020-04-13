@@ -13,7 +13,7 @@ then
 fi
 deployNotes=$notes;
 
-if [ -z "${componentId" ]
+if [ -z "${componentId}" ]
 then
 	source bin/queryProcess.sh processName="$processName"
 fi

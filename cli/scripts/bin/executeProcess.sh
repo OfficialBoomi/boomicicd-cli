@@ -4,7 +4,7 @@
 source bin/common.sh
 #execute Process by atomId and processId
 ARGUMENTS=(atomName atomType)
-OPT_ARGUMENTS=(componentId processName)
+OPT_ARGUMENTS=(componentId processName processProperties)
 
 inputs "$@"
 if [ "$?" -gt "0" ]
@@ -20,7 +20,15 @@ then
 fi
 processId=${componentId}
 
-ARGUMENTS=(atomId processId)
+if [ -z "${processProperties}" ]
+then
+	processProperties="[]"
+else
+	# escape double quotes with \"
+	processProperties=`echo $processProperties | sed -e 's/\"/\\\"/g'`
+fi
+
+ARGUMENTS=(atomId processId processProperties)
 JSON_FILE=json/executeProcess.json
 URL=$baseURL/executeProcess
  

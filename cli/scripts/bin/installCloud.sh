@@ -76,7 +76,7 @@ fi
 -VlocalPath=${WORK_DIR}
 
 # update container properties
-input="conf/container.properties"
+input="conf/cloud_container.properties"
 while IFS= read -r line; do echo "$line" >> ${ATOM_HOME}/conf/container.properties; done  < "$input"
 
 echo "${JRE_HOME}" > $ATOM_HOME/.install4j/pref_jre.cfg

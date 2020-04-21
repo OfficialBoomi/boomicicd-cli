@@ -5,7 +5,7 @@ function inputs {
      for ARGUMENT in "$@"
      do
        KEY=$(echo $ARGUMENT | cut -f1 -d=)
-       VALUE=$(echo $ARGUMENT | cut -f2 -d=)
+       VALUE="$(echo $ARGUMENT | cut -f2 -d=)"
       	for i in "${ARGUMENTS[@]}"
       	do
 					# remove all old values of the ARGUMENTS
@@ -119,9 +119,9 @@ function callAPI {
   fi
   else
   curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL -d${queryToken} > "${WORKSPACE}"/out.json
-  export ERROR=`jq  -r . out.json  |  grep '"@type": "Error"' | wc -l`
+  export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
   if [[ $ERROR -gt 0 ]]; then 
-	  export ERROR_MESSAGE=`jq -r .message out.json` 
+	  export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 
 		echo $ERROR_MESSAGE 
 	 return 251
   fi
@@ -129,6 +129,23 @@ function callAPI {
 
 }
 
+function getAPI {
+	unset ERROR ERROR_MESSAGE
+  curl -s -X GET -u $authToken -H "${h1}" -H "${h2}" "$URL" > "${WORKSPACE}"/out.json
+  export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
+  if [[ $ERROR -gt 0 ]]; then 
+	  export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 
+		echo $ERROR_MESSAGE 
+	 return 251
+  fi
+}
+
+function getXMLAPI {
+	unset ERROR ERROR_MESSAGE
+	export ERROR=0
+  export ERROR_MESSAGE=""
+  curl -s -X GET -u $authToken -H "application/xml" -H "application/xml" "$URL" > "${WORKSPACE}"/out.xml
+}
 
 function extract {
   	export ${2}="`jq -r .${1} "${WORKSPACE}"/out.json`"
@@ -136,6 +153,10 @@ function extract {
 
 function extractMap {
  mapfile -t ${2} < <(jq -r .result[].${1} "${WORKSPACE}/out.json")
+}
+
+function extractComponentMap {
+ mapfile -t ${2} < <(jq -r .componentInfo[].${1} "${WORKSPACE}/out.json")
 }
 
 function printReportHead {

@@ -1,3 +1,8 @@
 out.json
 tmp.json
+out.xml
+**/Test***/**
+**/TestOut/**
+**/Test **/**
 *.swp
+*.bak

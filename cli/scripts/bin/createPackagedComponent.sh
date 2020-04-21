@@ -5,27 +5,36 @@ source bin/queryPackagedComponent.sh $@
 
 
 # mandatory arguments
-ARGUMENTS=(componentId componentType packageVersion notes createdDate)
+ARGUMENTS=(componentId componentType packageVersion notes createdDate) 
+OPT_ARGUMENTS=(componentVersion) 
 createdDate=`date -u +"%Y-%m-%d"T%H:%M:%SZ`
-JSON_FILE=json/createPackagedComponent.json
-URL=$baseURL/PackagedComponent/
-id=packageId
-exportVariable=packageId
 inputs "$@"
 if [ "$?" -gt "0" ]
 then
         return 255;
 fi
 
-createJSON
+URL=$baseURL/PackagedComponent/
+id=packageId
+exportVariable=packageId
 
-if [ "$packageId" == "null" ] || [ -z "$packageId" ]
+if [ null == "${componentVersion}" ]
+then
+ JSON_FILE=json/createPackagedComponent.json
+else 
+ ARGUMENTS=(componentId componentType componentVersion packageVersion notes createdDate) 
+ JSON_FILE=json/createPackagedComponentVersion.json
+fi
+
+createJSON
+if [ "$packageId" == "null" ] || [ -z "$packageId" ] || [ null == "${packageId}" ]
 then 
 	callAPI	
 fi
 
 clean
-if [ "$ERROR" -gt "0" ]
+if [ "$ERROR" -gt 0 ]
 then
    return 255;
 fi
+

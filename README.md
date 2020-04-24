@@ -45,9 +45,12 @@ createAtomAttachment.sh|atomId, envId|createAtomAttachment.json|EnvironmentAtomA
 createDeployedPackage.sh|envId, packageId, notes, listenerStatus|createDeployedPackage.json|DeployedPackage /create|Deploy a Packaged Component in an Env
 createEnvironment.sh|env, classification|createEnvironment.json|Environment/create|Create Env (only if does not exist)
 createEnvironmentRole.sh|roleName, env|createEnvironmentRole.json|EnvironmentRole /create|Attach a Role to an Env
-createPackagedComponent.sh|componentId, componentType, packageVersion, notes, createdDate|createPackagedComponent.json|PackagedComponent/create|Create a Packaged Component 
+createPackages.sh|packageVersion, notes, componentType, componentIds or processNames, extractComponentXmlFolder|Muliple|Multiple|Creates multiple PackagedComponents using the currentVersion processName or id. If the extractComponentXmlFolder if passed all the component XML and package manifest files are extracted into the folder
+createPackage.sh|packageVersion, notes, componentType, componentVersion, componentId or processName, extractComponentXmlFolder|Muliple|Multiple|Creates a PackagedComponent by processName or componentid. If the extractComponentXmlFolder if passed all the component XML and package manifest files are extracted into the folder
+createPackagedComponent.sh|componentId, componentType, packageVersion, notes, componentVersion createdDate|createPackagedComponent.json|PackagedComponent/create|Create a Packaged Component 
 createProcessAttachment.sh|processId, envId, componentType|createProcessAttachment.json|ProcessEnvironmentAttachment /create|Attach Process to Environment (Legacy deployment)
-deployPackage.sh|env, packageVersion, notes, listenerStatus, componentId or processName|Muliple|Multiple|Creates and deploys a packaged component by processName or id in a given Env
+deployPackage.sh|env, packageVersion, notes, listenerStatus, componentType, componentVersion, componentId or processName, extractComponentXmlFolder|Muliple|Multiple|Creates and deploys a PackagedComponent by processName or componentid in a given Env. If the extractComponentXmlFolder if passed all the component XML and package manifest files are extracted into the folder
+deployPackages.sh|env, packageVersion, notes, listenerStatus, componentType, componentIds or processNames, extractComponentXmlFolder|Muliple|Multiple|Creates and deploys multiple packaged component using the currentVersion processName or id to an env. If the extractComponentXmlFolder if passed all the component XML and package manifest files are extracted into the folder
 deployProcess.sh|processId, envId, componentType, notes|deployProcess.json|Deployment/|Deploys a process to an env (Legacy Deployment)
 executeProcess.sh|	atomName, atomType, componentId or *processName*| executeProcess.json|executeProcess| Executes a process on a named Boomi runtime
 installerToken.sh|atomType, *cloudId*|installerToken.json|InstallerToken|Gets an installer token atomType must be one-of **ATOM**, **MOLECULE** or **CLOUD**. If atomType=CLOUD then the cloudId must be specified
@@ -95,6 +98,8 @@ The CLI framework is built around the functions in the common.sh
 | **Function** | **Usage**|
 | ------ | ------ |
 |callAPI| Invokes the AtomSphere API and captures the output in out.json|
+|getAPI| Invokes the GET request on AtomSphere API and captures the output in out.json|
+|getXMLAPI| Invokes the GET/XML request on AtomSphere API and captures the output in out.xml|
 |clean| unsets input variables, retains output variables|
 |createJSON| Creates the input JSON from the template JSON and ARGUMENTS in a tmp.json |
 |extract| Exports specific variables in the envirnoment variable from out.json|

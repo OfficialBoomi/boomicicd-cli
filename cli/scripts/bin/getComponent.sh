@@ -26,7 +26,7 @@ getXMLAPI
 
 
 
-cat "${WORKSPACE}"/out.xml | xmllint --format - > "${WORKSPACE}"/${componentId}_${version}.xml
+mv "${WORKSPACE}"/out.xml "${WORKSPACE}"/${componentId}_${version}.xml
 
 
 clean

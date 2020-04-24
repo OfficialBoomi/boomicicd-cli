@@ -1,6 +1,9 @@
 #!/bin/bash
 source bin/common.sh
-# get atom id of the by atom name
+# No verbose of this script
+saveVerbose=${VERBOSE}
+unset VERBOSE
+
 # mandatory arguments
 ARGUMENTS=(processName)
 JSON_FILE=json/searchProcess.json
@@ -44,6 +47,8 @@ done
 
 printReportTail
 clean
+export VERBOSE=${saveVerbose}
+
 if [ "$ERROR" -gt "0" ]
 then
    return 255;

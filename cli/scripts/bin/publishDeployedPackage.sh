@@ -1,6 +1,10 @@
 #!/bin/bash
 source bin/common.sh
-# get atom id of the by atom name
+
+# No verbose for this script
+saveVerbose=${VERBOSE}
+unset VERBOSE
+
 # mandatory arguments
 ARGUMENTS=(env)
 inputs "$@"
@@ -57,6 +61,7 @@ done
 
 printReportTail
 clean
+export VERBOSE=${saveVerbose}
 if [ "$ERROR" -gt "0" ]
 then
    return 255;

@@ -2,8 +2,8 @@
 source bin/common.sh
 
 # mandatory arguments
-ARGUMENTS=(env componentType packageVersion notes listenerStatus) 
-OPT_ARGUMENTS=(componentIds processNames extractComponentXmlFolder)
+ARGUMENTS=(env packageVersion notes listenerStatus) 
+OPT_ARGUMENTS=(componentIds processNames extractComponentXmlFolder tag componentType)
 inputs "$@"
 if [ "$?" -gt "0" ]
 then
@@ -13,6 +13,8 @@ fi
 saveNotes="${notes}"
 savePackageVersion="${packageVersion}"
 saveListenerStatus="${listenerStatus}"
+saveTag="${tag}"
+unset tag
 if [ -z "${componentIds}" ]
 then
 	IFS=',' ;for processName in `echo "${processNames}"`; 
@@ -22,7 +24,7 @@ then
     processName=`echo "${processName}" | xargs`
     saveProcessName="${processName}"
 		listenerStatus="${saveListenerStatus}"
-		source bin/deployPackage.sh processName="${processName}" componentType="Process" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}"
+		source bin/deployPackage.sh processName="${processName}" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag=""
  	done   
 else    
 	IFS=',' ;for componentId in `echo "${componentIds}"`; 
@@ -32,10 +34,23 @@ else
     componentId=`echo "${componentId}" | xargs`
     saveComponentId="${componentId}"
 		listenerStatus="${saveListenerStatus}"
-		source bin/deployPackage.sh componentId=${componentId} componentType="Process" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}"
+		source bin/deployPackage.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag=""
  	done   
 fi  
 
+
+# Tag all the packages of the release together
+if [ ! -z "${extractComponentXmlFolder}" ] && [ null != "${extractComponentXmlFolder}" ] && [ "" != "${extractComponentXmlFolder}" ]
+then
+  folder="${WORKSPACE}/${extractComponentXmlFolder}"
+	tag="${saveTag}"
+  # Save componentExtractFolder into git
+	if [ ! -z "${tag}" ] && [ null != "${tag}" ] && [ "" != "${tag}" ]
+	then
+    bin/gitrelease.sh baseFolder="${folder}" tag="${tag}" notes="${saveNotes}"
+	fi
+fi
+			
 clean
 unset componentIds processNames
 

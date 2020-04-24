@@ -40,6 +40,14 @@ function inputs {
       return 255;
     fi
    done
+
+	if [ "${VERBOSE}" == "true" ]
+	then
+		echo "Executing script: ${BASH_SOURCE[1]} with arguments"
+		echo "----"
+		printArgs
+		echo "----"
+	fi
   }
  
 # The help function
@@ -95,42 +103,47 @@ function clean {
 		do
 			unset $i
 	  done
-	 unset JSON_FILE ARGUMENTS id URL var ARGUMENT i exportVariable reportHeaders reportTitle OPT_ARGUMENTS
+	 unset JSON_FILE ARGUMENTS id URL var ARGUMENT i exportVariable reportHeaders reportTitle OPT_ARGUMENTS IFS
 	 #rm -f "${WORKSPACE}"/*.json
 }
 
 # call platform API
 function callAPI {
 	unset ERROR ERROR_MESSAGE
-  #echo "curl -s -X POST -u $authToken -H \"${h1}\" -H \"${h2}\" $URL -d@tmp.json > out.json"
- if [[ $URL != *queryMore* ]]
+	if [ ! -z ${SLEEP_TIMER} ]; then sleep ${SLEEP_TIMER}; fi
+  if [[ $URL != *queryMore* ]]
   then
-  curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL -d@"${WORKSPACE}"/tmp.json > "${WORKSPACE}"/out.json
-  export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
-  if [[ $ERROR -gt 0 ]]; then 
-	  export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 
-		echo $ERROR_MESSAGE 
-	 return 251
-  fi
+   curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL -d@"${WORKSPACE}"/tmp.json > "${WORKSPACE}"/out.json
+   export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
+   if [[ $ERROR -gt 0 ]]; then 
+	   export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 
+		 echo $ERROR_MESSAGE 
+	  return 251
+   fi
  
-  if [ ! -z "$exportVariable" ]
-  then
-  	export ${exportVariable}=`jq -r .$id "${WORKSPACE}"/out.json`
-  fi
+   if [ ! -z "$exportVariable" ]
+   then
+  	 export ${exportVariable}=`jq -r .$id "${WORKSPACE}"/out.json`
+   fi
   else
-  curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL -d${queryToken} > "${WORKSPACE}"/out.json
-  export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
-  if [[ $ERROR -gt 0 ]]; then 
+   curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL -d${queryToken} > "${WORKSPACE}"/out.json
+   export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
+   if [[ $ERROR -gt 0 ]]; then 
 	  export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 
 		echo $ERROR_MESSAGE 
 	 return 251
-  fi
+   fi
  fi
-
+ if [ "$VERBOSE" == "true" ]  
+ then 
+  cat  "${WORKSPACE}"/out.json >> "${WORKSPACE}"/outs.json
+  cat  "${WORKSPACE}"/tmp.json >> "${WORKSPACE}"/tmps.json
+ fi
 }
 
 function getAPI {
 	unset ERROR ERROR_MESSAGE
+	if [ ! -z ${SLEEP_TIMER} ]; then sleep ${SLEEP_TIMER}; fi
   curl -s -X GET -u $authToken -H "${h1}" -H "${h2}" "$URL" > "${WORKSPACE}"/out.json
   export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
   if [[ $ERROR -gt 0 ]]; then 
@@ -138,13 +151,22 @@ function getAPI {
 		echo $ERROR_MESSAGE 
 	 return 251
   fi
+  if [ "$VERBOSE" == "true" ]  
+  then 
+   cat  "${WORKSPACE}"/out.json >> "${WORKSPACE}"/outs.json
+  fi
 }
 
 function getXMLAPI {
 	unset ERROR ERROR_MESSAGE
 	export ERROR=0
   export ERROR_MESSAGE=""
+	if [ ! -z ${SLEEP_TIMER} ]; then sleep ${SLEEP_TIMER}; fi
   curl -s -X GET -u $authToken -H "application/xml" -H "application/xml" "$URL" > "${WORKSPACE}"/out.xml
+  if [ "$VERBOSE" == "true" ]  
+  then 
+   cat  "${WORKSPACE}"/out.xml >> "${WORKSPACE}"/outs.xml
+  fi
 }
 
 function extract {
@@ -157,6 +179,13 @@ function extractMap {
 
 function extractComponentMap {
  mapfile -t ${2} < <(jq -r .componentInfo[].${1} "${WORKSPACE}/out.json")
+}
+
+function echov {
+  if [ "$VERBOSE" == "true" ]  
+  then 
+   echo -e "${BASH_SOURCE[1]}: ${1}"
+  fi
 }
 
 function printReportHead {

@@ -1,20 +1,12 @@
 #!/bin/bash
-
+# Publish a list of atoms
 source bin/common.sh
-# get atom id of the by atom name
-# mandatory arguments
 JSON_FILE=json/queryAny.json
 URL=$baseURL/Atom/query
 REPORT_TITLE="List of Atoms"
 REPORT_HEADERS=("#" "Atom Id" "Atom Name" "Env Name" "Status")
 queryToken="new"
 
-inputs "$@"
-
-if [ "$?" -gt "0" ]
-then
-        return 255;
-fi
 
 createJSON
  

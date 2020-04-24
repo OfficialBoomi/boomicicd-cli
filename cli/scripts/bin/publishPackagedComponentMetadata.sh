@@ -1,6 +1,10 @@
 #!/bin/bash
 source bin/common.sh
-# get atom id of the by atom name
+
+# No verbose for this script
+saveVerbose=${VERBOSE}
+unset VERBOSE
+
 # mandatory arguments
 ARGUMENTS=(packageIds)
 inputs "$@"
@@ -50,7 +54,7 @@ printReportTail
 clean
 export componentIds
 export componentVersions
-
+export VERBOSE=${saveVerbose}
 if [ "$ERROR" -gt "0" ]
 then
    return 255;

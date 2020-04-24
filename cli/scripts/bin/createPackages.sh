@@ -2,8 +2,8 @@
 source bin/common.sh
 
 # mandatory arguments
-ARGUMENTS=(componentType packageVersion notes) 
-OPT_ARGUMENTS=(componentIds processNames extractComponentXmlFolder)
+ARGUMENTS=(packageVersion notes) 
+OPT_ARGUMENTS=(componentIds processNames extractComponentXmlFolder tag componentType)
 inputs "$@"
 if [ "$?" -gt "0" ]
 then
@@ -13,6 +13,8 @@ fi
 saveNotes="${notes}"
 savePackageVersion="${packageVersion}"
 packageIds=""
+saveTag="${tag}"
+unset tag
 if [ -z "${componentIds}" ]
 then
 	IFS=',' ;for processName in `echo "${processNames}"`; 
@@ -21,7 +23,7 @@ then
     packageVersion="${savePackageVersion}"
     processName=`echo "${processName}" | xargs`
     saveProcessName="${processName}"
-		source bin/createPackage.sh processName="${processName}" componentType="Process" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}"
+		source bin/createPackage.sh processName="${processName}" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag=""
  	done   
 else    
 	IFS=',' ;for componentId in `echo "${componentIds}"`; 
@@ -30,9 +32,23 @@ else
    	packageVersion="${savePackageVersion}"
     componentId=`echo "${componentId}" | xargs`
     saveComponentId="${componentId}"
-		source bin/createPackage.sh componentId=${componentId} componentType="Process" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}" 
+		source bin/createPackage.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag=""
  	done   
 fi  
+
+
+
+# Tag all the packages of the release together
+if [ ! -z "${extractComponentXmlFolder}" ] && [ null != "${extractComponentXmlFolder}}" ] && [ "" != "${extractComponentXmlFolder}" ]
+then
+  folder="${WORKSPACE}/${extractComponentXmlFolder}"
+	tag="${saveTag}"
+  # Save componentExtractFolder into git
+	if [ ! -z "${tag}" ] && [ null != "${tag}" ] && [ "" != "${tag}" ]
+	then
+    bin/gitrelease.sh baseFolder="${folder}" tag="${tag}" notes="${saveNotes}"
+	fi
+fi			
 
 clean
 

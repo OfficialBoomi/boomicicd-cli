@@ -1,7 +1,10 @@
 #!/bin/bash
 
 source bin/common.sh
-# get atom id of the by atom name
+# Turn off VERBOSE for this script
+unset VERBOSE
+saveVerbose="${VERBOSE}"
+
 # mandatory arguments
 URL=$baseURL/Environment/query
 JSON_FILE=json/queryEnvironmentAny.json
@@ -11,7 +14,6 @@ h=0
 queryToken="new"
 
 printReportHead
-
 while [ null != "${queryToken}" ]
 do
 	callAPI
@@ -37,6 +39,7 @@ done
 
 printReportTail
 clean
+export VERBOSE="${saveVerbose}"
 if [ "$ERROR" -gt "0" ]
 then
    return 255;

@@ -17,6 +17,7 @@ fi
 if [ ! -z "${envId}" ]
 then
 	JSON_FILE=json/queryAtomAttachmentEnv.json
+  ARGUMENTS=(atomId envId)
 else
 	JSON_FILE=json/queryAtomAttachment.json
 fi

@@ -15,26 +15,28 @@
 source bin/common.sh
 #Query Process Schedule Status  by atomId and processId
 ARGUMENTS=(atomName atomType processName years months daysOfMonth daysOfWeek hours minutes)
-
+OPT_ARGUMENTS=(processName componentType)
 inputs "$@"
 if [ "$?" -gt "0" ]
 then
         return 255;
 fi
 
-source bin/queryProcessScheduleStatus.sh atomName="$atomName" atomType=$atomType processName="$processName"
+source bin/queryProcessScheduleStatus.sh atomName="$atomName" atomType=$atomType componentId=${componentId}
 
-echo $scheduleId
+saveScheduleId=scheduleId
 
 ARGUMENTS=(atomId processId scheduleId years months daysOfMonth daysOfWeek hours minutes)
 JSON_FILE=json/updateProcessSchedules.json
 URL=$baseURL/ProcessSchedules/$scheduleId/update
  
 createJSON
-
+unset exportVariable
 callAPI
 
 clean
+export scheduleId=${saveScheduleId}
+
 if [ "$ERROR" -gt "0" ]
 then
    return 255;

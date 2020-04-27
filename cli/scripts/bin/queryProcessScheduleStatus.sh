@@ -4,7 +4,8 @@
 
 source bin/common.sh
 #Query Process Schedule Status  by atomId and processId
-ARGUMENTS=(atomName atomType processName)
+ARGUMENTS=(atomName atomType)
+OPT_ARGUMENTS=(processName componentId)
 
 inputs "$@"
 if [ "$?" -gt "0" ]
@@ -14,7 +15,11 @@ fi
 
 source bin/queryAtom.sh atomName="$atomName" atomStatus=online atomType=$atomType
 
-source bin/queryProcess.sh processName="$processName"
+if [ -z "${componentId}" ] || [ null == "${componentId}" ]
+then
+ source bin/queryProcess.sh processName="$processName"
+fi
+processId="${componentId}"
 
 ARGUMENTS=(atomId processId)
 JSON_FILE=json/queryProcessScheduleStatus.json

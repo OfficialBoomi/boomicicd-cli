@@ -3,19 +3,9 @@
     {
       "expression" : 
         {
-          "operator" : "and",
-          "nestedExpression" : [
-            {
-              "argument" : ["${atomId}"],
-              "operator" :"LIKE",
-              "property" :"atomId"
-            },
-            {
-              "argument" : ["${envId}"],
-              "operator" : "LIKE",
-              "property" : "environmentId"
-						}
-            ]
+          "argument" : ["${atomId}"],
+          "operator" :"LIKE",
+          "property" :"atomId"
         }
     }
 }

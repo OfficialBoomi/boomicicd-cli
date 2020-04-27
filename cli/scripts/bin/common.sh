@@ -68,7 +68,6 @@ function usage {
  
 # The help function
 function printArgs {
-   echo "ARGUMENTS"
     for ARGUMENT in "${ARGUMENTS[@]}"
     do
      echo "${ARGUMENT}=${!ARGUMENT}"
@@ -124,6 +123,7 @@ function callAPI {
    if [ ! -z "$exportVariable" ]
    then
   	 export ${exportVariable}=`jq -r .$id "${WORKSPACE}"/out.json`
+		 echovv "export ${exportVariable}=${!exportVariable}."
    fi
   else
    curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL -d${queryToken} > "${WORKSPACE}"/out.json
@@ -171,6 +171,7 @@ function getXMLAPI {
 
 function extract {
   	export ${2}="`jq -r .${1} "${WORKSPACE}"/out.json`"
+		echovv "export ${2}=${!2}."
 }
 
 function extractMap {
@@ -181,10 +182,19 @@ function extractComponentMap {
  mapfile -t ${2} < <(jq -r .componentInfo[].${1} "${WORKSPACE}/out.json")
 }
 
+#Echo from other scripts
 function echov {
   if [ "$VERBOSE" == "true" ]  
   then 
    echo -e "${BASH_SOURCE[1]}: ${1}"
+  fi
+}
+
+#Echo from common.sh
+function echovv {
+  if [ "$VERBOSE" == "true" ]  
+  then 
+   echo -e "${BASH_SOURCE[2]}: ${1}"
   fi
 }
 

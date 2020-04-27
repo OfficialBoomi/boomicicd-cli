@@ -2,8 +2,8 @@
 source bin/common.sh
 # get atom id of the by atom name
 # mandatory arguments
-ARGUMENTS=(atomId envId)
-JSON_FILE=json/queryAtomAttachment.json
+ARGUMENTS=(atomId)
+OPT_ARGUMENTS=(envId)
 URL=$baseURL/EnvironmentAtomAttachment/query
 id=result[0].id
 exportVariable=atomAttachmentId
@@ -14,6 +14,12 @@ then
 	return 255;
 fi
 
+if [ ! -z "${envId}" ]
+then
+	JSON_FILE=json/queryAtomAttachmentEnv.json
+else
+	JSON_FILE=json/queryAtomAttachment.json
+fi
 
 createJSON
  

@@ -18,6 +18,7 @@ Copy the scripts folder on to a Unix Machine. The scripts folder contains the fo
 - **json** has json templates used in the Atomsphere API calls.
 
 Set the following variables before the scripts are invoked.
+Review this link to set up Atomsphere API tokens. [Set up tokens](https://help.boomi.com/bundle/integration/page/int-AtomSphere_API_Tokens_page_6a75a1f6-709c-4b08-b3bd-85fe2ac02e18.html)
 
         $ SCRIPTS_HOME='/pathto/scripts'
         $ cd $SCRIPTS_HOME

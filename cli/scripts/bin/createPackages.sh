@@ -12,6 +12,7 @@ fi
 
 saveNotes="${notes}"
 savePackageVersion="${packageVersion}"
+saveComponentType="${componentType}"
 packageIds=""
 saveTag="${tag}"
 unset tag
@@ -23,6 +24,7 @@ then
     packageVersion="${savePackageVersion}"
     processName=`echo "${processName}" | xargs`
     saveProcessName="${processName}"
+		componentType="${saveComponentType}"
 		source bin/createPackage.sh processName="${processName}" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag=""
  	done   
 else    
@@ -32,6 +34,7 @@ else
    	packageVersion="${savePackageVersion}"
     componentId=`echo "${componentId}" | xargs`
     saveComponentId="${componentId}"
+		componentType="${saveComponentType}"
 		source bin/createPackage.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag=""
  	done   
 fi  

@@ -4,7 +4,7 @@ source bin/common.sh
 # get atom id of the by atom name
 # mandatory arguments
 ARGUMENTS=(from to atomName)
-OPT_ARGUMENTS=(processName componentId)
+OPT_ARGUMENTS=(processName componentId failOnError)
 JSON_FILE=json/queryExecutionRecord.json
 URL=$baseURL/ExecutionRecord/query
 id=result[0].executionId
@@ -39,6 +39,11 @@ then
         return 255;
 fi
 
+if [ -z "${failOnError}" ]
+then
+    failOnError="false"
+fi
+
 processId=${componentId}
 
 ARGUMENTS=(from to processName atomName processId)
@@ -50,7 +55,18 @@ extract result[0].status status
 extract result[0].message message
  
 clean
+
 if [ "$ERROR" -gt "0" ]
 then
    return 255;
+fi
+
+if [ "$failOnError" == "true" ]
+then
+	if [ "$status" != "COMPLETE" ]
+    then
+			 export ERROR_MESSAGE="Process failed with with STATUS = ${status}."
+			 echo -e ${ERROR_MESSAGE}
+    	 exit 255 
+    fi
 fi

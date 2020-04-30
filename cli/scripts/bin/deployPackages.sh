@@ -13,6 +13,7 @@ fi
 saveNotes="${notes}"
 savePackageVersion="${packageVersion}"
 saveListenerStatus="${listenerStatus}"
+saveComponentType="${componentType}"
 saveTag="${tag}"
 unset tag
 if [ -z "${componentIds}" ]
@@ -24,6 +25,7 @@ then
     processName=`echo "${processName}" | xargs`
     saveProcessName="${processName}"
 		listenerStatus="${saveListenerStatus}"
+		componentType="${saveComponentType}"
 		source bin/deployPackage.sh processName="${processName}" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag=""
  	done   
 else    
@@ -33,6 +35,7 @@ else
    	packageVersion="${savePackageVersion}"
     componentId=`echo "${componentId}" | xargs`
     saveComponentId="${componentId}"
+		componentType="${saveComponentType}"
 		listenerStatus="${saveListenerStatus}"
 		source bin/deployPackage.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag=""
  	done   

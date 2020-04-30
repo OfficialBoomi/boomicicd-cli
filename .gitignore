@@ -1,6 +1,6 @@
-out.json
-tmp.json
-out.xml
+out*.json
+tmp*.json
+out*.xml
 **/Test***/**
 **/TestOut/**
 **/Test **/**

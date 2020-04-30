@@ -43,7 +43,7 @@ then
 fi
 
 
-ATOM_HOME=${INSTALL_DIR}/${atomCamel}_$atomName
+ATOM_HOME="${INSTALL_DIR}/${atomCamel}_$atomName"
 
 proxyParams=""
 

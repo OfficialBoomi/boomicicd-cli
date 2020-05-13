@@ -16,9 +16,9 @@ fi
 cd "${baseFolder}"
 
 git init
-git config --global user.email "${GIT_USER_EMAIL}"
-git config --global user.name  "${GIT_USER_NAME}"
-git remote add origin "${BOOMI_COMPONENTS_GIT_REPO}"
+git config --global user.email "${gitUserEmail}"
+git config --global user.name  "${gitUserName}"
+git remote add origin "${gitRepoURL}"
 git add .
 git commit -m "${tag}"
 git tag -a "${tag}" -m "${notes}"

@@ -13,11 +13,7 @@ then
 fi
 deployNotes="${notes}";
 
-if [ -z "${componentId}" ]
-then
-	source bin/queryProcess.sh processName="$processName"
-fi
-source bin/createPackage.sh componentId=${componentId} componentType="${componentType}" componentVersion="${componentVersion}" packageVersion="$packageVersion" notes="$notes" extractComponentXmlFolder="${extractComponentXmlFolder}" tag="${tag}"
+source bin/createPackage.sh componentId=${componentId} processName="${processName}" componentType="${componentType}" componentVersion="${componentVersion}" packageVersion="$packageVersion" notes="$notes" extractComponentXmlFolder="${extractComponentXmlFolder}" tag="${tag}" 
 source bin/queryEnvironment.sh env="$env" classification="*"
 source bin/createDeployedPackage.sh envId=${envId} listenerStatus="${listenerStatus}" packageId=$packageId notes="$deployNotes"
 

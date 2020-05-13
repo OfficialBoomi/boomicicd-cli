@@ -79,6 +79,7 @@ The following scripts publish html reports
 publishAllEnvironments.sh|-|Id, Classification, Name|Publishes a list of  Environments in the account
 publishAtom.sh|-|Atom Id, Atom Name, Env, Name, Status|Publishes a list of Atoms and attached Env in the account
 publishDeployedPackage.sh|env=%env%|Component, Package Version, Environment, Component Type, Deployed Date, Deployed By, Notes|Publishes a list of Deployed Packaged in an Env
+publishComponentMetadata.sh|packageIds|ComponentId, Component Name, Component Type, Version, Folder Name, Modified by|Publishes Component Metadata details in a given package
 publishPackagedComponent.sh|packageVersion=%version%|Component, Package Version, Component Type, Deployed Date, Deployed By, Notes|Publishes a list of Packaged Component for a given version
 publishProcess.sh|processName=%%|Process Id, Process Name|Publishes a list of Processes  in the account
 

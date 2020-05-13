@@ -26,7 +26,7 @@ then
     saveProcessName="${processName}"
 		listenerStatus="${saveListenerStatus}"
 		componentType="${saveComponentType}"
-		source bin/deployPackage.sh processName="${processName}" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag=""
+		source bin/deployPackage.sh processName="${processName}" componentVersion="" componentId="" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag="" componentType="${componentType}"
  	done   
 else    
 	IFS=',' ;for componentId in `echo "${componentIds}"`; 
@@ -37,7 +37,7 @@ else
     saveComponentId="${componentId}"
 		componentType="${saveComponentType}"
 		listenerStatus="${saveListenerStatus}"
-		source bin/deployPackage.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag=""
+		source bin/deployPackage.sh componentId=${componentId} processName="" componentVersion="" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag="" componentType="${componentType}"
  	done   
 fi  
 
@@ -50,7 +50,8 @@ then
   # Save componentExtractFolder into git
 	if [ ! -z "${tag}" ] && [ null != "${tag}" ] && [ "" != "${tag}" ]
 	then
-    bin/gitrelease.sh baseFolder="${folder}" tag="${tag}" notes="${saveNotes}"
+   bin/sonarScanner.sh baseFolder="${folder}" 
+   bin/gitPush.sh baseFolder="${folder}" tag="${tag}" notes="${saveNotes}"
 	fi
 fi
 			

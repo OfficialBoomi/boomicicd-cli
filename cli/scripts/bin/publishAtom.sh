@@ -1,9 +1,8 @@
 #!/bin/bash
 # Publish a list of atoms
 source bin/common.sh
-saveVerbose=${VERBOSE}
 unset VERBOSE
-
+saveVerbose=${VERBOSE}
 JSON_FILE=json/queryAny.json
 URL=$baseURL/Atom/query
 REPORT_TITLE="List of Atoms"

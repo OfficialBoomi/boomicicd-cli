@@ -49,7 +49,8 @@ then
   # Save componentExtractFolder into git
 	if [ ! -z "${tag}" ] && [ null != "${tag}" ] && [ "" != "${tag}" ]
 	then
-    bin/gitrelease.sh baseFolder="${folder}" tag="${tag}" notes="${saveNotes}"
+	  bin/sonarScanner.sh baseFolder="${folder}"
+    bin/gitPush.sh baseFolder="${folder}" tag="${tag}" notes="${saveNotes}"
 	fi
 fi			
 

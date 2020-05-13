@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profile>
+   <name>Boomi</name>
+   <language>xml</language>
+   <rules>
+      <rule>
+         <repositoryKey>xml</repositoryKey>
+         <key>Components_Shall_Not_Start_With_New</key>
+         <type>CODE_SMELL</type>
+         <priority>MAJOR</priority>
+         <name>Components Shall Not Start With New</name>
+         <templateKey>XPathCheck</templateKey>
+         <description>Component names must not start with "New " which is Boomi"s default. They should be named to have a accurate description.</description>
+         <parameters>
+            <parameter>
+               <key>filePattern</key>
+               <value>**/**.xml</value>
+            </parameter>
+            <parameter>
+               <key>expression</key>
+               <value>/Component/@name[starts-with(., 'New ')]</value>
+            </parameter>
+            <parameter>
+               <key>message</key>
+               <value>Component names shall not begin with *New *. Please rename to match naming standard.</value>
+            </parameter>
+         </parameters>
+      </rule>
+      <rule>
+         <repositoryKey>xml</repositoryKey>
+         <key>Description_Must_Not_Be_Empty</key>
+         <type>CODE_SMELL</type>
+         <priority>MAJOR</priority>
+         <name>Description Must Not Be Empty</name>
+         <templateKey>XPathCheck</templateKey>
+         <description>Process description must be set</description>
+         <parameters>
+            <parameter>
+               <key>filePattern</key>
+               <value>**/**.xml</value>
+            </parameter>
+            <parameter>
+               <key>expression</key>
+               <value>/Component/object/process/../../description[not(text())]</value>
+            </parameter>
+            <parameter>
+               <key>message</key>
+               <value>Process description is not set</value>
+            </parameter>
+         </parameters>
+      </rule>
+      <rule>
+         <repositoryKey>xml</repositoryKey>
+         <key>Exceptions_Must_Have_Params</key>
+         <type>CODE_SMELL</type>
+         <priority>MAJOR</priority>
+         <name>Exceptions Must Have Params</name>
+         <templateKey>XPathCheck</templateKey>
+         <description>Business exception message does not have parameters defined {1} defined</description>
+         <parameters>
+            <parameter>
+               <key>filePattern</key>
+               <value>**/**.xml</value>
+            </parameter>
+            <parameter>
+               <key>expression</key>
+               <value>/Component/object/process/shapes/shape[@shapetpye='exception']/configuration/exception/exMessage/text()[not(contains(.,'{1}'))]</value>
+            </parameter>
+            <parameter>
+               <key>message</key>
+               <value>Business exception message does not have parameters defined.</value>
+            </parameter>
+         </parameters>
+      </rule>
+      <rule>
+         <repositoryKey>xml</repositoryKey>
+         <key>Parameter_ize_Business_Rules_Error_Messages</key>
+         <type>CODE_SMELL</type>
+         <priority>MAJOR</priority>
+         <name>Parameter-ize Business_Rules Error Messages</name>
+         <templateKey>XPathCheck</templateKey>
+         <description>Businessrules error messages shall have custom parameterized error messages</description>
+         <parameters>
+            <parameter>
+               <key>filePattern</key>
+               <value>**/**.xml</value>
+            </parameter>
+            <parameter>
+               <key>expression</key>
+               <value>/Component/object/process/shapes/shape[@shapetype='businessrules']/configuration/businessrules/rule/errorMessage/@content[not(contains(.,'{1}'))]</value>
+            </parameter>
+            <parameter>
+               <key>message</key>
+               <value>Business rule error message does not have parameters defined.</value>
+            </parameter>
+         </parameters>
+      </rule>
+      <rule>
+         <repositoryKey>xml</repositoryKey>
+         <key>Password_must_be_extensible</key>
+         <type>CODE_SMELL</type>
+         <priority>MAJOR</priority>
+         <name>Password must be extensible</name>
+         <templateKey>XPathCheck</templateKey>
+         <description>Is the password hard coded? The connection property password must be hard coded.</description>
+         <parameters>
+            <parameter>
+               <key>filePattern</key>
+               <value>**/**.xml</value>
+            </parameter>
+            <parameter>
+               <key>expression</key>
+               <value>/Component/*/Overrides/Connections/ConnectionOverride/field[@id='password'][@overrideable='false']</value>
+            </parameter>
+            <parameter>
+               <key>message</key>
+               <value>Connection property "password" must be extensible. @overrideable must be "true"</value>
+            </parameter>
+         </parameters>
+      </rule>
+      <rule>
+         <repositoryKey>xml</repositoryKey>
+         <key>URL_Must_be_Extensible</key>
+         <type>CODE_SMELL</type>
+         <priority>MAJOR</priority>
+         <name>URL Must be Extensible</name>
+         <templateKey>XPathCheck</templateKey>
+         <description>Is the URL hardcoded? URL property used in connection must be marked as extensible.</description>
+         <parameters>
+            <parameter>
+               <key>filePattern</key>
+               <value>**/**.xml</value>
+            </parameter>
+            <parameter>
+               <key>expression</key>
+               <value>/Component/*/Overrides/Connections/ConnectionOverride/field[@id='url'][@overrideable='false']</value>
+            </parameter>
+            <parameter>
+               <key>message</key>
+               <value>Connection property "URL" must be extensible. @overrideable must be "true"</value>
+            </parameter>
+         </parameters>
+      </rule>
+      <rule>
+         <repositoryKey>xml</repositoryKey>
+         <key>User_name_must_be_extensible</key>
+         <type>CODE_SMELL</type>
+         <priority>MAJOR</priority>
+         <name>User name must be extensible</name>
+         <templateKey>XPathCheck</templateKey>
+         <description>Is user name hard coded? Connection setting User name must be extensible.</description>
+         <parameters>
+            <parameter>
+               <key>filePattern</key>
+               <value>**/**.xml</value>
+            </parameter>
+            <parameter>
+               <key>expression</key>
+               <value>/Component/*/Overrides/Connections/ConnectionOverride/field[@id='user'][@overrideable='false']</value>
+            </parameter>
+            <parameter>
+               <key>message</key>
+               <value>Connection property "user" must be extensible. @overrideable must be "true"</value>
+            </parameter>
+         </parameters>
+      </rule>
+   </rules>
+</profile>

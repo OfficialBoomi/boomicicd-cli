@@ -5,8 +5,8 @@
 
 source bin/common.sh
 
-ARGUMENTS=(atomName atomType processName  action)
-
+ARGUMENTS=(atomName atomType action)
+OPT_ARGUMENTS=(processName componentId)
 inputs "$@"
 if [ "$?" -gt "0" ]
 then
@@ -14,9 +14,10 @@ then
 fi
 
 source bin/queryAtom.sh atomName="$atomName" atomStatus=online atomType=$atomType
-echo $atomId
-source bin/queryProcess.sh processName="$processName"
-echo $componentId
+if [ -z "${componentId}" ]
+then
+ source bin/queryProcess.sh processName="$processName"
+fi
 
 listenerId=$componentId
 

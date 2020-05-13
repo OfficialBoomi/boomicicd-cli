@@ -1,0 +1,6 @@
+{  
+  "accountId" : "${accountId}",
+  "authToken": "${authToken}",
+	"processId" : "${processId}",
+  "atomId" : "${atomId}"
+}

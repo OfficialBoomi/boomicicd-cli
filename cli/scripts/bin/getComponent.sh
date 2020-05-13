@@ -25,8 +25,7 @@ export URL=$baseURL/Component/${componentId}${version}
 getXMLAPI
 
 
-
-mv "${WORKSPACE}"/out.xml "${WORKSPACE}"/${componentId}_${version}.xml
+cat "${WORKSPACE}"/out.xml | xmllint --format - > "${WORKSPACE}"/${componentId}.xml
 
 
 clean

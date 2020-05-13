@@ -1,7 +1,7 @@
 #!/bin/bash
 
 atomType="ATOM"
-env=Dev1
+env=
 classification=TEST
 atomName=
 

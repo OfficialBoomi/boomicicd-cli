@@ -1,7 +1,7 @@
 #!/bin/bash
 source bin/common.sh
 # Query processattachment id before creating it
-source bin/queryPackagedComponent.sh $@
+source bin/queryPackagedComponent.sh "$@"
 
 
 # mandatory arguments

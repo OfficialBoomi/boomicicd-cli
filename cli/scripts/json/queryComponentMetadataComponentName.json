@@ -1,0 +1,26 @@
+{
+  "QueryFilter" : 
+    {
+      "expression" : 
+        {
+          "operator" : "and",
+          "nestedExpression": [
+			    {
+              "argument":["${componentName}"],
+              "operator":"EQUALS",
+              "property":"name"
+           },
+			     {
+              "argument":["${deleted}"],
+              "operator":"EQUALS",
+              "property":"deleted"
+           },
+			     {
+              "argument":["${currentVersion}"],
+              "operator":"EQUALS",
+              "property":"currentVersion"
+           }
+          ]
+        }
+    }
+}

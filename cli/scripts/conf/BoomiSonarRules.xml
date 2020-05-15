@@ -54,7 +54,7 @@
          <key>Exceptions_Must_Have_Params</key>
          <type>CODE_SMELL</type>
          <priority>MAJOR</priority>
-         <name>Exceptions Must Have Params</name>
+         <name>Exceptions must Have Params</name>
          <templateKey>XPathCheck</templateKey>
          <description>Business exception message does not have parameters defined {1} defined</description>
          <parameters>
@@ -77,7 +77,7 @@
          <key>Parameter_ize_Business_Rules_Error_Messages</key>
          <type>CODE_SMELL</type>
          <priority>MAJOR</priority>
-         <name>Parameter-ize Business_Rules Error Messages</name>
+         <name>Business_Rules error eessages must be parameterized</name>
          <templateKey>XPathCheck</templateKey>
          <description>Businessrules error messages shall have custom parameterized error messages</description>
          <parameters>
@@ -123,7 +123,7 @@
          <key>URL_Must_be_Extensible</key>
          <type>CODE_SMELL</type>
          <priority>MAJOR</priority>
-         <name>URL Must be Extensible</name>
+         <name>URL must be extensible</name>
          <templateKey>XPathCheck</templateKey>
          <description>Is the URL hardcoded? URL property used in connection must be marked as extensible.</description>
          <parameters>

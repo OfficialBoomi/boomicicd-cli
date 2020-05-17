@@ -6,11 +6,15 @@ The CLI utility wraps calls to [Boomi Atomsphere APIs](https://help.boomi.com/bu
   - The CLI utility currently runs on any Unix OS and invokes BASH shell scripts
   - On Windows this has been tested with [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
   - The CLI utility requires jq - JSON Query interpreter installed 
+  - The CLI requires xmllit interpreter 
   
-        # Using yum #
+        ## Using yum 
         $ yum install -y jq 
+        $ yum install -y libxml2
+        
         ## Using apt
         $ apt-get install -y jq 
+        $ apt-get install libxml2-utils
 
 ## Set up
 Clone the scripts folder on to a Unix Machine. The scripts folder contains the following directories. 

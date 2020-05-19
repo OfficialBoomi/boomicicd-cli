@@ -1,6 +1,7 @@
+#!/bin/bash
+
 # Process Schedule Status Query by passing the processId and atomId
 # Usage : queryProcessScheduleStatus.sh <atomId> <atomType> <processId>
-#!/bin/bash
 
 source bin/common.sh
 #Query Process Schedule Status  by atomId and processId

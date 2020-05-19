@@ -1,6 +1,7 @@
+#!/bin/bash
+
 # Process Schedule Status Query by passing the processId and atomId
 # Usage : updateProcessScheduleStatus.sh <atomName> <atomType> <processId> <status=true|false>
-#!/bin/bash
 
 source bin/common.sh
 ARGUMENTS=(atomName status)

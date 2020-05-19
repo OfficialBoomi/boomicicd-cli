@@ -1,5 +1,5 @@
 #!/bin/bash
-
+unset ARGUMENTS OPT_ARGUMENTS
 # Capture user inputs
 function inputs {
      for ARGUMENT in "$@"
@@ -199,6 +199,7 @@ function echovv {
 }
 
 function printReportHead {
+  printf "<!DOCTYPE html>"
 	printf "%s\n" "<html>"
 	printf "%s\n" "<head>"
 	printf "%s\n" "<style>"

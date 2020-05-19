@@ -17,8 +17,14 @@ Copy the scripts folder on to a Unix Machine. The scripts folder contains the fo
 - **conf** has configuration files for Molecule installation 
 - **json** has json templates used in the Atomsphere API calls.
 
-Set the following variables before the scripts are invoked.
-
+        $ # Set the following variables before the scripts are invoked. 
+        $ Or Update in the bin/exports.sh and run source bin/exports
+        $ source bin/exports.sh 
+        
+        $ # Get values from user or parameter store
+        $ # The following credentials can be stored in parameter store and retrieved dynamically
+        $ # Example to retrieve form an AWS store "$(aws ssm get-parameter --region xx --with-decryption --output text --query Parameter.Value --name /Parameter.name)
+        
         $ SCRIPTS_HOME='/pathto/scripts'
         $ cd $SCRIPTS_HOME
         $ export accountId=company_account_uuid
@@ -27,6 +33,25 @@ Set the following variables before the scripts are invoked.
         $ export h2="Accept: application/json"
         $ export baseURL=https://api.boomi.com/api/rest/v1/$accountId
         $ export WORKSPACE=`pwd`
+               
+        # Git stuff
+        $ export gitRepoURL=""
+        $ export gitUserName=""
+        $ export gitUserEmail=""
+        $ export gitRepoName="boomi-components" # Top level folder of the GIT REPO
+        $ export gitOption="CLONE" # This clones the repo; else default is to create a release tag. Check gitPush.sh file
+        
+        # Sonar stuff
+        $ export SONAR_HOST=""  # If sonar scanner is installed locally then will use the local sonar scanner. Check the sonarScanner.sh
+        $ export sonarHostURL=""
+        $ export sonarHostToken=""
+        $ export sonarProjectKey="BoomiSonar"
+        $ export sonarRulesFile="conf/BoomiSonarRules.xml"
+        $ export VERBOSE="false" # Bash verbose output; set to true only for testing, will slow execution.
+        $ export SLEEP_TIMER=0.2 # Delays curl request to the platform to set the rate under 5 requests/second
+
+        
+
         
 ## Run your first script
 
@@ -46,11 +71,11 @@ createDeployedPackage.sh|envId, packageId, notes, listenerStatus|createDeployedP
 createEnvironment.sh|env, classification|createEnvironment.json|Environment/create|Create Env (only if does not exist)
 createEnvironmentRole.sh|roleName, env|createEnvironmentRole.json|EnvironmentRole /create|Attach a Role to an Env
 createPackages.sh|packageVersion, notes, componentType, componentIds or processNames, extractComponentXmlFolder|Muliple|Multiple|Creates multiple PackagedComponents using the currentVersion processName or id. If the extractComponentXmlFolder if passed all the component XML and package manifest files are extracted into the folder
-createPackage.sh|packageVersion, notes, componentType, componentVersion, componentId or processName, extractComponentXmlFolder|Muliple|Multiple|Creates a PackagedComponent by processName or componentid. If the extractComponentXmlFolder if passed all the component XML and package manifest files are extracted into the folder
+createPackage.sh|packageVersion, notes, componentType, componentVersion, componentId or processName, extractComponentXmlFolder,tag|Muliple|Multiple|Creates a PackagedComponent by processName or componentid. If the extractComponentXmlFolder if passed all the component XML and package manifest files are extracted into the folder
 createPackagedComponent.sh|componentId, componentType, packageVersion, notes, componentVersion createdDate|createPackagedComponent.json|PackagedComponent/create|Create a Packaged Component 
 createProcessAttachment.sh|processId, envId, componentType|createProcessAttachment.json|ProcessEnvironmentAttachment /create|Attach Process to Environment (Legacy deployment)
-deployPackage.sh|env, packageVersion, notes, listenerStatus, componentType, componentVersion, componentId or processName, extractComponentXmlFolder|Muliple|Multiple|Creates and deploys a PackagedComponent by processName or componentid in a given Env. If the extractComponentXmlFolder if passed all the component XML and package manifest files are extracted into the folder
-deployPackages.sh|env, packageVersion, notes, listenerStatus, componentType, componentIds or processNames, extractComponentXmlFolder|Muliple|Multiple|Creates and deploys multiple packaged component using the currentVersion processName or id to an env. If the extractComponentXmlFolder if passed all the component XML and package manifest files are extracted into the folder
+deployPackage.sh|env, packageVersion, notes, listenerStatus, componentType, componentVersion, componentId or processName, extractComponentXmlFolder,tag|Muliple|Multiple|Creates and deploys a PackagedComponent by processName or componentid in a given Env. If the extractComponentXmlFolder if passed all the component XML and package manifest files are extracted into the folder
+deployPackages.sh|env, packageVersion, notes, listenerStatus, componentType, componentIds or processNames, extractComponentXmlFolder, tag|Muliple|Multiple|Creates and deploys multiple packaged component using the currentVersion processName or id to an env. If the extractComponentXmlFolder if passed all the component XML and package manifest files are extracted into the folder
 deployProcess.sh|processId, envId, componentType, notes|deployProcess.json|Deployment/|Deploys a process to an env (Legacy Deployment)
 executeProcess.sh|	atomName, atomType, componentId or *processName*| executeProcess.json|executeProcess| Executes a process on a named Boomi runtime
 installerToken.sh|atomType, *cloudId*|installerToken.json|InstallerToken|Gets an installer token atomType must be one-of **ATOM**, **MOLECULE** or **CLOUD**. If atomType=CLOUD then the cloudId must be specified

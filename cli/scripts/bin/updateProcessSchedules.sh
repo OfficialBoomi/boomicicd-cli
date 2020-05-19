@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Process Schedules Query by passing the atomId, ProcessId, ScheduleId, schedule details as defined syntax
 # Usage : updateProcessSchedules.sh <atomName> <atomType> <processName> <schedule: minutes hours daysOfWeek daysOfMonth months years>
 ###
@@ -10,19 +12,24 @@
 #               59 is the last minute of the hour — for example, 1:59 A.M.
 # maxRetry	  - (Retry schedules only) The maximum number of retries. The minimum valid value is 1; the maximum is 5.
 ###
-#!/bin/bash
 
 source bin/common.sh
 #Query Process Schedule Status  by atomId and processId
-ARGUMENTS=(atomName atomType processName years months daysOfMonth daysOfWeek hours minutes)
-OPT_ARGUMENTS=(processName componentType)
+ARGUMENTS=(atomName atomType years months daysOfMonth daysOfWeek hours minutes)
+OPT_ARGUMENTS=(processName componentId)
 inputs "$@"
 if [ "$?" -gt "0" ]
 then
         return 255;
 fi
 
-source bin/queryProcessScheduleStatus.sh atomName="$atomName" atomType=$atomType componentId=${componentId}
+# Get componentId from processName
+if [ -z "${componentId}" ] || [ null == "${componentId}" ]
+then
+  source bin/queryProcess.sh processName="$processName"
+fi
+
+source bin/queryProcessScheduleStatus.sh atomName="$atomName" atomType=$atomType componentId=${componentId} 
 
 saveScheduleId=scheduleId
 

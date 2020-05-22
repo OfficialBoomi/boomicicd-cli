@@ -1,7 +1,7 @@
 #!/bin/bash
-
-unset saveComponentId saveComponentType saveComponentName saveComponentVersion
 source bin/common.sh
+
+unset _saveComponentId _saveComponentType _saveComponentName _saveComponentVersion
 # mandatory arguments
 OPT_ARGUMENTS=(componentType componentName componentId deleted currentVersion componentVersion)
 ARGUMENTS=()
@@ -65,10 +65,10 @@ createJSON
 
 callAPI
 
-extract result[0].componentId saveComponentId
-extract result[0].name saveComponentName
-extract result[0].version saveComponentVersion
-extract result[0].type saveComponentType
+extract result[0].componentId _saveComponentId
+extract result[0].name _saveComponentName
+extract result[0].version _saveComponentVersion
+extract result[0].type _saveComponentType
 
 clean
 
@@ -77,8 +77,8 @@ then
    return 255;
 fi
 
-export componentId="${saveComponentId}"
-export componentType="${saveComponentType}"
-export componentName="${saveComponentName}"
-export componentVersion="${saveComponentVersion}"
-unset saveComponentId saveComponentType saveComponentName saveComponentVersion
+export componentId="${_saveComponentId}"
+export componentType="${_saveComponentType}"
+export componentName="${_saveComponentName}"
+export componentVersion="${_saveComponentVersion}"
+unset _saveComponentId _saveComponentType _saveComponentName _saveComponentVersion

@@ -4,15 +4,25 @@ The CLI utility wraps calls to [Boomi Atomsphere APIs](https://help.boomi.com/bu
   
 ## Pre-requistes
   - The CLI utility currently runs on any Unix OS and invokes BASH shell scripts
+  - On Windows this has been tested with [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
   - The CLI utility requires jq - JSON Query interpreter installed 
+  - The CLI requires xmllit interpreter 
   
-        # Using yum #
+        ## Using yum 
         $ yum install -y jq 
+        $ yum install -y libxml2
+        
         ## Using apt
         $ apt-get install -y jq 
+        $ apt-get install libxml2-utils
 
 ## Set up
-Copy the scripts folder on to a Unix Machine. The scripts folder contains the following directories
+Clone the scripts folder on to a Unix Machine. The scripts folder contains the following directories. 
+
+    $ git clone https://github.com/OfficialBoomi/boomicicd-cli.git
+    $ cd boomicicd-cli/cli/scripts
+
+
 - **bin** has the bash scripts for CLI
 - **conf** has configuration files for Molecule installation 
 - **json** has json templates used in the Atomsphere API calls.

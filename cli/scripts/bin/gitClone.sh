@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -e 
 source bin/common.sh
 SCRIPTS_FOLDER=`pwd`
 

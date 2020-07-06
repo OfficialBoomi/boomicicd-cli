@@ -20,7 +20,7 @@ toEnvId=$envId
 
 source bin/queryProcess.sh processName="$processName" 
 # saving the id for future use
-deployProcessId=processId
+deployProcessId=$processId
 
 source bin/createProcessAttachment.sh envId=$toEnvId processId=$processId componentType="process"
 

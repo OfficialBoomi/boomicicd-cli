@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -e 
 
 if [ "${gitOption}" = "CLONE" ]
 then

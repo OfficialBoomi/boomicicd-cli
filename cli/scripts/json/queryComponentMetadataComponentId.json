@@ -8,7 +8,7 @@
 			    {
               "argument":["${componentId}"],
               "operator":"EQUALS",
-              "property":"name"
+              "property":"componentId"
            },
 			     {
               "argument":["${deleted}"],

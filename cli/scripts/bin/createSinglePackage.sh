@@ -1,0 +1,89 @@
+#!/bin/bash
+source bin/common.sh
+
+# mandatory arguments
+ARGUMENTS=(packageVersion notes) 
+OPT_ARGUMENTS=(componentId processName extractComponentXmlFolder componentVersion componentType)
+inputs "$@"
+if [ "$?" -gt "0" ]
+then
+    return 255;
+fi
+folder="${WORKSPACE}/${extractComponentXmlFolder}"
+saveNotes="${notes}"
+savePackageVersion="${packageVersion}"
+saveComponentType="${componentType}"
+if [ -z "${componentId}" ] || [ null == "${componentId}" ]
+then
+		notes="${saveNotes}"
+    packageVersion="${savePackageVersion}"
+    processName=`echo "${processName}" | xargs`
+    saveProcessName="${processName}"
+    componentType="${saveComponentType}"
+    componentId=""
+		source bin/queryComponentMetadata.sh componentName="${processName}" componentType="${componentType}" componentId="${componentId}"
+		saveComponentName="${componentName}"
+    saveComponentId="${componentId}"
+    saveComponentVersion="${componentVersion}"
+		source bin/createPackagedComponent.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" componentVersion="${componentVersion}"
+		echov "Created package ${packageId} for process ${saveProcessName}"
+else    
+		notes="${saveNotes}"
+    packageVersion="${savePackageVersion}"
+    componentId=`echo "${componentId}" | xargs`
+    saveComponentId="${componentId}"
+    componentType="${saveComponentType}"
+		processName=""
+		source bin/queryComponentMetadata.sh componentName="${processName}" componentType="${componentType}" componentId="${componentId}"
+		saveComponentName="${componentName}"
+    saveComponentVersion="${componentVersion}"
+		source bin/createPackagedComponent.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" componentVersion="${componentVersion}"
+		echov "Created package ${packageId} for componentId ${saveComponentId}"
+fi  
+
+savePackageId=${packageId}
+
+# Extract Boomi componentXMLs to a local disk
+if [ ! -z "${extractComponentXmlFolder}" ] && [ null != "${extractComponentXmlFolder}" ] && [ "" != "${extractComponentXmlFolder}" ]
+then
+	#echov "Contents of /tmp/${BUILDKITE_TRIGGERED_FROM_BUILD_ID}.txt: $(cat /tmp/${BUILDKITE_TRIGGERED_FROM_BUILD_ID}.txt)"
+  folder="${WORKSPACE}/${extractComponentXmlFolder}"
+	packageFolder="${folder}/${saveComponentId}"
+	mkdir -p "${packageFolder}"
+	echov "Publishing package metatdata for ${packageId}."
+	source bin/publishPackagedComponentMetadata.sh packageIds="${packageId}" > "${packageFolder}/Manifest_${saveComponentId}.html"
+  g=0
+	for g in ${!componentIds[@]}; 
+	do
+		componentId=${componentIds[$g]}
+		componentVersion=${componentVersions[$g]}
+		source bin/getComponent.sh componentId=${componentId} version=${componentVersion} 
+    eval `cat "${WORKSPACE}"/${componentIds[$g]}.xml | xmllint --xpath '//*/@folderFullPath' -`
+    mkdir -p "${packageFolder}/${folderFullPath}"
+		type=$(cat "${WORKSPACE}"/${componentIds[$g]}.xml | xmllint --xpath 'string(//*/@type)' -)
+		
+		# create extension file for this process
+		if [ $type == "process" ] 
+		then
+			componentFile="${WORKSPACE}"/${componentIds[$g]}.xml
+			#source bin/createExtensionsJson.sh componentFile="${componentFile}"
+		fi
+ 
+    mv "${WORKSPACE}"/${componentIds[$g]}.xml "${packageFolder}/${folderFullPath}" 
+ done
+  
+  # Create a violations report using sonarqube rules	
+	bin/xpathRulesChecker.sh baseFolder="${packageFolder}" > "${packageFolder}/ViolationsReport_${saveComponentId}.html"
+
+fi
+
+clean
+
+unset folder packageFolder
+export packageId=${savePackageId}
+
+
+if [ "$ERROR" -gt 0 ]
+then
+   return 255;
+fi

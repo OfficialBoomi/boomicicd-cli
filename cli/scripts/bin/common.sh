@@ -253,3 +253,33 @@ function printReportRow {
 	printText="${printText} </tr>"
 	printf "${printFormat} ${printText}"
 }
+
+
+function handleXmlComponents {
+	extractComponentXmlFolder="$1"
+	tag="${2}"
+	notes="${3}"
+
+
+	# Tag all the packages of the release together
+	if [ ! -z "${extractComponentXmlFolder}" ] && [ null != "${extractComponentXmlFolder}" ] && [ "" != "${extractComponentXmlFolder}" ]
+	then
+  	folder="${WORKSPACE}/${extractComponentXmlFolder}"
+  	#	 Save componentExtractFolder into git
+    if [ ! -z "${tag}" ] && [ null != "${tag}" ] && [ "" != "${tag}" ]
+        then
+          bin/sonarScanner.sh baseFolder="${folder}"
+          bin/gitPush.sh baseFolder="${folder}" tag="${tag}" notes="${notes}"
+    		fi
+   fi
+}
+
+
+function printExtensions {
+	if [ ! -z "${extensionJson}" ]
+	then
+  	echo "----Begin Extensions----"
+ 		echo "${extensionJson}"
+ 		echo "---- End Extension -----"
+	fi
+}

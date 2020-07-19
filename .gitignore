@@ -6,3 +6,4 @@ out*.xml
 **/Test **/**
 *.swp
 *.bak
+atom_install.sh

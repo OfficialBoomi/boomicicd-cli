@@ -6,7 +6,6 @@ unset _saveComponentId _saveComponentType _saveComponentName _saveComponentVersi
 OPT_ARGUMENTS=(componentType componentName componentId deleted currentVersion componentVersion)
 ARGUMENTS=()
 inputs "$@"
-
 if [ "$?" -gt "0" ]
 then
    return 255;
@@ -63,6 +62,7 @@ JSON_FILE="${JSON_FILE}.json"
 URL=$baseURL/ComponentMetadata/query
 createJSON
 
+exportVariable=""
 callAPI
 
 extract result[0].componentId _saveComponentId

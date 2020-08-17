@@ -15,7 +15,7 @@ else
 fi
 index=$(echo ${json} | jq '.connections.connection | length')
 
-componentXML=$( cat ${componentFile} | sed -e 's/bns://g' )
+componentXML=$( cat "${componentFile}" | sed -e 's/bns://g' )
 ConnectionOverrides=$( echo $componentXML | xmllint -xpath 'count(/Component/processOverrides/Overrides/Connections/ConnectionOverride)' -)
 
 for (( h=1; h<=${ConnectionOverrides}; h++ ))
@@ -35,18 +35,25 @@ do
   	for (( f=1; f<=${fields}; f++ ))
 		do
 	 		fieldId=$(echo ${componentXML} | xmllint -xpath 'string(/Component/processOverrides/Overrides/Connections/ConnectionOverride['${h}']/field[@overrideable="true"]['${f}']/@id)' -)
+	 		_g=$(( f - 1 ))
 			if [[ $fieldId == "password" ]]
 			then
 				useEncryption="true"
+	 		  json=$(echo ${json} | jq --arg field $_g --arg id "${fieldId}" --arg connection_arg ${l} --arg useEncryption ${useEncryption} '.connections.connection[$connection_arg|tonumber].field[$field|tonumber]  |= . + {"@type": "field", "id": $id, "valueFrom": "", "usesEncryption": $useEncryption, "useDefault": false}')
 		  else
-			 useEncryption="false"
+			  useEncryption="false"
+	 		  json=$(echo ${json} | jq --arg field $_g --arg id "${fieldId}" --arg connection_arg ${l} --arg useEncryption ${useEncryption} '.connections.connection[$connection_arg|tonumber].field[$field|tonumber]  |= . + {"@type": "field", "id": $id, "value": "", "usesEncryption": $useEncryption, "useDefault": false}')
 			fi
-	 		_g=$(( f - 1 ))
-	 		json=$(echo ${json} | jq --arg field $_g --arg id "${fieldId}" --arg connection_arg ${l} --arg useEncryption ${useEncryption} '.connections.connection[$connection_arg|tonumber].field[$field|tonumber]  |= . + {"@type": "field", "id": $id, "value": "", "usesEncryption": $useEncryption}')
 		done
 		unset componentId componentName componentType componentVersion
 	fi
 done
+# export extension if there are atleast one field
+if [ ! -z "${fieldId}" ] 
+ then 
+	export extensionJson="$(echo ${json} | jq . )"
+fi
 
-export extensionJson="$(echo ${json} | jq . )"
+unset fieldId json _g f useEncryption fields
+ 
 clean

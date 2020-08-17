@@ -278,8 +278,13 @@ function handleXmlComponents {
 function printExtensions {
 	if [ ! -z "${extensionJson}" ]
 	then
-  	echo "----Begin Extensions----"
- 		echo "${extensionJson}"
- 		echo "---- End Extension -----"
+  	#echo "----Begin Extensions----"
+ 		echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}.json"
+ 		#echo "---- End Extension -----"
 	fi
+}
+
+# Extension function to retrieve value
+function getValueFrom {
+	export extensionValue=${!1}	
 }

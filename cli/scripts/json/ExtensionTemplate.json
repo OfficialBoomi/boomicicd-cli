@@ -7,6 +7,7 @@
         ]
     },
 	  "environmentId": "[Update ID]",
+	  "partial": "true",
     "extensionGroupId": "",
     "id": "[Same as environmentId]"
 }	

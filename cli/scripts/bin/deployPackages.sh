@@ -40,7 +40,7 @@ then
 		envId=${saveEnvId}
 		#source bin/deployPackage.sh processName="${processName}" componentVersion="" componentId="" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag="" componentType="${componentType}"
 		source bin/createSinglePackage.sh processName="${processName}" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}"
-		source bin/createDeployedPackage.sh envId="${envId}" listenerStatus="${listenerStatus}" packageId=$packageId notes="$saveNotes"
+		source bin/createDeployedPackage.sh envId=${envId} listenerStatus="${listenerStatus}" packageId=$packageId notes="$deployNotes"
  	done   
 else    
 	IFS=',' ;for componentId in `echo "${componentIds}"`; 
@@ -54,7 +54,7 @@ else
 		envId=${saveEnvId}
 		#source bin/deployPackage.sh componentId=${componentId} processName="" componentVersion="" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag="" componentType="${componentType}"
 		source bin/createSinglePackage.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}"
-		source bin/createDeployedPackage.sh envId="${envId}" listenerStatus="${listenerStatus}" packageId=$packageId notes="$saveNotes"
+		source bin/createDeployedPackage.sh envId=${envId} listenerStatus="${listenerStatus}" packageId=$packageId notes="$deployNotes"
  	done   
 fi  
 

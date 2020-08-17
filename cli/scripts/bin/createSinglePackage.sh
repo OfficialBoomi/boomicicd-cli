@@ -46,7 +46,6 @@ savePackageId=${packageId}
 # Extract Boomi componentXMLs to a local disk
 if [ ! -z "${extractComponentXmlFolder}" ] && [ null != "${extractComponentXmlFolder}" ] && [ "" != "${extractComponentXmlFolder}" ]
 then
-	#echov "Contents of /tmp/${BUILDKITE_TRIGGERED_FROM_BUILD_ID}.txt: $(cat /tmp/${BUILDKITE_TRIGGERED_FROM_BUILD_ID}.txt)"
   folder="${WORKSPACE}/${extractComponentXmlFolder}"
 	packageFolder="${folder}/${saveComponentId}"
 	mkdir -p "${packageFolder}"
@@ -66,7 +65,7 @@ then
 		if [ $type == "process" ] 
 		then
 			componentFile="${WORKSPACE}"/${componentIds[$g]}.xml
-			#source bin/createExtensionsJson.sh componentFile="${componentFile}"
+			source bin/createExtensionsJson.sh componentFile="${componentFile}"
 		fi
  
     mv "${WORKSPACE}"/${componentIds[$g]}.xml "${packageFolder}/${folderFullPath}" 

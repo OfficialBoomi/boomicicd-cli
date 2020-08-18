@@ -1,7 +1,7 @@
 #!/bin/bash
 source bin/common.sh
 
-unset _saveComponentId _saveComponentType _saveComponentName _saveComponentVersion
+unset _saveComponentId _saveComponentType _saveComponentName _saveComponentVersion exportVariable
 # mandatory arguments
 OPT_ARGUMENTS=(componentType componentName componentId deleted currentVersion componentVersion)
 ARGUMENTS=()

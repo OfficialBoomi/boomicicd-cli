@@ -268,23 +268,26 @@ function handleXmlComponents {
   	#	 Save componentExtractFolder into git
     if [ ! -z "${tag}" ] && [ null != "${tag}" ] && [ "" != "${tag}" ]
         then
+   				bin/publishCodeReviewReport.sh COMPONENT_LIST_FILE="${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}.list" GIT_COMMIT_ID="master" > "${WORKSPACE}/${extractComponentXmlFolder}_CodeReviewReport.html"
           bin/sonarScanner.sh baseFolder="${folder}"
           bin/gitPush.sh baseFolder="${folder}" tag="${tag}" notes="${notes}"
     		fi
    fi
+	 
 }
 
 
 function printExtensions {
 	if [ ! -z "${extensionJson}" ]
 	then
-  	#echo "----Begin Extensions----"
- 		echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}.json"
- 		#echo "---- End Extension -----"
+	  #echo "----Begin Extensions----"
+    echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}.json"
+    #echo "---- End Extension -----"
 	fi
 }
 
 # Extension function to retrieve value
 function getValueFrom {
-	export extensionValue=${!1}	
+   export extensionValue=${!1}
+	# export extensionValue=$(aws secretsmanager get-secret-value --secret-id ${1} | jq -r .SecretString)
 }

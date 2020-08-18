@@ -32,29 +32,29 @@ then
 	IFS=',' ;for processName in `echo "${processNames}"`; 
 	do 
 		notes="${saveNotes}"
+		deployNotes="${saveNotes}"
     packageVersion="${savePackageVersion}"
     processName=`echo "${processName}" | xargs`
     saveProcessName="${processName}"
 		listenerStatus="${saveListenerStatus}"
 		componentType="${saveComponentType}"
 		envId=${saveEnvId}
-		#source bin/deployPackage.sh processName="${processName}" componentVersion="" componentId="" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag="" componentType="${componentType}"
 		source bin/createSinglePackage.sh processName="${processName}" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}"
-		source bin/createDeployedPackage.sh envId=${envId} listenerStatus="${listenerStatus}" packageId=$packageId notes="$deployNotes"
+		source bin/createDeployedPackage.sh envId=${envId} listenerStatus="${listenerStatus}" packageId=$packageId notes="${deployNotes}"
  	done   
 else    
 	IFS=',' ;for componentId in `echo "${componentIds}"`; 
 	do 
 		notes="${saveNotes}"
+		deployNotes="${saveNotes}"
    	packageVersion="${savePackageVersion}"
     componentId=`echo "${componentId}" | xargs`
     saveComponentId="${componentId}"
 		componentType="${saveComponentType}"
 		listenerStatus="${saveListenerStatus}"
 		envId=${saveEnvId}
-		#source bin/deployPackage.sh componentId=${componentId} processName="" componentVersion="" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag="" componentType="${componentType}"
 		source bin/createSinglePackage.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}"
-		source bin/createDeployedPackage.sh envId=${envId} listenerStatus="${listenerStatus}" packageId=$packageId notes="$deployNotes"
+		source bin/createDeployedPackage.sh envId=${envId} listenerStatus="${listenerStatus}" packageId=$packageId notes="${deployNotes}"
  	done   
 fi  
 

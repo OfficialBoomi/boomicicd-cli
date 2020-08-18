@@ -49,8 +49,12 @@ then
   folder="${WORKSPACE}/${extractComponentXmlFolder}"
 	packageFolder="${folder}/${saveComponentId}"
 	mkdir -p "${packageFolder}"
+	
+  # save the list of component details for a codereview report to be published at the end
+	printf "%s%s%s\n" "${saveComponentId}|" "${saveComponentName}|" "${saveComponentVersion}" >> "${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}.list"
 	echov "Publishing package metatdata for ${packageId}."
 	source bin/publishPackagedComponentMetadata.sh packageIds="${packageId}" > "${packageFolder}/Manifest_${saveComponentId}.html"
+
   g=0
 	for g in ${!componentIds[@]}; 
 	do

@@ -6,4 +6,5 @@ out*.xml
 **/Test **/**
 *.swp
 *.bak
+pipeline*.json
 atom_install.sh

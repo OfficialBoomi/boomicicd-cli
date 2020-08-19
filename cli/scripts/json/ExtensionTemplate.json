@@ -6,6 +6,11 @@
             
         ]
     },
+		"properties": {
+        "@type": "",
+        "property": [
+        ]
+    },
 	  "environmentId": "[Update ID]",
 	  "partial": "true",
     "extensionGroupId": "",

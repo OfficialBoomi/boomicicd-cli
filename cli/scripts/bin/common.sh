@@ -200,8 +200,9 @@ function echovv {
 
 function printReportHead {
   printf "<!DOCTYPE html>"
-	printf "%s\n" "<html>"
+	printf "%s\n" "<html lang='en'>"
 	printf "%s\n" "<head>"
+  printf "%s\n" "<title>${REPORT_TITLE}</title>"
 	printf "%s\n" "<style>"
   printf "%s\n" "table {"
   printf "\t%s\n" "font-family: arial, sans-serif;"
@@ -225,10 +226,11 @@ function printReportHead {
   printf "%s\n" "<h2>${REPORT_TITLE}</h2>"
  
   printf "%s\n" "<table>"
+  printf "%s\n" "<caption>Table for ${REPORT_TITLE}.</caption>"
   printf "%s\n" "<tr>"	
   for i in "${REPORT_HEADERS[@]}"
    do
-			printf "%s\n" "<th>${i}</th>"
+			printf "%s\n" "<th scope='row'>${i}</th>"
 	 done	
 	printf "%s\n\n" "</tr>"
 }
@@ -246,7 +248,7 @@ function printReportRow {
 	for FIELD in "$@"
 	do		
 	 printFormat="${printFormat}%s"
-	 printText="${printText} <th>${FIELD}</th>"
+	 printText="${printText} <th scope='row'>${FIELD}</th>"
 	 l=$(( $l + 1));
 	done	
 	printFormat="${printFormat}%s"

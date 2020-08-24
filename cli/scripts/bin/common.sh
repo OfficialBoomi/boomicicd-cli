@@ -226,7 +226,7 @@ function printReportHead {
   printf "%s\n" "<h2>${REPORT_TITLE}</h2>"
  
   printf "%s\n" "<table>"
-  printf "%s\n" "<caption>Table for ${REPORT_TITLE}.</caption>"
+  printf "%s\n" "<caption><h3>List of ${REPORT_TITLE}</h3></caption>"
   printf "%s\n" "<tr>"	
   for i in "${REPORT_HEADERS[@]}"
    do

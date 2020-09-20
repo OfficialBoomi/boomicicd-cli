@@ -111,22 +111,12 @@ updateSharedServer.sh|atomName, overrideUrl, apiType, auth, url|updateSharedServ
 The following scripts publish html reports
 | **SCRIPT_NAME** | **ARGUMENTS** | **REPORT HEADERS** | **Notes**|
 | ------ | ------ | ------ | ------ |
-publishAllEnvironments.sh|-|Id, Classification, Name|Publishes a list of  Environments in the account
-publishAtom.sh|-|Atom Id, Atom Name, Env, Name, Status|Publishes a list of Atoms and attached Env in the account
-publishDeployedPackage.sh|env=%env%|Component, Package Version, Environment, Component Type, Deployed Date, Deployed By, Notes|Publishes a list of Deployed Packaged in an Env
-publishComponentMetadata.sh|packageIds|ComponentId, Component Name, Component Type, Version, Folder Name, Modified by|Publishes Component Metadata details in a given package
-publishPackagedComponent.sh|packageVersion=%version%|Component, Package Version, Component Type, Deployed Date, Deployed By, Notes|Publishes a list of Packaged Component for a given version
-publishProcess.sh|processName=%%|Process Id, Process Name|Publishes a list of Processes  in the account
-
-## List of installation scripts
-- The following scripts installs Boomi runtimes (local to the script location).
-- Before running the script set the tokenId variable by running the installerToke.sh CLI script.
-
-| **SCRIPT_NAME** | **Usage**|
-| ------ | ------ |
-installAtom.sh|bin/installAtom.sh atomName=${atomName} tokenId=${tokenId} *INSTALL_DIR=${INSTALL_DIR}*
-installMolecule.sh|bin/installMolecule.sh atomName=${atomName} tokenId=${tokenId} *INSTALL_DIR=${INSTALL_DIR} WORK_DIR=${WORK_DIR} JRE_HOME=${JRE_HOME} JAVA_HOME=${JAVA_HOME} TMP_DIR=${TMP_DIR}*||Installs the Molecule runtime locally
-installCloud.sh|bin/installCloud.sh atomName=${atomName} cloudId=${cloudId} tokenId=${tokenId} *INSTALL_DIR=${INSTALL_DIR} WORK_DIR=${WORK_DIR} JRE_HOME=${JRE_HOME} JAVA_HOME=${JAVA_HOME} TMP_DIR=${TMP_DIR}*||Publishes a list of Deployed Packaged in an Env
+|publishAllEnvironments.sh|-|Id, Classification, Name|Publishes a list of  Environments in the account|
+|publishAtom.sh|-|Atom Id, Atom Name, Env, Name, Status|Publishes a list of Atoms and attached Env in the account|
+|publishDeployedPackage.sh|env=%env%|Component, Package Version, Environment, Component Type, Deployed Date, Deployed By, Notes|Publishes a list of Deployed Packaged in an Env|
+|publishComponentMetadata.sh|packageIds|ComponentId, Component Name, Component Type, Version, Folder Name, Modified by|Publishes Component Metadata details in a given package|
+|publishPackagedComponent.sh|packageVersion=%version%|Component, Package Version, Component Type, Deployed Date, Deployed By, Notes|Publishes a list of Packaged Component for a given version|
+|publishProcess.sh|processName=%%|Process Id, Process Name|Publishes a list of Processes  in the account|
 
 
 ## common. sh
@@ -146,6 +136,7 @@ The CLI framework is built around the functions in the common.sh
 |printReportRow|  Prints row data. Called by the Publish report scripts|
 |printReportTail|  Prints report tail. Called by the Publish report scripts|
 |usage| Prints the script usage details|
+|getValueFrom| Used in the updateEnvironmentExtensions.sh to lookup secret values, this function needs to be changed for special usecases|
 
 ## Troubleshooting and help
 - If a script fails to run, it will print the ERROR_MESSAGE and exit with an ERROR_CODE i.e. $? > 0

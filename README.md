@@ -104,8 +104,18 @@ queryProcessSchedules.sh|atomName, atomType, processName|queryProcessSchedules.j
 queryRole.sh|roleName|queryRole.json|Role/query|Queries a role exists
 updateAtom.sh|atomId, purgeHistoryDays|updateAtom.json|Atom/$atomId/update|Update atom properties (purgeHistory)
 updateProcessScheduleStatus.sh|atomName, atomType, processName, status|updateProcessScheduleStatus.json|ProcessScheduleStatus /$scheduleId /update|Updates Process Schedule Status
+updateExtensions.sh|extensionJson, envId or env|User supplied JSON file|EnvironmentExtensions $envId/update|Updates the environment extension. The extension values can be passed as strings value="string" or as valueFrom="lookup_value"
+updateProcessScheduleStatus.sh|atomName, atomType, processName, status|updateProcessScheduleStatus.json|ProcessScheduleStatus /$scheduleId /update|Updates Process Schedule Status
 updateProcessSchedules.sh|atomName, atomType, processName, years, months, daysOfMonth, daysOfWeek, hours, minutes|updateProcessSchedules.json|ProcessSchedules /$scheduleId /update|Updates Single Process Schedule (For advance options use the UI)
 updateSharedServer.sh|atomName, overrideUrl, apiType, auth, url|updateSharedServer.json|SharedServerInformation /$atomId /update|Updates Shared Web Server URL and APIType
+
+### Updating Environment Extensions 
+Boomi platform APIs support updating partial or full environment extensions. There are two CLI functions built in to support environment extensions. 
+
+1. The Create/Deploy Package CLIs scans the component XML to create the JSON required to call the update extension function. The developer needs to review the JSON and update the extensions values. The extension values can be passed as clear string or derived strings. If looking up extension from an external entity like SecretManager this has to be address in the common.sh|getValueFrom function. In this version the JSON is only created for Connection extension and dynamic process properties, more types will be supported in future release.
+
+2. The extension JSON generated in the previous step can be used to updateExtension.sh CLI. The updateExtension CLI supports all extension types, the get Environment Extension can also be used (here https://help.boomi.com/bundle/integration/page/int-Environment_extensions_object.html) to generate the extension JSON. When using valueFrom attribute to update secret or other variables review the common.sh | getValueFrom function to ensure it meets your need.
+
 
 ## List of Reports
 The following scripts publish html reports
@@ -136,7 +146,7 @@ The CLI framework is built around the functions in the common.sh
 |printReportRow|  Prints row data. Called by the Publish report scripts|
 |printReportTail|  Prints report tail. Called by the Publish report scripts|
 |usage| Prints the script usage details|
-|getValueFrom| Used in the updateEnvironmentExtensions.sh to lookup secret values, this function needs to be changed for special usecases|
+|getValueFrom| Used in the updateExtensions.sh to lookup secret values, this function needs to be changed for special usecases|
 
 ## Troubleshooting and help
 - If a script fails to run, it will print the ERROR_MESSAGE and exit with an ERROR_CODE i.e. $? > 0

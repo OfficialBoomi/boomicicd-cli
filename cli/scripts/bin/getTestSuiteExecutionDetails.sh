@@ -6,7 +6,8 @@ source bin/regression.sh
 # mandatory arguments
 ARGUMENTS=(testSuiteExecutionId)
 OPT_ARGUMENTS=(failOnError minTestCoverage componentId processName)
-
+MAX_COUNT=20
+WAIT=30
 inputs "$@"
 if [ "$?" -gt "0" ]
 then
@@ -35,18 +36,18 @@ echov "Extract test results from ${URL}."
 count=0
 
 
-while [ $count -lt 6 ]
+while [ $count -lt "${MAX_COUNT}" ]
 do
-	sleep 30
+	sleep ${WAIT}
 	getTestAPI
-  extract status status
+  extract [0].status status
 	echov "Status is ${status}. Count is $count."
 	if [ "${status}" = "COMPLETED" ]
   then
-		count=6
+		count="${MAX_COUNT}"
 	fi 
-  extract result result
-  extract testSuiteTestCoverage testSuiteTestCoverage
+  extract [0].result result
+  extract [0].testSuiteTestCoverage testSuiteTestCoverage
 	count=$(( $count + 1 ))
 done
 

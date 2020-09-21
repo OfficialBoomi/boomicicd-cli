@@ -10,9 +10,18 @@ then
     return 255;
 fi
 
+if [ ! -z "${extractComponentXmlFolder}" ]
+then
+ folder="${WORKSPACE}/${extractComponentXmlFolder}"
+ rm -rf ${folder}
+ unset extensionJson
+ saveExtractComponentXmlFolder="${extractComponentXmlFolder}"
+fi
+
 saveNotes="${notes}"
 savePackageVersion="${packageVersion}"
 saveComponentType="${componentType}"
+
 packageIds=""
 saveTag="${tag}"
 unset tag
@@ -25,7 +34,7 @@ then
     processName=`echo "${processName}" | xargs`
     saveProcessName="${processName}"
 		componentType="${saveComponentType}"
-		source bin/createPackage.sh processName="${processName}" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag=""
+		source bin/createSinglePackage.sh processName="${processName}" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}" 
  	done   
 else    
 	IFS=',' ;for componentId in `echo "${componentIds}"`; 
@@ -35,24 +44,14 @@ else
     componentId=`echo "${componentId}" | xargs`
     saveComponentId="${componentId}"
 		componentType="${saveComponentType}"
-		source bin/createPackage.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag=""
+		source bin/createSinglePackage.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}" 
  	done   
 fi  
 
 
 
 # Tag all the packages of the release together
-if [ ! -z "${extractComponentXmlFolder}" ] && [ null != "${extractComponentXmlFolder}}" ] && [ "" != "${extractComponentXmlFolder}" ]
-then
-  folder="${WORKSPACE}/${extractComponentXmlFolder}"
-	tag="${saveTag}"
-  # Save componentExtractFolder into git
-	if [ ! -z "${tag}" ] && [ null != "${tag}" ] && [ "" != "${tag}" ]
-	then
-	  bin/sonarScanner.sh baseFolder="${folder}"
-    bin/gitPush.sh baseFolder="${folder}" tag="${tag}" notes="${saveNotes}"
-	fi
-fi			
+handleXmlComponents "${saveExtractComponentXmlFolder}" "${saveTag}" "${saveNotes}"
 
 clean
 
@@ -60,3 +59,5 @@ if [ "$ERROR" -gt 0 ]
 then
    return 255;
 fi
+
+printExtensions

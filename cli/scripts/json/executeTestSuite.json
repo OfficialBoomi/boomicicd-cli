@@ -1,6 +1,7 @@
 {  
-  "accountId" : "${accountId}",
-  "authToken": "${authToken}",
 	"processId" : "${processId}",
-  "atomId" : "${atomId}"
+  "atomId" : "${atomId}",
+  "runSimultaneously": false, 
+  "packagedDeployment": true, 
+	"testId": 0
 }

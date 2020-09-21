@@ -4,7 +4,7 @@
 source bin/common.sh
 source bin/regression.sh
 saveVerbose=${VERBOSE}
-unset VERBOSE
+#unset VERBOSE
 
 #execute Process by atomId and processId
 ARGUMENTS=(atomName atomType)

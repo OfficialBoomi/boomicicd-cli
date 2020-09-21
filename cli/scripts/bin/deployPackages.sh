@@ -10,55 +10,69 @@ then
     return 255;
 fi
 
+if [ ! -z "${extractComponentXmlFolder}" ]
+then
+ folder="${WORKSPACE}/${extractComponentXmlFolder}"
+ rm -rf ${folder}
+ unset extensionJson
+ saveExtractComponentXmlFolder="${extractComponentXmlFolder}"
+fi
+
 saveNotes="${notes}"
 savePackageVersion="${packageVersion}"
 saveListenerStatus="${listenerStatus}"
 saveComponentType="${componentType}"
 saveTag="${tag}"
 unset tag
+
+source bin/queryEnvironment.sh env="$env" classification="*"
+saveEnvId=${envId}
 if [ -z "${componentIds}" ]
 then
 	IFS=',' ;for processName in `echo "${processNames}"`; 
 	do 
 		notes="${saveNotes}"
+		deployNotes="${saveNotes}"
     packageVersion="${savePackageVersion}"
     processName=`echo "${processName}" | xargs`
     saveProcessName="${processName}"
 		listenerStatus="${saveListenerStatus}"
 		componentType="${saveComponentType}"
-		source bin/deployPackage.sh processName="${processName}" componentVersion="" componentId="" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag="" componentType="${componentType}"
+		envId=${saveEnvId}
+		source bin/createSinglePackage.sh processName="${processName}" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}"
+		source bin/createDeployedPackage.sh envId=${envId} listenerStatus="${listenerStatus}" packageId=$packageId notes="${deployNotes}"
  	done   
 else    
 	IFS=',' ;for componentId in `echo "${componentIds}"`; 
 	do 
 		notes="${saveNotes}"
+		deployNotes="${saveNotes}"
    	packageVersion="${savePackageVersion}"
     componentId=`echo "${componentId}" | xargs`
     saveComponentId="${componentId}"
 		componentType="${saveComponentType}"
 		listenerStatus="${saveListenerStatus}"
-		source bin/deployPackage.sh componentId=${componentId} processName="" componentVersion="" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" env="${env}" listenerStatus="${listenerStatus}" extractComponentXmlFolder="${extractComponentXmlFolder}" tag="" componentType="${componentType}"
+		envId=${saveEnvId}
+		source bin/createSinglePackage.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}"
+		source bin/createDeployedPackage.sh envId=${envId} listenerStatus="${listenerStatus}" packageId=$packageId notes="${deployNotes}"
  	done   
 fi  
 
 
 # Tag all the packages of the release together
-if [ ! -z "${extractComponentXmlFolder}" ] && [ null != "${extractComponentXmlFolder}" ] && [ "" != "${extractComponentXmlFolder}" ]
-then
-  folder="${WORKSPACE}/${extractComponentXmlFolder}"
-	tag="${saveTag}"
-  # Save componentExtractFolder into git
-	if [ ! -z "${tag}" ] && [ null != "${tag}" ] && [ "" != "${tag}" ]
-	then
-   bin/sonarScanner.sh baseFolder="${folder}" 
-   bin/gitPush.sh baseFolder="${folder}" tag="${tag}" notes="${saveNotes}"
-	fi
-fi
-			
-clean
-unset componentIds processNames
+handleXmlComponents "${saveExtractComponentXmlFolder}" "${saveTag}" "${saveNotes}"
+export envId=${saveEnvId}
 
 if [ "$ERROR" -gt 0 ]
 then
    return 255;
 fi
+
+if [ ! -z "${extensionJson}" ]
+then
+   export extensionJson=$(echo "${extensionJson}" | jq --arg envId ${envId} '.environmentId=$envId' | jq --arg envId ${envId} '.id=$envId')
+   printExtensions
+fi
+clean
+
+unset componentIds processNames

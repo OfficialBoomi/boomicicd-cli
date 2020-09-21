@@ -2,7 +2,8 @@
 
 source bin/common.sh 
 # Query processattachment id before creating it
-source bin/queryDeployedPackage.sh $@
+echov "$@"
+source bin/queryDeployedPackage.sh "$@"
 
 
 # mandatory arguments

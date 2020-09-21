@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-if [ "${gitOption}" = "CLONE" ]
+if [ "${gitOption}" == "CLONE" ]
 then
    bin/gitClone.sh "$@"
 else

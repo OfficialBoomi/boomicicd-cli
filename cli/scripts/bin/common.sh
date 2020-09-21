@@ -200,8 +200,9 @@ function echovv {
 
 function printReportHead {
   printf "<!DOCTYPE html>"
-	printf "%s\n" "<html>"
+	printf "%s\n" "<html lang='en'>"
 	printf "%s\n" "<head>"
+  printf "%s\n" "<title>${REPORT_TITLE}</title>"
 	printf "%s\n" "<style>"
   printf "%s\n" "table {"
   printf "\t%s\n" "font-family: arial, sans-serif;"
@@ -225,10 +226,11 @@ function printReportHead {
   printf "%s\n" "<h2>${REPORT_TITLE}</h2>"
  
   printf "%s\n" "<table>"
+  printf "%s\n" "<caption><h3>List of ${REPORT_TITLE}</h3></caption>"
   printf "%s\n" "<tr>"	
   for i in "${REPORT_HEADERS[@]}"
    do
-			printf "%s\n" "<th>${i}</th>"
+			printf "%s\n" "<th scope='row'>${i}</th>"
 	 done	
 	printf "%s\n\n" "</tr>"
 }
@@ -246,10 +248,48 @@ function printReportRow {
 	for FIELD in "$@"
 	do		
 	 printFormat="${printFormat}%s"
-	 printText="${printText} <th>${FIELD}</th>"
+	 printText="${printText} <th scope='row'>${FIELD}</th>"
 	 l=$(( $l + 1));
 	done	
 	printFormat="${printFormat}%s"
 	printText="${printText} </tr>"
 	printf "${printFormat} ${printText}"
+}
+
+
+function handleXmlComponents {
+	extractComponentXmlFolder="$1"
+	tag="${2}"
+	notes="${3}"
+
+
+	# Tag all the packages of the release together
+	if [ ! -z "${extractComponentXmlFolder}" ] && [ null != "${extractComponentXmlFolder}" ] && [ "" != "${extractComponentXmlFolder}" ]
+	then
+  	folder="${WORKSPACE}/${extractComponentXmlFolder}"
+  	#	 Save componentExtractFolder into git
+    if [ ! -z "${tag}" ] && [ null != "${tag}" ] && [ "" != "${tag}" ]
+        then
+   				bin/publishCodeReviewReport.sh COMPONENT_LIST_FILE="${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}.list" GIT_COMMIT_ID="master" > "${WORKSPACE}/${extractComponentXmlFolder}_CodeReviewReport.html"
+          bin/sonarScanner.sh baseFolder="${folder}"
+          bin/gitPush.sh baseFolder="${folder}" tag="${tag}" notes="${notes}"
+    		fi
+   fi
+	 
+}
+
+
+function printExtensions {
+	if [ ! -z "${extensionJson}" ]
+	then
+	  #echo "----Begin Extensions----"
+    echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}.json"
+    #echo "---- End Extension -----"
+	fi
+}
+
+# Extension function to retrieve value
+function getValueFrom {
+   export extensionValue=${!1}
+	# export extensionValue=$(aws secretsmanager get-secret-value --secret-id ${1} | jq -r .SecretString)
 }

@@ -97,16 +97,26 @@ The followings script/ calls a single API. Arguments in *italics* are optional
 |queryEnvironment.sh|env, classification|queryEnvironment.json|Environment/query|Queries an Env in an Account. Use classification=* for wildcard.|
 |queryExecutionRecord.sh|from, to, atomName|queryExecutionRecord.json|ExecutionRecord /query|Queries Process Execution records within a given time span|
 |queryPackagedComponent.sh|componentId, componentType, packageVersion|queryPackagedComponent.json|PackagedComponent /query|Queries a Packaged Component by version and Process Name|
-|queryProcess.sh|processName|queryProcess.json|Process/query|Queuries a process to get ComponentId| 
-|queryProcessAttachment.sh|processId, envId, componentType|queryProcessAttachment.json|ProcessEnvironmentAttachment /query|Queries a Process Deployment in an Env (Legacy deployment)
+|queryProcess.sh|processName|queryProcess.json|Process/query|Queuries a process to get ComponentId|
+|queryProcessAttachment.sh|processId, envId, componentType|queryProcessAttachment.json|ProcessEnvironmentAttachment /query|Queries a Process Deployment in an Env (Legacy deployment)|
 |queryProcessScheduleStatus.sh|atomName, atomType, processName|queryProcessScheduleStatus.json|ProcessScheduleStatus /query|Queries Process Schedule Status in a runtime|
 |queryProcessSchedules.sh|atomName, atomType, processName|queryProcessSchedules.json|ProcessSchedules /query|Queries Process Schedules in a runtime|
 |queryRole.sh|roleName|queryRole.json|Role/query|Queries a role exists|
 |updateAtom.sh|atomId, purgeHistoryDays|updateAtom.json|Atom/$atomId/update|Update atom properties (purgeHistory)|
-|updateExtension.sh|extensionJson, envId or env|Atom/$atomId/update|Update atom properties (purgeHistory)|
+|updateProcessScheduleStatus.sh|atomName, atomType, processName, status|updateProcessScheduleStatus.json|ProcessScheduleStatus /$scheduleId /update|Updates Process Schedule Status|
+|updateExtensions.sh|extensionJson, envId or env|User supplied JSON file|EnvironmentExtensions $envId/update|Updates the environment extension. The extension values can be passed as strings value="string" or as valueFrom="lookup_value"|
 |updateProcessScheduleStatus.sh|atomName, atomType, processName, status|updateProcessScheduleStatus.json|ProcessScheduleStatus /$scheduleId /update|Updates Process Schedule Status|
 |updateProcessSchedules.sh|atomName, atomType, processName, years, months, daysOfMonth, daysOfWeek, hours, minutes|updateProcessSchedules.json|ProcessSchedules /$scheduleId /update|Updates Single Process Schedule (For advance options use the UI)|
 |updateSharedServer.sh|atomName, overrideUrl, apiType, auth, url|updateSharedServer.json|SharedServerInformation /$atomId /update|Updates Shared Web Server URL and APIType|
+
+
+### Updating Environment Extensions 
+Boomi platform APIs support updating partial or full environment extensions. There are two CLI functions built in to support environment extensions. 
+
+1. The Create/Deploy Package CLIs scans the component XML to create the JSON required to call the update extension function. The developer needs to review the JSON and update the extensions values. The extension values can be passed as clear string or derived strings. If looking up extension from an external entity like SecretManager this has to be address in the common.sh#getValueFrom function. In this version the extension JSON is only created for Connection & Dynamic Process Properties extended by the Process, more types will be supported in future release.
+
+2. The extension JSON generated in the previous step can be used to updateExtension.sh CLI. The updateExtension CLI supports all extension types, the get Environment Extension can also be used (here https://help.boomi.com/bundle/integration/page/int-Environment_extensions_object.html) to generate the extension JSON. When using valueFrom attribute to update secret or other variables review the common.sh | getValueFrom function to ensure it meets your need.
+
 
 ## List of Reports
 The following scripts publish html reports
@@ -118,17 +128,6 @@ The following scripts publish html reports
 |publishComponentMetadata.sh|packageIds|ComponentId, Component Name, Component Type, Version, Folder Name, Modified by|Publishes Component Metadata details in a given package|
 |publishPackagedComponent.sh|packageVersion=%version%|Component, Package Version, Component Type, Deployed Date, Deployed By, Notes|Publishes a list of Packaged Component for a given version|
 |publishProcess.sh|processName=%%|Process Id, Process Name|Publishes a list of Processes  in the account|
-
-## List of installation scripts
-- The following scripts installs Boomi runtimes (local to the script location).
-- Before running the script set the tokenId variable by running the installerToke.sh CLI script.
-
-| **SCRIPT_NAME** | **Usage**|
-| ------ | ------ |
-|installAtom.sh|bin/installAtom.sh atomName=${atomName} tokenId=${tokenId} *INSTALL_DIR=${INSTALL_DIR}*|
-|installMolecule.sh|bin/installMolecule.sh atomName=${atomName} tokenId=${tokenId} *INSTALL_DIR=${INSTALL_DIR} WORK_DIR=${WORK_DIR} JRE_HOME=${JRE_HOME} JAVA_HOME=${JAVA_HOME} TMP_DIR=${TMP_DIR}*||Installs the Molecule runtime locally|
-|installCloud.sh|bin/installCloud.sh atomName=${atomName} cloudId=${cloudId} tokenId=${tokenId} *INSTALL_DIR=${INSTALL_DIR} WORK_DIR=${WORK_DIR} JRE_HOME=${JRE_HOME} JAVA_HOME=${JAVA_HOME} TMP_DIR=${TMP_DIR}*||Publishes a list of Deployed Packaged in an Env|
-
 
 ## common. sh
 The CLI framework is built around the functions in the common.sh
@@ -147,6 +146,7 @@ The CLI framework is built around the functions in the common.sh
 |printReportRow|  Prints row data. Called by the Publish report scripts|
 |printReportTail|  Prints report tail. Called by the Publish report scripts|
 |usage| Prints the script usage details|
+|getValueFrom| Used in the updateExtensions.sh to lookup secret values, this function needs to be changed for special usecases|
 
 ## Troubleshooting and help
 - If a script fails to run, it will print the ERROR_MESSAGE and exit with an ERROR_CODE i.e. $? > 0
@@ -157,5 +157,3 @@ The CLI framework is built around the functions in the common.sh
  
  # Support
 This image is not supported at this time. Please leave your comments at https://community.boomi.com/s/group/0F91W0000008r5WSAQ/devops-boomi
-
-

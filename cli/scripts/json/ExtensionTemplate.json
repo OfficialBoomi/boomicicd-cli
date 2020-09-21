@@ -1,0 +1,18 @@
+{
+    "@type": "EnvironmentExtensions",
+    "connections": {
+        "@type": "Connections",
+        "connection": [
+            
+        ]
+    },
+		"properties": {
+        "@type": "",
+        "property": [
+        ]
+    },
+	  "environmentId": "[Update ID]",
+	  "partial": "true",
+    "extensionGroupId": "",
+    "id": "[Same as environmentId]"
+}	

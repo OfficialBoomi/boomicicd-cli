@@ -34,7 +34,7 @@ saveEnvId=${envId}
 
 source bin/createDeployedPackage.sh envId=${envId} listenerStatus="${listenerStatus}" packageId=$packageId notes="$notes"
 
-handleXmlComponents "${saveExtractimponentXmlFolder}" "${saveTag}" "${saveNotes}"
+handleXmlComponents "${saveExtractComponentXmlFolder}" "${saveTag}" "${saveNotes}"
 
 if [ "$ERROR" -gt "0" ]
 then

@@ -34,7 +34,7 @@ then
     processName=`echo "${processName}" | xargs`
     saveProcessName="${processName}"
 		componentType="${saveComponentType}"
-		source bin/createSinglePackage.sh processName="${processName}" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}" 
+		source bin/createSinglePackage.sh processName="${processName}" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}"  componentVersion=""
  	done   
 else    
 	IFS=',' ;for componentId in `echo "${componentIds}"`; 
@@ -44,7 +44,7 @@ else
     componentId=`echo "${componentId}" | xargs`
     saveComponentId="${componentId}"
 		componentType="${saveComponentType}"
-		source bin/createSinglePackage.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}" 
+		source bin/createSinglePackage.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}"  componentVersion=""
  	done   
 fi  
 

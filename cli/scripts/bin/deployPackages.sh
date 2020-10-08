@@ -39,7 +39,7 @@ then
 		listenerStatus="${saveListenerStatus}"
 		componentType="${saveComponentType}"
 		envId=${saveEnvId}
-		source bin/createSinglePackage.sh processName="${processName}" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}"
+		source bin/createSinglePackage.sh processName="${processName}" componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}" componentVersion=""
 		source bin/createDeployedPackage.sh envId=${envId} listenerStatus="${listenerStatus}" packageId=$packageId notes="${deployNotes}"
  	done   
 else    
@@ -53,7 +53,7 @@ else
 		componentType="${saveComponentType}"
 		listenerStatus="${saveListenerStatus}"
 		envId=${saveEnvId}
-		source bin/createSinglePackage.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}"
+		source bin/createSinglePackage.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" extractComponentXmlFolder="${extractComponentXmlFolder}" componentVersion=""
 		source bin/createDeployedPackage.sh envId=${envId} listenerStatus="${listenerStatus}" packageId=$packageId notes="${deployNotes}"
  	done   
 fi  

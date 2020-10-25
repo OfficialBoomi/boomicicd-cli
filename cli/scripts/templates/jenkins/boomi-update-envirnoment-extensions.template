@@ -1,0 +1,78 @@
+{
+	"pipelines": [{
+		"job": "Update Environment Extensions",
+		"env": "A Boomi Environment",
+		"extensionJson": {
+			"@type": "EnvironmentExtensions",
+			"connections": {
+				"@type": "Connections",
+				"connection": [{
+					"@type": "Connection",
+					"field": [{
+							"@type": "field",
+							"id": "username",
+							"valueFrom": "Value from function /bin/common.sh#getValueFrom()",
+							"usesEncryption": "false",
+							"useDefault": false
+						},
+						{
+							"@type": "field",
+							"id": "password",
+							"valueFrom": "Value from function /bin/common.sh#getValueFrom()",
+							"usesEncryption": "true",
+							"useDefault": false
+						},
+						{
+							"@type": "field",
+							"id": "host",
+							"value": "",
+							"usesEncryption": "false",
+							"useDefault": false
+						},
+						{
+							"@type": "field",
+							"id": "port",
+							"value": "",
+							"usesEncryption": "false",
+							"useDefault": false
+						},
+						{
+							"@type": "field",
+							"id": "dbname",
+							"value": "clear text value 1",
+							"usesEncryption": "false",
+							"useDefault": false
+						},
+						{
+							"@type": "field",
+							"id": "additional",
+							"value": "clear text value 2",
+							"usesEncryption": "false",
+							"useDefault": false
+						}
+					],
+					"id": "Derived from output of create package environment.json ",
+					"name": "Derived"
+				}]
+			},
+			"properties": {
+				"@type": "",
+				"property": [{
+						"@type": "",
+						"name": "Dynamic Property Name 1",
+						"value": "Dynamic Property Value 2"
+					},
+					{
+						"@type": "",
+						"name": "Dynamic Property Name 2",
+						"value": "Dynamic Property Value 2"
+					}
+				]
+			},
+			"environmentId": "[leave blank]",
+			"partial": "true",
+			"extensionGroupId": "[leave blank]",
+			"id": "[leave blank]"
+		}
+	}]
+}

@@ -1,0 +1,19 @@
+{
+"pipelines" :
+        [
+                {
+                 "job": "Create Process Schedule",
+                 "env": "Mandatory: A Boomi Environment"
+                 "atomName": "Mandatory: A Boomi Runtime"
+                 "atomType": "Mandatory: *",
+                 "processName": "Either processName or compnentId must be present",
+                 "componentId": "ComponentId will replace processName attribute",
+                 "daysOfMonth": "Mandatory: 1 is the first day of the month and 31 is the last day of the month. Use * to indicate all days.",
+                 "daysOfWeek": "Mandatory: 1 is Sunday and 7 is Saturday. Use * to indicate all days.",
+                 "years": "Mandatory: The standard year format. In most cases this is set to an asterisk [*]",
+                 "months": "Mandatory:  The standard month format. In most cases this is set to an asterisk [*]",
+                 "hours": "Mandatory: A 24-hour clock is used. 0 is 12:00 A.M. or midnight and 12 is 12:00 P.M. or noon.",
+                 "minutes": "Mandatory:  0-59\\/1. Runs the job every minute."
+                }
+	]
+}

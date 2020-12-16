@@ -9,6 +9,10 @@ if [ "$?" -gt "0" ]
 then
     return 255;
 fi
+
+# This is a trick to remove special characters in the value
+notes="$(<<< "$notes" sed -e 's`[\\/.*^$&`\\]`\\&`g')"
+
 folder="${WORKSPACE}/${extractComponentXmlFolder}"
 saveNotes="${notes}"
 savePackageVersion="${packageVersion}"

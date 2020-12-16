@@ -6,29 +6,37 @@ function inputs {
      do
        KEY=$(echo $ARGUMENT | cut -f1 -d=)
        VALUE="$(echo $ARGUMENT | cut -f2 -d=)"
+       if [ "${VALUE}" == "NA" ] || [ "${VALUE}" == "-" ];
+       then
+          echovv "Ignoring dummy value for ${KEY}."
+		  unset "${KEY}"
+       else
       	for i in "${ARGUMENTS[@]}"
       	do
-					# remove all old values of the ARGUMENTS
+			# remove all old values of the ARGUMENTS
         	case "$KEY" in
               $i)  unset ${KEY}; export eval $KEY="${VALUE}" ;;
               *)
         	esac
-	      done
+	    done
+
       	for i in "${OPT_ARGUMENTS[@]}"
       	do
-					# remove all old values of the OPTIONAL ARGUMENTS
+			# remove all old values of the OPTIONAL ARGUMENTS
         	case "$KEY" in
               $i)  unset ${KEY}; export eval $KEY="${VALUE}" ;;
               *)
         	esac
-    		done  
+    	done  
  
-   			if [ $KEY = "help" ]
+   	   	if [ $KEY = "help" ]
    				then
     	 			usage
      			return 255; 
-   			fi
-   done
+   		fi
+	   fi # end if value='NA'	
+     done
+
  
    # Check inputs
    for i in "${ARGUMENTS[@]}"

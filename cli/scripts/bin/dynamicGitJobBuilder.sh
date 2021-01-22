@@ -12,7 +12,7 @@ fi
 
 CRUMBS=$(curl -s -u "$JENKINS_USER:$JENKINS_TOKEN" "${JENKINS_URL}/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,':',//crumb)")
 
-echo "Jenkins CRUMBS is ${CRUMBS}"
+#echo "Jenkins CRUMBS is ${CRUMBS}"
 function call_job {
   local JOB=${1}
   local json=${2}
@@ -45,9 +45,14 @@ do
  do
  	PROP_FILE="/tmp/${fileName}_${count}.sh"
  	rm -rf "${PROP_FILE}"
-    json=$(echo ${row} | base64 --decode | jq -r 'to_entries' | jq --arg count "$count" '. + [{"key": "count", "value": $count}]') 
+    #json=$(echo ${row} | base64 --decode | jq -r 'to_entries' | jq --arg count "$count" '. + [{"key": "count", "value": $count}]') 
+    json=$(echo ${row} | base64 --decode | jq -r 'to_entries' | \
+       jq --arg count "$count" '. + [{"key": "count", "value": $count}]' | \
+       jq --arg GIT_COMMIT "$GIT_COMMIT" '. + [{"key": "GIT_COMMIT", "value": $GIT_COMMIT}]')
+   #echo "JSON is ${json}"
+ 	
     echo "${json}" | jq -r 'map("export \(.key)=\(.value|tostring|@sh)") | .[]' > "${PROP_FILE}"
- 	if [ -s $PROP_FILE ]
+    if [ -s $PROP_FILE ]
  	then 
 		chmod +x ${PROP_FILE}
 		source ${PROP_FILE}

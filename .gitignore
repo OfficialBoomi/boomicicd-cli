@@ -8,3 +8,4 @@ out*.xml
 *.bak
 pipeline*.json
 atom_install.sh
+exports.sh

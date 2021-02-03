@@ -1,0 +1,26 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - master
+    exclude:
+    - cicd
+
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: |
+	  sudo apt-get install -y libxml2-utils
+      echo "Calling job dynamicScriptGitJobBuilder.sh with COMMIT_ID=$(Build.SourceVersion)."
+      GIT_COMMIT=$(echo $(Build.SourceVersion))
+      echo $GIT_COMMIT
+      cd cli/scripts
+      source bin/dynamicScriptGitJobBuilder.sh commit_id="$GIT_COMMIT" env="$(Stage.Env)" conf_folder="$(Global.Conf.Folder)"
+
+  displayName: 'Boomi Dynamic Script Job'

@@ -8,37 +8,13 @@
 parameters:
 - name: env
   type: string
-
-- name: processName
-  type: string
-  default: ""
   
-- name: componentId
-  type: string
-  default: ""
-
-- name: componentType
-  type: string
-  default: 'process'
-
-- name: notes
-  type: string
-  default: ''
-
-- name: packageVersion
+- name: envId
   type: string
 
-- name: extractComponentXmlFolder
+- name: extensionJson
   type: string
-  default: 'true'
 
-- name: tag
-  type: string
-  default: 'true'  
-
-- name: listenerStatus
-  type: string
-  default: 'RUNNING'
 
 
 
@@ -82,18 +58,11 @@ steps:
 
     # Derived keys
     export baseURL=https://api.boomi.com/api/rest/v1/$accountId
-    export regressionTestURL=https://connect.boomi.com/ws/simple # URL for regression test suite framework.
     echo "Base URL is ${baseURL}"
 
-    source bin/deployPackage.sh \
-      env=${{ parameters.env}} \
-      processName="${{ parameters.processName }}" \
-      componentId="${{ parameters.componentId }}" \
-      componentType=${{ parameters.componentType }} \
-      packageVersion=${{ parameters.packageVersion }} \
-      notes="${{ parameters.notes }}" \
-      extractComponentXmlFolder="${{ parameters.extractComponentXmlFolder }}" \
-      tag="${{ parameters.tag }}" \
-      listenerStatus=${{ parameters.listenerStatus }}
+    source bin/updateExtensions.sh \
+      env="${{ parameters.env }}" \
+      envId="${{ parameters.envId }}" \
+      extensionJson="${{ parameters.extensionJson }}"
     
-  displayName: 'Deploy a package'
+  displayName: 'Boomi Create Packages'

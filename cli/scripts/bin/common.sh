@@ -275,13 +275,17 @@ function handleXmlComponents {
 	if [ ! -z "${extractComponentXmlFolder}" ] && [ null != "${extractComponentXmlFolder}" ] && [ "" != "${extractComponentXmlFolder}" ]
 	then
   	folder="${WORKSPACE}/${extractComponentXmlFolder}"
-  	#	 Save componentExtractFolder into git
+	printExtensions
+
+  	# Save componentExtractFolder into git
     if [ ! -z "${tag}" ] && [ null != "${tag}" ] && [ "" != "${tag}" ]
         then
-   				bin/publishCodeReviewReport.sh COMPONENT_LIST_FILE="${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}.list" GIT_COMMIT_ID="master" > "${WORKSPACE}/${extractComponentXmlFolder}_CodeReviewReport.html"
+   		  bin/publishCodeReviewReport.sh COMPONENT_LIST_FILE="${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}.list" GIT_COMMIT_ID="master" > "${WORKSPACE}/${extractComponentXmlFolder}_CodeReviewReport.html"
+		  cp "${WORKSPACE}/${extractComponentXmlFolder}_CodeReviewReport.html" "${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}_CodeReviewReport.html" 
+		  rm -f "${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}.list"
           bin/sonarScanner.sh baseFolder="${folder}"
           bin/gitPush.sh baseFolder="${folder}" tag="${tag}" notes="${notes}"
-    		fi
+    	fi
    fi
 	 
 }
@@ -290,14 +294,72 @@ function handleXmlComponents {
 function printExtensions {
 	if [ ! -z "${extensionJson}" ]
 	then
-	  #echo "----Begin Extensions----"
-    echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}.json"
-    #echo "---- End Extension -----"
+	  echovv "----Begin Extensions----"
+	  # This goes to GIT  
+      echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}.json"
+	  # This goes to Jenkins workspace  
+      echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}.json"
+	  echovv "${extensionJson}"
+      echovv "---- End Extension -----"
 	fi
 }
 
 # Extension function to retrieve value
 function getValueFrom {
    export extensionValue=${!1}
-	# export extensionValue=$(aws secretsmanager get-secret-value --secret-id ${1} | jq -r .SecretString)
+   # export extensionValue=$(aws secretsmanager get-secret-value --secret-id ${1} | jq -r .SecretString)
+}
+
+function call_script {
+  local JOB=${1}
+  local json=${2}
+  unset PARAMS
+  for row in $(echo "${json}" | jq -r '.[] | @base64');
+        do
+                json=$(echo "${row}" | base64 --decode)
+                key=$(echo "${json}" |  jq -r '.key')
+                value=$(echo "${json}" | jq -r '.value')
+                if [ "job" != "$key" ] || [ "count" != "$key" ]
+                then
+                        PARAMS+="$key='$value'"
+                    PARAMS+=" "
+                fi
+  done
+
+  if [ "$JOB" == "Create Package" ]
+  then
+        source bin/createPackage.sh "$PARAMS"
+  elif [ "$JOB" == "Create Packages" ]
+  then
+        source bin/createPackages.sh "$PARAMS"
+  elif [ "$JOB" == "Deploy Packages" ]
+  then
+        source bin/deployPackage.sh "$PARAMS"
+  elif [ "$JOB" == "Deploy Package" ]
+  then
+        source bin/deployPackage.sh "$PARAMS"
+  elif [ "$JOB" == "Update Environment Extensions" ]
+  then
+        source bin/updateExtensions.sh "$PARAMS"
+  elif [ "$JOB" == "Create Process Schedule" ]
+  then
+        source bin/updateProcessSchedules.sh "$PARAMS"
+  elif [ "$JOB" == "Update Process Schedule Status" ]
+  then
+        source bin/updateProcessScheduleStatus.sh "$PARAMS"
+  elif [ "$JOB" == "Change Listener Status" ]
+  then
+        source bin/changeListenerStatus.sh "$PARAMS"
+  elif [ "$JOB" == "Execute Process" ]
+  then
+        source bin/executeProcess.sh "$PARAMS"
+  elif [ "$JOB" == "Execute Test Suite" ]
+  then
+        source bin/executeTestSuite.sh "$PARAMS"
+  elif [ "$JOB" == "Query Execution Record" ]
+  then
+        source bin/queryExecutionRecord.sh "$PARAMS"
+  else
+        echo "Unknown Job:$JOB."
+  fi
 }

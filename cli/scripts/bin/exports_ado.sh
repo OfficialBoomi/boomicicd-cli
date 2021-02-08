@@ -24,7 +24,7 @@ export sonarRulesFile="$(sonarRulesFile)"
 
 # Keys that can change
 export VERBOSE="$(VERBOSE)" # Bash verbose output; set to true only for testing, will slow execution.
-export SLEEP_TIMER="$(SLEEP_TIMER) # Delays curl request to the platform to set the rate under 5 requests/second
+export SLEEP_TIMER="$(SLEEP_TIMER)" # Delays curl request to the platform to set the rate under 5 requests/second
 export gitOption="$(gitOption)" # This clones the repo; else default is to create a release tag. Check gitPush.sh file
 export SONAR_HOST=""  # If sonar scanner is installed locally then will use the local sonar scanner. Check the sonarScanner.sh file
 

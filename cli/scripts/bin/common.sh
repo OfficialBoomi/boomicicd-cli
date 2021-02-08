@@ -1,4 +1,4 @@
-#!/bin/bash
+c!/bin/bash
 unset ARGUMENTS OPT_ARGUMENTS
 # Capture user inputs
 function inputs {
@@ -280,11 +280,12 @@ function handleXmlComponents {
   	# Save componentExtractFolder into git
     if [ ! -z "${tag}" ] && [ null != "${tag}" ] && [ "" != "${tag}" ]
         then
+        mkdir -p "${WORKSPACE}/${extractComponentXmlFolder}/CodeReviewReports"
    		  bin/publishCodeReviewReport.sh COMPONENT_LIST_FILE="${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}.list" GIT_COMMIT_ID="master" > "${WORKSPACE}/${extractComponentXmlFolder}_CodeReviewReport.html"
-		  cp "${WORKSPACE}/${extractComponentXmlFolder}_CodeReviewReport.html" "${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}_CodeReviewReport.html" 
-		  rm -f "${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}.list"
-          bin/sonarScanner.sh baseFolder="${folder}"
-          bin/gitPush.sh baseFolder="${folder}" tag="${tag}" notes="${notes}"
+		    cp "${WORKSPACE}/${extractComponentXmlFolder}_CodeReviewReport.html" "${WORKSPACE}/${extractComponentXmlFolder}/CodeReviewReports/${extractComponentXmlFolder}_CodeReviewReport.html" 
+		    rm -f "${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}.list"
+        bin/sonarScanner.sh baseFolder="${folder}"
+        bin/gitPush.sh baseFolder="${folder}" tag="${tag}" notes="${notes}"
     	fi
    fi
 	 
@@ -295,12 +296,13 @@ function printExtensions {
 	if [ ! -z "${extensionJson}" ]
 	then
 	  echovv "----Begin Extensions----"
-	  # This goes to GIT  
-      echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}.json"
+	  # This goes to GIT
+    mkdir -p "${WORKSPACE}/${extractComponentXmlFolder}/Extensions"  
+    echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}/Extensions/${extractComponentXmlFolder}_Extensions.json"
 	  # This goes to Jenkins workspace  
-      echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}.json"
+    echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}_Extensions.json"
 	  echovv "${extensionJson}"
-      echovv "---- End Extension -----"
+    echovv "---- End Extension -----"
 	fi
 }
 
@@ -313,6 +315,7 @@ function getValueFrom {
 function call_script {
   local JOB=${1}
   local json=${2}
+  local script="";
   unset PARAMS
   for row in $(echo "${json}" | jq -r '.[] | @base64');
         do
@@ -325,41 +328,44 @@ function call_script {
                     PARAMS+=" "
                 fi
   done
-
+  echovv "Params are $PARAMS"
   if [ "$JOB" == "Create Package" ]
   then
-        source bin/createPackage.sh "$PARAMS"
+        script=$(echo "bin/createPackage.sh $PARAMS")        
   elif [ "$JOB" == "Create Packages" ]
   then
-        source bin/createPackages.sh "$PARAMS"
+        script=$(echo "bin/createPackages.sh $PARAMS")
   elif [ "$JOB" == "Deploy Packages" ]
   then
-        source bin/deployPackage.sh "$PARAMS"
+        script=$(echo "bin/deployPackages.sh $PARAMS")
   elif [ "$JOB" == "Deploy Package" ]
   then
-        source bin/deployPackage.sh "$PARAMS"
+        script=$(echo "bin/deployPackage.sh $PARAMS")
   elif [ "$JOB" == "Update Environment Extensions" ]
   then
-        source bin/updateExtensions.sh "$PARAMS"
+        script=$(echo "bin/updateExtensions.sh $PARAMS")
   elif [ "$JOB" == "Create Process Schedule" ]
   then
-        source bin/updateProcessSchedules.sh "$PARAMS"
+        script=$(echo "bin/updateProcessSchedules.sh $PARAMS")
   elif [ "$JOB" == "Update Process Schedule Status" ]
   then
-        source bin/updateProcessScheduleStatus.sh "$PARAMS"
+        script=$(echo "bin/updateProcessScheduleStatus.sh $PARAMS")
   elif [ "$JOB" == "Change Listener Status" ]
   then
-        source bin/changeListenerStatus.sh "$PARAMS"
+        script=$(echo "bin/changeListenerStatus.sh $PARAMS")
   elif [ "$JOB" == "Execute Process" ]
   then
-        source bin/executeProcess.sh "$PARAMS"
+        script=$(echo "bin/executeProcess.sh $PARAMS")
   elif [ "$JOB" == "Execute Test Suite" ]
   then
-        source bin/executeTestSuite.sh "$PARAMS"
+        script=$(echo "source bin/executeTestSuite.sh $PARAMS")
   elif [ "$JOB" == "Query Execution Record" ]
   then
-        source bin/queryExecutionRecord.sh "$PARAMS"
+        script=$(echo "bin/queryExecutionRecord.sh $PARAMS")
   else
         echo "Unknown Job:$JOB."
   fi
+  echovv "${script}"
+  eval ${script}
 }
+

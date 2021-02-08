@@ -19,25 +19,28 @@ fileName=$(echo "${file}" | sed -e 's/^.*\///g' -e 's/\.conf.*$//g')
 count=1
  for row in $(cat "${file}" | jq -r '.pipelines[] | @base64');
   do
-   PROP_FILE="/tmp/${fileName}_${count}.sh"
-   rm -rf "${PROP_FILE}"
+   
    json=$(echo ${row} | base64 --decode | jq -r 'to_entries' | \
-     jq --arg count "$count" '. + [{"key": "count", "value": $count}]' 
-   echo "${json}" | jq -r 'map("export \(.key)=\(.value|tostring|@sh)") | .[]' > "${PROP_FILE}"
-    
-	if [ -s $PROP_FILE ]
-    then
-     chmod +x ${PROP_FILE}
-     source ${PROP_FILE}
-
+     jq --arg count "$count" '. + [{"key": "count", "value": $count}]') 
+   
+     job=$(echo $json | jq -r '.[] |  select(.key | contains("job")).value')
+     env=$(echo $json | jq -r '.[] |  select(.key | contains("env")).value')
+	
      # This check ensure that jobs are triggered for only the allowed env.
      # This will prevent a development job to trigger builds in production.
-     if [ ${env} == "${JOB_ENV}" ]
+     # If env is null use the JOB ENV as the env
+     if [ -z "${env}"  ]
      then
- 		 call_script "${job}" "${json}"
+          env="${JOB_ENV}"
+          json=$(echo ${json} | jq --arg env "$env" '. + [{"key": "env", "value": $env}]')           
+     fi
+
+     if [ "${env}" == "${JOB_ENV}" ]
+     then
+ 		   call_script "${job}" "${json}"
      else
        echo "Ignoring job ${job} for env ${env} as it does not match the JOB_ENV ${JOB_ENV}."
      fi
-    fi
+  
    count=$(( count + 1 ))
  done

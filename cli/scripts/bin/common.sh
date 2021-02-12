@@ -1,4 +1,4 @@
-c!/bin/bash
+#!/bin/bash
 unset ARGUMENTS OPT_ARGUMENTS
 # Capture user inputs
 function inputs {
@@ -6,9 +6,9 @@ function inputs {
      do
        KEY=$(echo $ARGUMENT | cut -f1 -d=)
        VALUE="$(echo $ARGUMENT | cut -f2 -d=)"
-       if [ "${VALUE}" == "NA" ] || [ "${VALUE}" == "-" ];
+       if [ "${VALUE}" == "NA" ] || [ "${VALUE}" == "-" ] || [ "${VALUE}" == "null" ];
        then
-          echovv "Ignoring dummy value for ${KEY}."
+          echovv "Ignoring value ${VALUE} for ${KEY}."
 		  unset "${KEY}"
        else
       	for i in "${ARGUMENTS[@]}"
@@ -43,7 +43,7 @@ function inputs {
    do
     if [ -z "${!i}" ]
     then
-      echo "Missing mandatory field:  ${i}"
+      echoee "Missing mandatory field:  ${i}"
       usage
       return 255;
     fi
@@ -51,10 +51,18 @@ function inputs {
 
 	if [ "${VERBOSE}" == "true" ]
 	then
-		echo "Executing script: ${BASH_SOURCE[1]} with arguments"
-		echo "----"
-		printArgs
-		echo "----"
+		echovv "Executing script: ${BASH_SOURCE[1]} with arguments"
+		echovv "----"
+    	for ARGUMENT in "${ARGUMENTS[@]}"
+    	do
+     	 echovv "${ARGUMENT}=${!ARGUMENT}"
+    	done
+
+    	for ARGUMENT in "${OPT_ARGUMENTS[@]}"
+    	do
+     	 echovv "(${ARGUMENT}=${!ARGUMENT})"
+    	done
+		echovv "----"
 	fi
   }
  
@@ -71,21 +79,9 @@ function usage {
     do
      var="$var[${ARGUMENT}=\${$ARGUMENT}] "
     done
-   echo "source ${BASH_SOURCE[2]} $var"
+   echoii "source ${BASH_SOURCE[2]} $var"
 }
  
-# The help function
-function printArgs {
-    for ARGUMENT in "${ARGUMENTS[@]}"
-    do
-     echo "${ARGUMENT}=${!ARGUMENT}"
-    done
-
-    for ARGUMENT in "${OPT_ARGUMENTS[@]}"
-    do
-     echo "(${ARGUMENT}=${!ARGUMENT})"
-    done
-}
 
 
 # Create JSON file with inputs from template
@@ -124,7 +120,7 @@ function callAPI {
    export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
    if [[ $ERROR -gt 0 ]]; then 
 	   export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 
-		 echo $ERROR_MESSAGE 
+		 echoee "$ERROR_MESSAGE"
 	  return 251
    fi
  
@@ -138,7 +134,7 @@ function callAPI {
    export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
    if [[ $ERROR -gt 0 ]]; then 
 	  export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 
-		echo $ERROR_MESSAGE 
+		echoee "$ERROR_MESSAGE"
 	 return 251
    fi
  fi
@@ -156,7 +152,7 @@ function getAPI {
   export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
   if [[ $ERROR -gt 0 ]]; then 
 	  export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 
-		echo $ERROR_MESSAGE 
+		echoee "$ERROR_MESSAGE"
 	 return 251
   fi
   if [ "$VERBOSE" == "true" ]  
@@ -194,16 +190,32 @@ function extractComponentMap {
 function echov {
   if [ "$VERBOSE" == "true" ]  
   then 
-   echo -e "${BASH_SOURCE[1]}: ${1}"
+   echo -e "DEBUG: ${BASH_SOURCE[1]}: ${1}"
   fi
+}
+	
+function echoi {
+   echo -e "INFO: ${BASH_SOURCE[1]}: ${1}"
+}
+
+function echoe {
+   echo -e "ERROR: ${BASH_SOURCE[1]}: ${1}"
 }
 
 #Echo from common.sh
 function echovv {
   if [ "$VERBOSE" == "true" ]  
   then 
-   echo -e "${BASH_SOURCE[2]}: ${1}"
+   echo -e "DEBUG: ${BASH_SOURCE[2]}: ${1}"
   fi
+}
+
+function echoii {
+   echo -e "INFO: ${BASH_SOURCE[2]}: ${1}"
+}
+
+function echoee {
+   echo -e "ERROR: ${BASH_SOURCE[2]}: ${1}"
 }
 
 function printReportHead {
@@ -295,13 +307,13 @@ function handleXmlComponents {
 function printExtensions {
 	if [ ! -z "${extensionJson}" ]
 	then
-	  echovv "----Begin Extensions----"
-	  # This goes to GIT
+	# This goes to GIT
     mkdir -p "${WORKSPACE}/${extractComponentXmlFolder}/Extensions"  
     echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}/Extensions/${extractComponentXmlFolder}_Extensions.json"
-	  # This goes to Jenkins workspace  
+	# This goes to Jenkins workspace  
     echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}_Extensions.json"
-	  echovv "${extensionJson}"
+	echovv "----Begin Extensions----"
+	echovv "${extensionJson}"
     echovv "---- End Extension -----"
 	fi
 }
@@ -363,7 +375,7 @@ function call_script {
   then
         script=$(echo "bin/queryExecutionRecord.sh $PARAMS")
   else
-        echo "Unknown Job:$JOB."
+        echoee "Unknown Job:$JOB."
   fi
   echovv "${script}"
   eval ${script}

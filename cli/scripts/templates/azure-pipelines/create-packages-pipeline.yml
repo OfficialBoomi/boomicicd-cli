@@ -3,12 +3,7 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-# How do I allow non-mandatory params
-# How do I pass params from external input
 parameters:
-- name: env
-  type: string
-
 - name: processNames
   type: string
   default: ""
@@ -55,12 +50,15 @@ steps:
     # Don't have to do this if the image comes preloaded with this package
     sudo apt-get install -y libxml2-utils
     cd cli/scripts
+    # This set the variables used in Azure DevOps pipeline.
+
     # Mostly constants
     export h1="$(h1)"
     export h2="$(h2)"
     export WORKSPACE=$(pwd)
+
     # Get values from user or parameter store
-    # The following credentials can be stored in parameter store and retrieved dynamically 
+    # The following credentials can be stored in parameter store and retrieved dynamically
     # Example to retrieve form an AWS store "$(aws ssm get-parameter --region xx --with-decryption --output text --query Parameter.Value --name /Parameter.name)
     export accountName="$(accountName)"
     export accountId=$(accountId)
@@ -70,23 +68,21 @@ steps:
     export gitUserEmail="$(gitUserEmail)"
     export sonarHostURL="$(sonarHostURL)"
     export sonarHostToken="$(sonarHostToken)"
-    export sonarProjectKey="BoomiSonar"
-    export gitRepoName="boomi-components" # Top level folder of the GIT REPO
-    export sonarRulesFile="conf/BoomiSonarRules.xml"
+    export sonarProjectKey="$(sonarProjectKey)"
+    export gitRepoName="$(gitRepoName)" # Top level folder of the GIT REPO
+    export sonarRulesFile="$(sonarRulesFile)"
 
     # Keys that can change
     export VERBOSE="$(VERBOSE)" # Bash verbose output; set to true only for testing, will slow execution.
-    export SLEEP_TIMER=0.2 # Delays curl request to the platform to set the rate under 5 requests/second
-    export gitOption="CLONE" # This clones the repo; else default is to create a release tag. Check gitPush.sh file
+    export SLEEP_TIMER="$(SLEEP_TIMER)" # Delays curl request to the platform to set the rate under 5 requests/second
+    export gitOption="$(gitOption)" # This clones the repo; else default is to create a release tag. Check gitPush.sh file
     export SONAR_HOST=""  # If sonar scanner is installed locally then will use the local sonar scanner. Check the sonarScanner.sh file
 
     # Derived keys
     export baseURL=https://api.boomi.com/api/rest/v1/$accountId
-    export regressionTestURL=https://connect.boomi.com/ws/simple # URL for regression test suite framework.
+    export regressionTestURL="$(regressionTestURL)" # URL for regression test suite framework.
     echo "Base URL is ${baseURL}"
-
-    source bin/deployPackages.sh \
-      env="${{ parameters.env}}" \
+    source bin/createPackages.sh \
       processNames="${{ parameters.processNames }}" \
       componentIds="${{ parameters.componentIds }}" \
       componentType=${{ parameters.componentType }} \
@@ -96,4 +92,4 @@ steps:
       tag="${{ parameters.tag }}" \
       listenerStatus=${{ parameters.listenerStatus }}
     
-  displayName: 'Boomi Deploy Packages'
+  displayName: 'Boomi Create Packages'

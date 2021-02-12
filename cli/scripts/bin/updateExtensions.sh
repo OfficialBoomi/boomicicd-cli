@@ -15,7 +15,7 @@ then
 fi
 
 if [ ! -z "${envId}" ]
-	then
+then
 		envId=${envId}
 elif [ ! -z "${env}" ]
 	then
@@ -23,6 +23,15 @@ elif [ ! -z "${env}" ]
 else
 		envId=$(echo "$extensionJson" | jq -r .environmentId)
 fi
+
+partial=$(echo "$extensionJson" | jq -r .partial)
+
+if [ "true" != "${partial}" ]
+then
+	echoe "Only partial updates of envirnoment extensions is supported at this time."
+	return 255;
+fi
+
 
 echov "The env id is ${envId}"
 
@@ -54,5 +63,6 @@ clean
 
 if [ "$ERROR" -gt "0" ]
 then
+   echoe "${ERROR_MESSAGE}"	
    return 255;
 fi

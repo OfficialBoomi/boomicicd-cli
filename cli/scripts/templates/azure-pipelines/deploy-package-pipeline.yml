@@ -6,12 +6,8 @@
 # How do I allow non-mandatory params
 # How do I pass params from external input
 parameters:
-- name: atomName
+- name: env
   type: string
-
-- name: atomType
-  type: string
-  default: "*"
 
 - name: processName
   type: string
@@ -21,29 +17,33 @@ parameters:
   type: string
   default: ""
 
-- name: years
+- name: componentType
   type: string
-  default: "*"
+  default: 'process'
 
-- name: months
+- name: componentVersion
   type: string
-  default: "*"
+  default: 'NA'
 
-- name: daysOfMonth
+- name: notes
   type: string
-  default: "*"
+  default: ''
 
-- name: daysOfWeek
+- name: packageVersion
   type: string
-  default: "*"
 
-- name: hours
+- name: extractComponentXmlFolder
   type: string
-  default: "*"
+  default: 'true'
 
-- name: minute
+- name: tag
   type: string
-  default: "*"
+  default: 'true'  
+
+- name: listenerStatus
+  type: string
+  default: 'RUNNING'
+
 
 
 variables:
@@ -74,30 +74,31 @@ steps:
     export gitUserEmail="$(gitUserEmail)"
     export sonarHostURL="$(sonarHostURL)"
     export sonarHostToken="$(sonarHostToken)"
-    export sonarProjectKey="BoomiSonar"
-    export gitRepoName="boomi-components" # Top level folder of the GIT REPO
-    export sonarRulesFile="conf/BoomiSonarRules.xml"
-
+    export sonarProjectKey="$(sonarProjectKey)"
+    export gitRepoName="$(gitRepoName)" # Top level folder of the GIT REPO
+    export sonarRulesFile="$(sonarRulesFile)"
+    
     # Keys that can change
     export VERBOSE="$(VERBOSE)" # Bash verbose output; set to true only for testing, will slow execution.
-    export SLEEP_TIMER=0.2 # Delays curl request to the platform to set the rate under 5 requests/second
-    export gitOption="CLONE" # This clones the repo; else default is to create a release tag. Check gitPush.sh file
+    export SLEEP_TIMER="$(SLEEP_TIMER)" # Delays curl request to the platform to set the rate under 5 requests/second
+    export gitOption="$(gitOption)" # This clones the repo; else default is to create a release tag. Check gitPush.sh file
     export SONAR_HOST=""  # If sonar scanner is installed locally then will use the local sonar scanner. Check the sonarScanner.sh file
-
+    
     # Derived keys
     export baseURL=https://api.boomi.com/api/rest/v1/$accountId
+    export regressionTestURL="$(regressionTestURL)" # URL for regression test suite framework.
     echo "Base URL is ${baseURL}"
 
-    source bin/updateProcessSchedules.sh \
-      atomName="${{ parameters.atomName}}" \
-      atomType="${{ parameters.atomType}}" \
+    source bin/deployPackage.sh \
+      env="${{ parameters.env}}" \
       processName="${{ parameters.processName }}" \
       componentId="${{ parameters.componentId }}" \
-      years="${{ parameters.years }}" \
-      months="${{ parameters.months }}" \
-      hours="${{ parameters.hours }}" \
-      minutes="${{ parameters.minutes }}" \
-      daysOfMonth="${{ parameters.daysOfMonth }}" \
-      daysOfWeek="${{ parameters.daysOfWeek }}" 
+      componentType=${{ parameters.componentType }} \
+      componentVersion=${{ parameters.componentVersion }} \
+      packageVersion="${{ parameters.packageVersion }}" \
+      notes="${{ parameters.notes }}" \
+      extractComponentXmlFolder="${{ parameters.extractComponentXmlFolder }}" \
+      tag="${{ parameters.tag }}" \
+      listenerStatus=${{ parameters.listenerStatus }}
     
-  displayName: 'Boomi Create Process Schedule'
+  displayName: 'Boomi Deploy Package'

@@ -18,6 +18,7 @@ unset env
 for file in $(git diff --name-only --diff-filter=AM HEAD~1 $GIT_COMMIT | grep .conf)
 do
  fileName=$(echo "${file}" | sed -e 's/^.*\///g' -e 's/\.conf.*$//g')
+ echoi "Executing configurations for file ${file}." 
  count=1
  for row in $(cat "${conf_folder}/${file}" | jq -r '.pipelines[] | @base64');
   do

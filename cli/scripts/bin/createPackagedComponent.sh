@@ -14,6 +14,13 @@ then
         return 255;
 fi
 
+if [ "${componentId}" == "null" ] || [ -z "${componentId}" ] || [ null == "${componentId}" ]
+then
+		echoe "Cannot create package for component ${componentId}."
+		export packageId=""
+        return 255;
+fi
+
 URL=$baseURL/PackagedComponent/
 id=packageId
 exportVariable=packageId

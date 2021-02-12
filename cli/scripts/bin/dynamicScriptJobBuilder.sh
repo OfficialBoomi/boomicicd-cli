@@ -16,6 +16,8 @@ JOB_ENV="${env}"
 unset env
 
 fileName=$(echo "${file}" | sed -e 's/^.*\///g' -e 's/\.conf.*$//g')
+echoi "Executing configurations for file ${file}."
+
 count=1
  for row in $(cat "${file}" | jq -r '.pipelines[] | @base64');
   do

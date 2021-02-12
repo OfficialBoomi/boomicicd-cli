@@ -1,0 +1,58 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+# How do I allow non-mandatory params
+# How do I pass params from external input
+parameters:
+- name: env
+  type: string
+  
+- name: envId
+  type: string
+
+- name: extensionJson
+  type: string
+
+
+
+
+variables:
+- group: boomicicd
+
+# need a new image with SonarRunner and xmllint (libxml2-utils) and jq
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+- script: |
+    # Don't have to do this if the image comes preloaded with this package
+    sudo apt-get install -y libxml2-utils
+    cd cli/scripts
+    # Mostly constants
+    export h1="$(h1)"
+    export h2="$(h2)"
+    export WORKSPACE=$(pwd)
+    # Get values from user or parameter store
+    # The following credentials can be stored in parameter store and retrieved dynamically 
+    # Example to retrieve form an AWS store "$(aws ssm get-parameter --region xx --with-decryption --output text --query Parameter.Value --name /Parameter.name)
+    export accountName="$(accountName)"
+    export accountId=$(accountId)
+    export authToken=$(authToken)
+
+    # Keys that can change
+    export VERBOSE="$(VERBOSE)" # Bash verbose output; set to true only for testing, will slow execution.
+    export SLEEP_TIMER="$(SLEEP_TIMER)" # Delays curl request to the platform to set the rate under 5 requests/second
+
+    # Derived keys
+    export baseURL=https://api.boomi.com/api/rest/v1/$accountId
+    echo "Base URL is ${baseURL}"
+
+    source bin/updateExtensions.sh \
+      env="${{ parameters.env }}" \
+      envId="${{ parameters.envId }}" \
+      extensionJson="${{ parameters.extensionJson }}"
+    
+  displayName: 'Boomi Update Environment Extensions'

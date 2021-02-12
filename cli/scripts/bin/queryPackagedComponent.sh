@@ -26,6 +26,11 @@ JSON_FILE=json/queryPackagedComponent.json
 createJSON
  
 callAPI
+
+if [ ! -z "${packageId}" ] && [ "${packageId}" != "null" ] && [ "${packageId}" != null ]
+then
+	echoi "Found packageId ${packageId} for componentId ${componentId} with packageVersion ${packageVersion}. This package will not be recreated."
+fi
  
 clean
 if [ "$ERROR" -gt 0 ]

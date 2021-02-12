@@ -33,7 +33,7 @@ then
 		source bin/createPackagedComponent.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" componentVersion="${componentVersion}"
 		if [ ! -z ${packageId} ]
 		then
-		 echov "Created package ${packageId} for component ${saveProcessName}"
+		 echoi "Created package ${packageId} for component ${saveProcessName}"
 		else 
 			return 255;
 		fi 
@@ -50,7 +50,7 @@ else
 		source bin/createPackagedComponent.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" componentVersion="${componentVersion}"
 		if [ ! -z ${packageId} ]
 		then
-		 echov "Created package ${packageId} for componentId ${saveComponentId}"
+		 echoi "Created package ${packageId} for componentId ${saveComponentId}"
 		else 
 			return 255;
 		fi 

@@ -8,7 +8,7 @@ OPT_ARGUMENTS=(componentVersion)
 URL=$baseURL/PackagedComponent/query
 id=result[0].packageId
 exportVariable=packageId
-
+unset packageId
 inputs "$@"
 if [ "$?" -gt "0" ]
 then

@@ -8,7 +8,7 @@ JSON_FILE=json/queryDeployedComponent.json
 URL=$baseURL/DeployedPackage/query
 id=result[0].deploymentId
 exportVariable=deploymentId
-
+unset deploymentId
 inputs "$@"
 if [ "$?" -gt "0" ]
 then

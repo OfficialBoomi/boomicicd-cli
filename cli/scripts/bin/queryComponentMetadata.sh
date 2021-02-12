@@ -32,32 +32,32 @@ then
 	export deleted="false"
 fi
 
+ARGUMENTS=(componentId componentName componentType componentVersion deleted currentVersion)
 JSON_FILE=json/queryComponentMetadata
-# Create the JSON File with either componentType and (componentId or processName)
+# Create the JSON File with either componentType, componentVersion and (componentId or processName)
 
-if [ ! -z "${componentType}" ] && [ null != "${componentType}" ]
-then
-
-	if [ ! -z "${componentId}" ] && [ null != "${componentId}" ]
-	then
-  	ARGUMENTS=(componentId componentType deleted currentVersion)
-  	JSON_FILE="${JSON_FILE}ComponentIdComponentType"
-	else
-  	ARGUMENTS=(componentName componentType deleted currentVersion)
-  	JSON_FILE="${JSON_FILE}ComponentNameComponentType"
-	fi
+if [ ! -z "${componentId}" ]
+then 
+ JSON_FILE="${JSON_FILE}ComponentId"
 else
-
-  if [ ! -z "${componentId}" ] && [ null != "${componentId}" ]
-  then
-   ARGUMENTS=(componentId deleted currentVersion)
-   JSON_FILE="${JSON_FILE}ComponentId"
-  else
-   ARGUMENTS=(componentName deleted currentVersion)
-   JSON_FILE="${JSON_FILE}ComponentName"
-  fi
-
+ JSON_FILE="${JSON_FILE}ComponentName"
 fi
+
+if [ ! -z "${componentType}" ]
+then 
+ JSON_FILE="${JSON_FILE}ComponentType"
+fi
+
+if [ ! -z "${componentVersion}" ]
+then 
+	if [ ! -z "${componentId}" ]
+	then
+ 		JSON_FILE="${JSON_FILE}ComponentVersion"
+	else
+		echov "Ignoring version if componentId is not specified"
+	fi
+fi
+
 
 JSON_FILE="${JSON_FILE}.json"
 URL=$baseURL/ComponentMetadata/query

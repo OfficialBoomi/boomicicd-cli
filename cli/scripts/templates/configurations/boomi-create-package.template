@@ -1,0 +1,17 @@
+{
+"pipelines" :
+        [
+                {
+                        "job": "Create Package",
+                        "env": "Mandatory: A Boomi Environment"
+                        "processName": "Either processName or compnentId must be present",
+                        "componentId": "ComponentId will replace processName attribute",
+                        "packageVersion": "Mandatory: e.g. 1.2",
+                        "componentType": "Optional:- Must be one one-of: certificate customlibrary flowservice process processroute tpgroup webservice",
+                        "componentVersion": "Optional:- If no version is specified the latest version is used as default",
+                        "notes": "Mandatory: Create Package Template",
+                        "extractComponentXmlFolder": "Optional: If no folder is present the components are not extracted to store in GIT, codereview or quality checks",
+                        "tag": "Optional: If no tag is present the components are not stored in GIT"
+                }
+]
+}

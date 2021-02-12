@@ -9,36 +9,51 @@ if [ "$?" -gt "0" ]
 then
     return 255;
 fi
+
+# This is a trick to remove special characters in the value
+notes="$(<<< "$notes" sed -e 's`[\\/.*^$&`\\]`\\&`g')"
+
 folder="${WORKSPACE}/${extractComponentXmlFolder}"
 saveNotes="${notes}"
 savePackageVersion="${packageVersion}"
 saveComponentType="${componentType}"
+saveComponentVersion="${componentVersion}"
 if [ -z "${componentId}" ] || [ null == "${componentId}" ]
 then
 		notes="${saveNotes}"
-    packageVersion="${savePackageVersion}"
-    processName=`echo "${processName}" | xargs`
-    saveProcessName="${processName}"
-    componentType="${saveComponentType}"
-    componentId=""
-		source bin/queryComponentMetadata.sh componentName="${processName}" componentType="${componentType}" componentId="${componentId}"	currentVersion="" deleted=""
+        packageVersion="${savePackageVersion}"
+        processName=`echo "${processName}" | xargs`
+        saveProcessName="${processName}"
+        componentType="${saveComponentType}"
+        componentId=""
+		source bin/queryComponentMetadata.sh componentName="${processName}" componentType="${componentType}" componentId="${componentId}" componentVersion="${componentVersion}" currentVersion="" deleted=""
 		saveComponentName="${componentName}"
-    saveComponentId="${componentId}"
-    saveComponentVersion="${componentVersion}"
+        saveComponentId="${componentId}"
+        saveComponentVersion="${componentVersion}"
 		source bin/createPackagedComponent.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" componentVersion="${componentVersion}"
-		echov "Created package ${packageId} for process ${saveProcessName}"
+		if [ ! -z ${packageId} ]
+		then
+		 echoi "Created package ${packageId} for component ${saveProcessName}"
+		else 
+			return 255;
+		fi 
 else    
 		notes="${saveNotes}"
-    packageVersion="${savePackageVersion}"
-    componentId=`echo "${componentId}" | xargs`
-    saveComponentId="${componentId}"
-    componentType="${saveComponentType}"
+        packageVersion="${savePackageVersion}"
+        componentId=`echo "${componentId}" | xargs`
+        saveComponentId="${componentId}"
+        componentType="${saveComponentType}"
 		processName=""
-		source bin/queryComponentMetadata.sh componentName="${processName}" componentType="${componentType}" componentId="${componentId}" currentVersion="" deleted=""
+		source bin/queryComponentMetadata.sh componentName="${processName}" componentType="${componentType}" componentId="${componentId}" componentVersion="${componentVersion}" currentVersion="" deleted="" 
 		saveComponentName="${componentName}"
-    saveComponentVersion="${componentVersion}"
+        saveComponentVersion="${componentVersion}"
 		source bin/createPackagedComponent.sh componentId=${componentId} componentType="${componentType}" packageVersion="${packageVersion}" notes="${notes}" componentVersion="${componentVersion}"
-		echov "Created package ${packageId} for componentId ${saveComponentId}"
+		if [ ! -z ${packageId} ]
+		then
+		 echoi "Created package ${packageId} for componentId ${saveComponentId}"
+		else 
+			return 255;
+		fi 
 fi  
 
 savePackageId=${packageId}

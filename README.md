@@ -26,6 +26,8 @@ Clone the scripts folder on to a Unix Machine. The scripts folder contains the f
 - **bin** has the bash scripts for CLI
 - **conf** has configuration files for Molecule installation 
 - **json** has json templates used in the Atomsphere API calls.
+- **templates/azure-pipelines** has yaml templates used to create Azure pipelines
+- **templates/configuration** has json templates used to trigger Boomi jobs using a metadata file, configuration as code.
 
         $ # Set the following variables before the scripts are invoked. 
         $ Or Update in the bin/exports.sh and run source bin/exports
@@ -42,7 +44,7 @@ Clone the scripts folder on to a Unix Machine. The scripts folder contains the f
         $ export h1="Content-Type: application/json"
         $ export h2="Accept: application/json"
         $ export baseURL=https://api.boomi.com/api/rest/v1/$accountId
-        $ export WORKSPACE=`pwd`
+        $ export WORKSPACE=$(pwd)
                
         # Git stuff
         $ export gitRepoURL=""
@@ -57,7 +59,7 @@ Clone the scripts folder on to a Unix Machine. The scripts folder contains the f
         $ export sonarHostToken=""
         $ export sonarProjectKey="BoomiSonar"
         $ export sonarRulesFile="conf/BoomiSonarRules.xml"
-        $ export VERBOSE="false" # Bash verbose output; set to true only for testing, will slow execution.
+        $ export VERBOSE="false" # Bash verbose output; set to true only for testing.
         $ export SLEEP_TIMER=0.2 # Delays curl request to the platform to set the rate under 5 requests/second
 
         
@@ -86,6 +88,9 @@ The followings script/ calls a single API. Arguments in *italics* are optional
 |createProcessAttachment.sh|processId, envId, componentType|createProcessAttachment.json|ProcessEnvironmentAttachment /create|Attach Process to Environment (Legacy deployment)|
 |deployPackage.sh|env, packageVersion, notes, listenerStatus, componentType, componentVersion, componentId or processName, extractComponentXmlFolder,tag|Muliple|Multiple|Creates and deploys a PackagedComponent by processName or componentid in a given Env. If the extractComponentXmlFolder if passed all the component XML and package manifest files are extracted into the folder|
 |deployPackages.sh|env, packageVersion, notes, listenerStatus, componentType, componentIds or processNames, extractComponentXmlFolder, tag|Muliple|Multiple|Creates and deploys multiple packaged component using the currentVersion processName or id to an env. If the extractComponentXmlFolder if passed all the component XML and package manifest files are extracted into the folder|
+|dynamicJenkinsGitJobBuilder.sh|GIT_COMMIT_ID|Muliple|Multiple|Reads a JSON configuration file (*\*.conf* extension) that was added/updated as part of the GIT COMMIT and calls Jenkins jobs based the pipeline template. The templates are defined in the templates/configurations folder|
+|dynamicScripGitJobBuilder.sh|GIT_COMMIT_ID|Muliple|Multiple|Sames as above reads a JSON configuration file (*\*.conf* extension) that was added/updated as part of the GIT COMMIT and calls cli scripts based the pipeline template. The templates are defined in the templates/configurations folder|
+|dynamicScriptJobBuilder.sh|file|Muliple|Multiple|Sames as above directly reads a JSON configuration file (*\*.conf* extension) and calls cli scripts based the pipeline template. The templates are defined in the templates/configurations folder|
 |deployProcess.sh|processId, envId, componentType, notes|deployProcess.json|Deployment/|Deploys a process to an env (Legacy Deployment)|
 |executeProcess.sh|	atomName, atomType, componentId or *processName*| executeProcess.json|executeProcess| Executes a process on a named Boomi runtime|
 |installerToken.sh|atomType, *cloudId*|installerToken.json|InstallerToken|Gets an installer token atomType must be one-of **ATOM**, **MOLECULE** or **CLOUD**. If atomType=CLOUD then the cloudId must be specified|
@@ -134,6 +139,7 @@ The CLI framework is built around the functions in the common.sh
 | **Function** | **Usage**|
 | ------ | ------ |
 |callAPI| Invokes the AtomSphere API and captures the output in out.json|
+|call_script| This is used in the dynamicScript* jobs and interprets the configuration files to invoke CLI scripts dynamically|
 |getAPI| Invokes the GET request on AtomSphere API and captures the output in out.json|
 |getXMLAPI| Invokes the GET/XML request on AtomSphere API and captures the output in out.xml|
 |clean| unsets input variables, retains output variables|
@@ -141,7 +147,6 @@ The CLI framework is built around the functions in the common.sh
 |extract| Exports specific variables in the envirnoment variable from out.json|
 |extractMap| Exports specific array in the envirnoment variable from out.json |
 |inputs|Parses the inputs and validates its against the mandatory ARGUMENTS |
-|printArgs|Prints all ARGUMENTS and input variables|
 |printReportHead| Prints report header. Called by the Publish report scripts|
 |printReportRow|  Prints row data. Called by the Publish report scripts|
 |printReportTail|  Prints report tail. Called by the Publish report scripts|
@@ -153,7 +158,8 @@ The CLI framework is built around the functions in the common.sh
 - Check the $WORKSPACE/tmp.json for the input.json
 - Check the $WORKSPACE/out.json for the out.json
 - Call the API manually using
+- set the export VERBOSE="true" to see DEBUG messages
  curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL -d@"${WORKSPACE}"/tmp.json > "${WORKSPACE}"/out.json
  
  # Support
-This image is not supported at this time. Please leave your comments at https://community.boomi.com/s/group/0F91W0000008r5WSAQ/devops-boomi
+This image is not supported at this time. Please leave your comments at https://community.boomi.com/s/group/0F91W0000008r5WSAQ/devops-boomi.

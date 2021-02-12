@@ -68,11 +68,4 @@ then
    return 255;
 fi
 
-if [ ! -z "${extensionJson}" ]
-then
-   export extensionJson=$(echo "${extensionJson}" | jq --arg envId ${envId} '.environmentId=$envId' | jq --arg envId ${envId} '.id=$envId')
-   printExtensions
-fi
 clean
-
-unset componentIds processNames

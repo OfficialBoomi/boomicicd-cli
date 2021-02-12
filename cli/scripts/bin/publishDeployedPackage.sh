@@ -12,7 +12,7 @@ if [ "$?" -gt "0" ]
 then
         return 255;
 fi
-source bin/queryEnvironment.sh env=${env} classification="*"
+source bin/queryEnvironment.sh env="${env}" classification="*"
 
 ARGUMENTS=(envId)
 URL=$baseURL/DeployedPackage/query

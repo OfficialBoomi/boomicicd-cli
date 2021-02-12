@@ -1,10 +1,9 @@
-out*.json
-tmp*.json
-out*.xml
-**/Test***/**
-**/TestOut/**
-**/Test **/**
+out*
+tmp*
 *.swp
 *.bak
 pipeline*.json
-atom_install.sh
+*_install.sh
+exports*.sh
+*_CodeReviewReport.html
+*_Extensions.json

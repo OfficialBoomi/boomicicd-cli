@@ -1,5 +1,9 @@
 #!/bin/bash
 
+######################################################
+# This scripts get the component metadata details    #
+######################################################
+
 source bin/common.sh
 # get atom id of the by atom name
 # mandatory arguments
@@ -30,6 +34,7 @@ extract type type
 extract subType subType
 extract version myversion
 extract currentVersion currentVersion
+extract folderId folderId
 extract folderName folderName
 extract modifiedBy modifiedBy
 

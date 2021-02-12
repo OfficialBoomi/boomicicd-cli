@@ -6,36 +6,44 @@ function inputs {
      do
        KEY=$(echo $ARGUMENT | cut -f1 -d=)
        VALUE="$(echo $ARGUMENT | cut -f2 -d=)"
+       if [ "${VALUE}" == "NA" ] || [ "${VALUE}" == "-" ] || [ "${VALUE}" == "null" ];
+       then
+          echovv "Ignoring value ${VALUE} for ${KEY}."
+		  unset "${KEY}"
+       else
       	for i in "${ARGUMENTS[@]}"
       	do
-					# remove all old values of the ARGUMENTS
+			# remove all old values of the ARGUMENTS
         	case "$KEY" in
               $i)  unset ${KEY}; export eval $KEY="${VALUE}" ;;
               *)
         	esac
-	      done
+	    done
+
       	for i in "${OPT_ARGUMENTS[@]}"
       	do
-					# remove all old values of the OPTIONAL ARGUMENTS
+			# remove all old values of the OPTIONAL ARGUMENTS
         	case "$KEY" in
               $i)  unset ${KEY}; export eval $KEY="${VALUE}" ;;
               *)
         	esac
-    		done  
+    	done  
  
-   			if [ $KEY = "help" ]
+   	   	if [ $KEY = "help" ]
    				then
     	 			usage
      			return 255; 
-   			fi
-   done
+   		fi
+	   fi # end if value='NA'	
+     done
+
  
    # Check inputs
    for i in "${ARGUMENTS[@]}"
    do
     if [ -z "${!i}" ]
     then
-      echo "Missing mandatory field:  ${i}"
+      echoee "Missing mandatory field:  ${i}"
       usage
       return 255;
     fi
@@ -43,10 +51,18 @@ function inputs {
 
 	if [ "${VERBOSE}" == "true" ]
 	then
-		echo "Executing script: ${BASH_SOURCE[1]} with arguments"
-		echo "----"
-		printArgs
-		echo "----"
+		echovv "Executing script: ${BASH_SOURCE[1]} with arguments"
+		echovv "----"
+    	for ARGUMENT in "${ARGUMENTS[@]}"
+    	do
+     	 echovv "${ARGUMENT}=${!ARGUMENT}"
+    	done
+
+    	for ARGUMENT in "${OPT_ARGUMENTS[@]}"
+    	do
+     	 echovv "(${ARGUMENT}=${!ARGUMENT})"
+    	done
+		echovv "----"
 	fi
   }
  
@@ -63,21 +79,9 @@ function usage {
     do
      var="$var[${ARGUMENT}=\${$ARGUMENT}] "
     done
-   echo "source ${BASH_SOURCE[2]} $var"
+   echoii "source ${BASH_SOURCE[2]} $var"
 }
  
-# The help function
-function printArgs {
-    for ARGUMENT in "${ARGUMENTS[@]}"
-    do
-     echo "${ARGUMENT}=${!ARGUMENT}"
-    done
-
-    for ARGUMENT in "${OPT_ARGUMENTS[@]}"
-    do
-     echo "(${ARGUMENT}=${!ARGUMENT})"
-    done
-}
 
 
 # Create JSON file with inputs from template
@@ -116,7 +120,7 @@ function callAPI {
    export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
    if [[ $ERROR -gt 0 ]]; then 
 	   export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 
-		 echo $ERROR_MESSAGE 
+		 echoee "$ERROR_MESSAGE"
 	  return 251
    fi
  
@@ -130,7 +134,7 @@ function callAPI {
    export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
    if [[ $ERROR -gt 0 ]]; then 
 	  export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 
-		echo $ERROR_MESSAGE 
+		echoee "$ERROR_MESSAGE"
 	 return 251
    fi
  fi
@@ -148,7 +152,7 @@ function getAPI {
   export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
   if [[ $ERROR -gt 0 ]]; then 
 	  export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 
-		echo $ERROR_MESSAGE 
+		echoee "$ERROR_MESSAGE"
 	 return 251
   fi
   if [ "$VERBOSE" == "true" ]  
@@ -186,16 +190,32 @@ function extractComponentMap {
 function echov {
   if [ "$VERBOSE" == "true" ]  
   then 
-   echo -e "${BASH_SOURCE[1]}: ${1}"
+   echo -e "DEBUG: ${BASH_SOURCE[1]}: ${1}"
   fi
+}
+	
+function echoi {
+   echo -e "INFO: ${BASH_SOURCE[1]}: ${1}"
+}
+
+function echoe {
+   echo -e "ERROR: ${BASH_SOURCE[1]}: ${1}"
 }
 
 #Echo from common.sh
 function echovv {
   if [ "$VERBOSE" == "true" ]  
   then 
-   echo -e "${BASH_SOURCE[2]}: ${1}"
+   echo -e "DEBUG: ${BASH_SOURCE[2]}: ${1}"
   fi
+}
+
+function echoii {
+   echo -e "INFO: ${BASH_SOURCE[2]}: ${1}"
+}
+
+function echoee {
+   echo -e "ERROR: ${BASH_SOURCE[2]}: ${1}"
 }
 
 function printReportHead {
@@ -267,13 +287,18 @@ function handleXmlComponents {
 	if [ ! -z "${extractComponentXmlFolder}" ] && [ null != "${extractComponentXmlFolder}" ] && [ "" != "${extractComponentXmlFolder}" ]
 	then
   	folder="${WORKSPACE}/${extractComponentXmlFolder}"
-  	#	 Save componentExtractFolder into git
+	printExtensions
+
+  	# Save componentExtractFolder into git
     if [ ! -z "${tag}" ] && [ null != "${tag}" ] && [ "" != "${tag}" ]
         then
-   				bin/publishCodeReviewReport.sh COMPONENT_LIST_FILE="${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}.list" GIT_COMMIT_ID="master" > "${WORKSPACE}/${extractComponentXmlFolder}_CodeReviewReport.html"
-          bin/sonarScanner.sh baseFolder="${folder}"
-          bin/gitPush.sh baseFolder="${folder}" tag="${tag}" notes="${notes}"
-    		fi
+        mkdir -p "${WORKSPACE}/${extractComponentXmlFolder}/CodeReviewReports"
+   		  bin/publishCodeReviewReport.sh COMPONENT_LIST_FILE="${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}.list" GIT_COMMIT_ID="master" > "${WORKSPACE}/${extractComponentXmlFolder}_CodeReviewReport.html"
+		    cp "${WORKSPACE}/${extractComponentXmlFolder}_CodeReviewReport.html" "${WORKSPACE}/${extractComponentXmlFolder}/CodeReviewReports/${extractComponentXmlFolder}_CodeReviewReport.html" 
+		    rm -f "${WORKSPACE}/${extractComponentXmlFolder}/${extractComponentXmlFolder}.list"
+        bin/sonarScanner.sh baseFolder="${folder}"
+        bin/gitPush.sh baseFolder="${folder}" tag="${tag}" notes="${notes}"
+    	fi
    fi
 	 
 }
@@ -282,14 +307,77 @@ function handleXmlComponents {
 function printExtensions {
 	if [ ! -z "${extensionJson}" ]
 	then
-	  #echo "----Begin Extensions----"
-    echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}.json"
-    #echo "---- End Extension -----"
+	# This goes to GIT
+    mkdir -p "${WORKSPACE}/${extractComponentXmlFolder}/Extensions"  
+    echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}/Extensions/${extractComponentXmlFolder}_Extensions.json"
+	# This goes to Jenkins workspace  
+    echo "${extensionJson}" > "${WORKSPACE}/${extractComponentXmlFolder}_Extensions.json"
+	echovv "----Begin Extensions----"
+	echovv "${extensionJson}"
+    echovv "---- End Extension -----"
 	fi
 }
 
 # Extension function to retrieve value
 function getValueFrom {
    export extensionValue=${!1}
-	# export extensionValue=$(aws secretsmanager get-secret-value --secret-id ${1} | jq -r .SecretString)
+   # export extensionValue=$(aws secretsmanager get-secret-value --secret-id ${1} | jq -r .SecretString)
 }
+
+function call_script {
+  local JOB=${1}
+  local json=${2}
+  local script="";
+  unset PARAMS
+  for row in $(echo "${json}" | jq -r '.[] | @base64');
+        do
+                json=$(echo "${row}" | base64 --decode)
+                key=$(echo "${json}" |  jq -r '.key')
+                value=$(echo "${json}" | jq -r '.value')
+                if [ "job" != "$key" ] || [ "count" != "$key" ]
+                then
+                        PARAMS+="$key='$value'"
+                    PARAMS+=" "
+                fi
+  done
+  echovv "Params are $PARAMS"
+  if [ "$JOB" == "Create Package" ]
+  then
+        script=$(echo "bin/createPackage.sh $PARAMS")        
+  elif [ "$JOB" == "Create Packages" ]
+  then
+        script=$(echo "bin/createPackages.sh $PARAMS")
+  elif [ "$JOB" == "Deploy Packages" ]
+  then
+        script=$(echo "bin/deployPackages.sh $PARAMS")
+  elif [ "$JOB" == "Deploy Package" ]
+  then
+        script=$(echo "bin/deployPackage.sh $PARAMS")
+  elif [ "$JOB" == "Update Environment Extensions" ]
+  then
+        script=$(echo "bin/updateExtensions.sh $PARAMS")
+  elif [ "$JOB" == "Create Process Schedule" ]
+  then
+        script=$(echo "bin/updateProcessSchedules.sh $PARAMS")
+  elif [ "$JOB" == "Update Process Schedule Status" ]
+  then
+        script=$(echo "bin/updateProcessScheduleStatus.sh $PARAMS")
+  elif [ "$JOB" == "Change Listener Status" ]
+  then
+        script=$(echo "bin/changeListenerStatus.sh $PARAMS")
+  elif [ "$JOB" == "Execute Process" ]
+  then
+        script=$(echo "bin/executeProcess.sh $PARAMS")
+  elif [ "$JOB" == "Execute Test Suite" ]
+  then
+        script=$(echo "source bin/executeTestSuite.sh $PARAMS")
+  elif [ "$JOB" == "Query Execution Record" ]
+  then
+        script=$(echo "bin/queryExecutionRecord.sh $PARAMS")
+  else
+        echoee "Unknown Job:$JOB."
+  fi
+  echovv "${script}"
+  eval ${script}
+}
+

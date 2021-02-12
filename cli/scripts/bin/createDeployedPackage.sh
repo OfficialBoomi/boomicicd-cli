@@ -24,6 +24,11 @@ then
 	callAPI
 fi
 
+if [ "$deploymentId" != "null" ] || [ ! -z "$deploymentId" ]
+then 
+	echoi "Deployed package ${packageId} in env ${envId} with deploymentId ${deploymentId}."	
+fi
+
 clean
 if [ "$ERROR" -gt "0" ]
 then

@@ -43,10 +43,4 @@ fi
 
 export envId=${saveEnvId}
 
-if [ ! -z "${extensionJson}" ]
-then
-   export extensionJson=$(echo "${extensionJson}" | jq --arg envId ${envId} '.environmentId=$envId' | jq --arg envId ${envId} '.id=$envId')
-   printExtensions
-fi
-
 clean

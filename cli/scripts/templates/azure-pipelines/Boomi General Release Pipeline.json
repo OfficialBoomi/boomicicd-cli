@@ -1,0 +1,560 @@
+{
+	"source": 2,
+	"revision": 2,
+	"description": "This is a general Boomi release pipeline",
+	"createdBy": {},
+	"createdOn": "2021-02-15T21:51:47.910Z",
+	"modifiedBy": {},
+	"modifiedOn": "2021-02-15T21:52:54.100Z",
+	"isDeleted": false,
+	"variables": {},
+	"variableGroups": [],
+	"environments": [{
+		"id": 10,
+		"name": "Development",
+		"rank": 1,
+		"owner": {},
+		"variables": {
+			"file": {
+				"value": "",
+				"allowOverride": true
+			}
+		},
+		"variableGroups": [],
+		"preDeployApprovals": {
+			"approvals": [{
+				"rank": 1,
+				"isAutomated": true,
+				"isNotificationOn": false,
+				"id": 28
+			}],
+			"approvalOptions": {
+				"requiredApproverCount": null,
+				"releaseCreatorCanBeApprover": false,
+				"autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+				"enforceIdentityRevalidation": false,
+				"timeoutInMinutes": 0,
+				"executionOrder": 1
+			}
+		},
+		"deployStep": {
+			"id": 33
+		},
+		"postDeployApprovals": {
+			"approvals": [{
+				"rank": 1,
+				"isAutomated": true,
+				"isNotificationOn": false,
+				"id": 34
+			}],
+			"approvalOptions": {
+				"requiredApproverCount": null,
+				"releaseCreatorCanBeApprover": false,
+				"autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+				"enforceIdentityRevalidation": false,
+				"timeoutInMinutes": 0,
+				"executionOrder": 2
+			}
+		},
+		"deployPhases": [{
+			"deploymentInput": {
+				"parallelExecution": {
+					"parallelExecutionType": 0
+				},
+				"agentSpecification": {
+					"identifier": "ubuntu-20.04"
+				},
+				"skipArtifactsDownload": false,
+				"artifactsDownloadInput": {
+					"downloadInputs": []
+				},
+				"queueId": 18,
+				"demands": [],
+				"enableAccessToken": false,
+				"timeoutInMinutes": 0,
+				"jobCancelTimeoutInMinutes": 1,
+				"condition": "succeeded()",
+				"overrideInputs": {}
+			},
+			"rank": 1,
+			"phaseType": 1,
+			"name": "Agent job",
+			"refName": null,
+			"workflowTasks": [{
+				"environment": {},
+				"taskId": "d9bafed4-0b18-4f58-968d-86655b4d2ce9",
+				"version": "2.*",
+				"name": "Command Line Script",
+				"refName": "",
+				"enabled": true,
+				"alwaysRun": false,
+				"continueOnError": false,
+				"timeoutInMinutes": 0,
+				"definitionType": "task",
+				"overrideInputs": {},
+				"condition": "succeeded()",
+				"inputs": {
+					"script": "sudo apt-get install -y libxml2-utils",
+					"workingDirectory": "",
+					"failOnStderr": "false"
+				}
+			}, {
+				"environment": {
+					"env": "Development",
+					"authToken": "$(authToken)",
+					"gitRepoURL": "$(gitRepoURL)",
+					"sonarHostToken": "$(sonarHostToken)"
+				},
+				"taskId": "6c731c3c-3c68-459a-a5c9-bde6e6595b5b",
+				"version": "3.*",
+				"name": "Azure Release Pipeline",
+				"refName": "",
+				"enabled": true,
+				"alwaysRun": false,
+				"continueOnError": false,
+				"timeoutInMinutes": 0,
+				"definitionType": "task",
+				"overrideInputs": {},
+				"condition": "succeeded()",
+				"inputs": {
+					"targetType": "filePath",
+					"filePath": "$(System.DefaultWorkingDirectory)/$(System.TeamProject)/cli/scripts/bin/azureReleasePipeline.sh",
+					"arguments": "",
+					"script": "# Write your commands here\n\necho 'Hello world'\n",
+					"workingDirectory": "",
+					"failOnStderr": "false",
+					"noProfile": "true",
+					"noRc": "true"
+				}
+			}]
+		}],
+		"environmentOptions": {
+			"emailNotificationType": "OnlyOnFailure",
+			"emailRecipients": "release.environment.owner;release.creator",
+			"skipArtifactsDownload": false,
+			"timeoutInMinutes": 0,
+			"enableAccessToken": false,
+			"publishDeploymentStatus": true,
+			"badgeEnabled": false,
+			"autoLinkWorkItems": false,
+			"pullRequestDeploymentEnabled": false
+		},
+		"demands": [],
+		"conditions": [{
+			"name": "ReleaseStarted",
+			"conditionType": 1,
+			"value": ""
+		}],
+		"executionPolicy": {
+			"concurrencyCount": 1,
+			"queueDepthCount": 0
+		},
+		"schedules": [],
+		"currentRelease": {},
+		"retentionPolicy": {
+			"daysToKeep": 30,
+			"releasesToKeep": 3,
+			"retainBuild": true
+		},
+		"processParameters": {},
+		"properties": {
+			"BoardsEnvironmentType": {
+				"$type": "System.String",
+				"$value": "unmapped"
+			},
+			"LinkBoardsWorkItems": {
+				"$type": "System.String",
+				"$value": "False"
+			}
+		},
+		"preDeploymentGates": {
+			"id": 0,
+			"gatesOptions": null,
+			"gates": []
+		},
+		"postDeploymentGates": {
+			"id": 0,
+			"gatesOptions": null,
+			"gates": []
+		},
+		"environmentTriggers": [],
+		"badgeUrl": ""
+	}, {
+		"id": 11,
+		"name": "Test",
+		"rank": 2,
+		"owner": {},
+		"variables": {
+			"file": {
+				"value": "",
+				"allowOverride": true
+			}
+		},
+		"variableGroups": [],
+		"preDeployApprovals": {
+			"approvals": [{
+				"rank": 1,
+				"isAutomated": true,
+				"isNotificationOn": false,
+				"id": 29
+			}],
+			"approvalOptions": {
+				"requiredApproverCount": null,
+				"releaseCreatorCanBeApprover": false,
+				"autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+				"enforceIdentityRevalidation": false,
+				"timeoutInMinutes": 0,
+				"executionOrder": 1
+			}
+		},
+		"deployStep": {
+			"id": 32
+		},
+		"postDeployApprovals": {
+			"approvals": [{
+				"rank": 1,
+				"isAutomated": true,
+				"isNotificationOn": false,
+				"id": 35
+			}],
+			"approvalOptions": {
+				"requiredApproverCount": null,
+				"releaseCreatorCanBeApprover": false,
+				"autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+				"enforceIdentityRevalidation": false,
+				"timeoutInMinutes": 0,
+				"executionOrder": 2
+			}
+		},
+		"deployPhases": [{
+			"deploymentInput": {
+				"parallelExecution": {
+					"parallelExecutionType": 0
+				},
+				"agentSpecification": {
+					"identifier": "ubuntu-20.04"
+				},
+				"skipArtifactsDownload": false,
+				"artifactsDownloadInput": {
+					"downloadInputs": []
+				},
+				"queueId": 18,
+				"demands": [],
+				"enableAccessToken": false,
+				"timeoutInMinutes": 0,
+				"jobCancelTimeoutInMinutes": 1,
+				"condition": "succeeded()",
+				"overrideInputs": {}
+			},
+			"rank": 1,
+			"phaseType": 1,
+			"name": "Agent job",
+			"refName": null,
+			"workflowTasks": [{
+				"environment": {},
+				"taskId": "d9bafed4-0b18-4f58-968d-86655b4d2ce9",
+				"version": "2.*",
+				"name": "Command Line Script",
+				"refName": "",
+				"enabled": true,
+				"alwaysRun": false,
+				"continueOnError": false,
+				"timeoutInMinutes": 0,
+				"definitionType": "task",
+				"overrideInputs": {},
+				"condition": "succeeded()",
+				"inputs": {
+					"script": "sudo apt-get install -y libxml2-utils",
+					"workingDirectory": "",
+					"failOnStderr": "false"
+				}
+			}, {
+				"environment": {
+					"env": "Test",
+					"authToken": "$(authToken)",
+					"gitRepoURL": "$(gitRepoURL)",
+					"sonarHostToken": "$(sonarHostToken)"
+				},
+				"taskId": "6c731c3c-3c68-459a-a5c9-bde6e6595b5b",
+				"version": "3.*",
+				"name": "Azure Release Pipeline",
+				"refName": "",
+				"enabled": true,
+				"alwaysRun": false,
+				"continueOnError": false,
+				"timeoutInMinutes": 0,
+				"definitionType": "task",
+				"overrideInputs": {},
+				"condition": "succeeded()",
+				"inputs": {
+					"targetType": "filePath",
+					"filePath": "$(System.DefaultWorkingDirectory)/$(System.TeamProject)/cli/scripts/bin/azureReleasePipeline.sh",
+					"arguments": "",
+					"script": "# Write your commands here\n\necho 'Hello world'\n",
+					"workingDirectory": "",
+					"failOnStderr": "false",
+					"noProfile": "true",
+					"noRc": "true"
+				}
+			}]
+		}],
+		"environmentOptions": {
+			"emailNotificationType": "OnlyOnFailure",
+			"emailRecipients": "release.environment.owner;release.creator",
+			"skipArtifactsDownload": false,
+			"timeoutInMinutes": 0,
+			"enableAccessToken": false,
+			"publishDeploymentStatus": true,
+			"badgeEnabled": false,
+			"autoLinkWorkItems": false,
+			"pullRequestDeploymentEnabled": false
+		},
+		"demands": [],
+		"conditions": [{
+			"name": "Development",
+			"conditionType": 2,
+			"value": "4"
+		}],
+		"executionPolicy": {
+			"concurrencyCount": 1,
+			"queueDepthCount": 0
+		},
+		"schedules": [],
+		"currentRelease": {
+			"id": 0,
+			"url": "",
+			"_links": {}
+		},
+		"retentionPolicy": {
+			"daysToKeep": 30,
+			"releasesToKeep": 3,
+			"retainBuild": true
+		},
+		"processParameters": {},
+		"properties": {
+			"BoardsEnvironmentType": {
+				"$type": "System.String",
+				"$value": "unmapped"
+			},
+			"LinkBoardsWorkItems": {
+				"$type": "System.String",
+				"$value": "False"
+			}
+		},
+		"preDeploymentGates": {
+			"id": 0,
+			"gatesOptions": null,
+			"gates": []
+		},
+		"postDeploymentGates": {
+			"id": 0,
+			"gatesOptions": null,
+			"gates": []
+		},
+		"environmentTriggers": [],
+		"badgeUrl": ""
+	}, {
+		"id": 12,
+		"name": "Production",
+		"rank": 3,
+		"owner": {
+
+		},
+		"variables": {
+			"file": {
+				"value": "",
+				"allowOverride": true
+			}
+		},
+		"variableGroups": [],
+		"preDeployApprovals": {
+			"approvals": [{
+				"rank": 1,
+				"isAutomated": true,
+				"isNotificationOn": false,
+				"id": 30
+			}],
+			"approvalOptions": {
+				"requiredApproverCount": null,
+				"releaseCreatorCanBeApprover": false,
+				"autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+				"enforceIdentityRevalidation": false,
+				"timeoutInMinutes": 0,
+				"executionOrder": 1
+			}
+		},
+		"deployStep": {
+			"id": 31
+		},
+		"postDeployApprovals": {
+			"approvals": [{
+				"rank": 1,
+				"isAutomated": true,
+				"isNotificationOn": false,
+				"id": 36
+			}],
+			"approvalOptions": {
+				"requiredApproverCount": null,
+				"releaseCreatorCanBeApprover": false,
+				"autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+				"enforceIdentityRevalidation": false,
+				"timeoutInMinutes": 0,
+				"executionOrder": 2
+			}
+		},
+		"deployPhases": [{
+			"deploymentInput": {
+				"parallelExecution": {
+					"parallelExecutionType": 0
+				},
+				"agentSpecification": {
+					"identifier": "ubuntu-20.04"
+				},
+				"skipArtifactsDownload": false,
+				"artifactsDownloadInput": {
+					"downloadInputs": []
+				},
+				"queueId": 18,
+				"demands": [],
+				"enableAccessToken": false,
+				"timeoutInMinutes": 0,
+				"jobCancelTimeoutInMinutes": 1,
+				"condition": "succeeded()",
+				"overrideInputs": {}
+			},
+			"rank": 1,
+			"phaseType": 1,
+			"name": "Agent job",
+			"refName": null,
+			"workflowTasks": [{
+				"environment": {},
+				"taskId": "d9bafed4-0b18-4f58-968d-86655b4d2ce9",
+				"version": "2.*",
+				"name": "Command Line Script",
+				"refName": "",
+				"enabled": true,
+				"alwaysRun": false,
+				"continueOnError": false,
+				"timeoutInMinutes": 0,
+				"definitionType": "task",
+				"overrideInputs": {},
+				"condition": "succeeded()",
+				"inputs": {
+					"script": "sudo apt-get install -y libxml2-utils",
+					"workingDirectory": "",
+					"failOnStderr": "false"
+				}
+			}, {
+				"environment": {
+					"env": "Production",
+					"authToken": "$(authToken)",
+					"gitRepoURL": "$(gitRepoURL)",
+					"sonarHostToken": "$(sonarHostToken)"
+				},
+				"taskId": "6c731c3c-3c68-459a-a5c9-bde6e6595b5b",
+				"version": "3.*",
+				"name": "Azure Release Pipeline",
+				"refName": "",
+				"enabled": true,
+				"alwaysRun": false,
+				"continueOnError": false,
+				"timeoutInMinutes": 0,
+				"definitionType": "task",
+				"overrideInputs": {},
+				"condition": "succeeded()",
+				"inputs": {
+					"targetType": "filePath",
+					"filePath": "$(System.DefaultWorkingDirectory)/$(System.TeamProject)/cli/scripts/bin/azureReleasePipeline.sh",
+					"arguments": "",
+					"script": "# Write your commands here\n\necho 'Hello world'\n",
+					"workingDirectory": "",
+					"failOnStderr": "false",
+					"noProfile": "true",
+					"noRc": "true"
+				}
+			}]
+		}],
+		"environmentOptions": {
+			"emailNotificationType": "OnlyOnFailure",
+			"emailRecipients": "release.environment.owner;release.creator",
+			"skipArtifactsDownload": false,
+			"timeoutInMinutes": 0,
+			"enableAccessToken": false,
+			"publishDeploymentStatus": true,
+			"badgeEnabled": false,
+			"autoLinkWorkItems": false,
+			"pullRequestDeploymentEnabled": false
+		},
+		"demands": [],
+		"conditions": [],
+		"executionPolicy": {
+			"concurrencyCount": 1,
+			"queueDepthCount": 0
+		},
+		"schedules": [],
+		"currentRelease": {
+			"id": 0,
+			"url": "",
+			"_links": {}
+		},
+		"retentionPolicy": {
+			"daysToKeep": 30,
+			"releasesToKeep": 3,
+			"retainBuild": true
+		},
+		"processParameters": {},
+		"properties": {
+			"BoardsEnvironmentType": {
+				"$type": "System.String",
+				"$value": "unmapped"
+			},
+			"LinkBoardsWorkItems": {
+				"$type": "System.String",
+				"$value": "False"
+			}
+		},
+		"preDeploymentGates": {
+			"id": 0,
+			"gatesOptions": null,
+			"gates": []
+		},
+		"postDeploymentGates": {
+			"id": 0,
+			"gatesOptions": null,
+			"gates": []
+		},
+		"environmentTriggers": [],
+		"badgeUrl": ""
+	}],
+	"artifacts": [],
+	"triggers": [],
+	"releaseNameFormat": "Release-$(rev:r)",
+	"tags": [],
+	"properties": {
+		"DefinitionCreationSource": {
+			"$type": "System.String",
+			"$value": "ReleaseImport"
+		},
+		"IntegrateBoardsWorkItems": {
+			"$type": "System.String",
+			"$value": "False"
+		},
+		"IntegrateJiraWorkItems": {
+			"$type": "System.String",
+			"$value": "false"
+		}
+	},
+	"id": 4,
+	"name": "Boomi General Release Pipeline",
+	"path": "\\Boomi Release Pipeline",
+	"projectReference": null,
+	"url": "",
+	"_links": {
+		"self": {
+			"href": ""
+		},
+		"web": {
+			"href": ""
+		}
+	}
+}

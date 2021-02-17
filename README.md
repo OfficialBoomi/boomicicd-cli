@@ -52,6 +52,8 @@ Clone the scripts folder on to a Unix Machine. The scripts folder contains the f
         $ export gitUserEmail=""
         $ export gitRepoName="boomi-components" # Top level folder of the GIT REPO
         $ export gitOption="CLONE" # This clones the repo; else default is to create a release tag. Check gitPush.sh file
+        $ export gitCommitPath="/tree/master/" # For Azure Repos use this "?version=GBmaster&path=" this is used in code review report to construct the path
+        
         
         # Sonar stuff
         $ export SONAR_HOST=""  # If sonar scanner is installed locally then will use the local sonar scanner. Check the sonarScanner.sh

@@ -19,6 +19,7 @@ export sonarHostURL="${SONARHOSTURL}"
 # export sonarHostToken="${sonarHostToken}" # Passed in as environment variable
 export sonarProjectKey="${SONARPROJECTKEY}"
 export gitRepoName="${GITREPONAME}" # Top level folder of the GIT REPO
+export gitCommitPath="$(GITCOMMITPATH)" # export gitCommitPath="?version=GBmaster&path=" this is used in code review report 
 export sonarRulesFile="${SONARRULESFILE}"
 
 # Keys that can change

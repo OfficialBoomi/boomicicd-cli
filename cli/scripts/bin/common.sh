@@ -273,7 +273,7 @@ function printReportRow {
 	done	
 	printFormat="${printFormat}%s"
 	printText="${printText} </tr>"
-	printf "${printFormat} ${printText}"
+	printf "${printFormat}" "${printText}"
 }
 
 

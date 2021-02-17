@@ -28,7 +28,7 @@ do
 	componentId=$connectionId
 	connectionExists=$(echo "${extensionJson}" | jq --arg id ${connectionId} '.connections.connection[] | select(.id == $id)')
 	fields=$(echo ${componentXML} | xmllint -xpath 'count(/Component/processOverrides/Overrides/Connections/ConnectionOverride['${h}']/field[@overrideable="true"])' -)
-	source bin/queryComponentMetadata.sh componentId=${componentId}
+	source bin/queryComponentMetadata.sh componentId=${componentId} componentVersion="" 
   # Add connection only if does not exist in the extensions and the componentName is not null or deleted and if there are fields in the connection
 	if [ -z "${connectionExists}" ] && [ "${componentName}" != null ] && [ ${fields} -gt 0 ]
   then

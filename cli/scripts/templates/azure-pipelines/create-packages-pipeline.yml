@@ -70,6 +70,7 @@ steps:
     export sonarHostToken="$(sonarHostToken)"
     export sonarProjectKey="$(sonarProjectKey)"
     export gitRepoName="$(gitRepoName)" # Top level folder of the GIT REPO
+	export gitCommitPath="$(gitCommitPath)" # export gitCommitPath="?version=GBmaster&path=" this is used in code review report 
     export sonarRulesFile="$(sonarRulesFile)"
 
     # Keys that can change

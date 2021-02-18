@@ -5,6 +5,7 @@ The CLI utility wraps calls to [Boomi Atomsphere APIs](https://help.boomi.com/bu
 ## Pre-requistes
   - The CLI utility currently runs on any Unix OS and invokes BASH shell scripts
   - On Windows this has been tested with [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+  - Boomi Atomsphere API token to be generated [link](https://help.boomi.com/bundle/integration/page/int-AtomSphere_API_Tokens_page.html)
   - The CLI utility requires jq - JSON Query interpreter installed 
   - The CLI requires xmllit interpreter 
   
@@ -28,6 +29,7 @@ Clone the scripts folder on to a Unix Machine. The scripts folder contains the f
 - **json** has json templates used in the Atomsphere API calls.
 - **templates/azure-pipelines** has yaml templates used to create Azure pipelines
 - **templates/configuration** has json templates used to trigger Boomi jobs using a metadata file, configuration as code.
+- Check this link to create the authToken [link](https://help.boomi.com/bundle/integration/page/int-AtomSphere_API_Tokens_page.html)
 
         $ # Set the following variables before the scripts are invoked. 
         $ Or Update in the bin/exports.sh and run source bin/exports
@@ -40,7 +42,7 @@ Clone the scripts folder on to a Unix Machine. The scripts folder contains the f
         $ SCRIPTS_HOME='/pathto/scripts'
         $ cd $SCRIPTS_HOME
         $ export accountId=company_account_uuid
-        $ export authToken=BOOMI_TOKEN.username@company.com:aP1k3y02-mob1-b00M-M0b1-at0msph3r3aa
+        $ export authToken=BOOMI_TOKEN.username@company.com:aP1k3y02-mob1-b00M-M0b1-at0msph3r3aa        
         $ export h1="Content-Type: application/json"
         $ export h2="Accept: application/json"
         $ export baseURL=https://api.boomi.com/api/rest/v1/$accountId

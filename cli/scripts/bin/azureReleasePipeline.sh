@@ -19,7 +19,7 @@ export sonarHostURL="${SONARHOSTURL}"
 # export sonarHostToken="${sonarHostToken}" # Passed in as environment variable
 export sonarProjectKey="${SONARPROJECTKEY}"
 export gitRepoName="${GITREPONAME}" # Top level folder of the GIT REPO
-export gitCommitPath="$(GITCOMMITPATH)" # export gitCommitPath="?version=GBmaster&path=" this is used in code review report 
+export gitCommitPath="${GITCOMMITPATH}" # export gitCommitPath="?version=GBmaster&path=" this is used in code review report 
 export sonarRulesFile="${SONARRULESFILE}"
 
 # Keys that can change
@@ -37,5 +37,5 @@ HOME_DIR="${SYSTEM_ARTIFACTSDIRECTORY}/${RELEASE_PRIMARYARTIFACTSOURCEALIAS}"
 echo "HOME DIR is ${HOME_DIR}"
 cd "${HOME_DIR}/cli/scripts"
 export WORKSPACE="$(pwd)"
-echo "Executing script for file=${file} in WORKSPACE ${WORKSPACE}."
-bin/dynamicScriptJobBuilder.sh file="${HOME_DIR}/${file}"
+echo "Executing script for file=${FILE} in WORKSPACE ${WORKSPACE}."
+bin/dynamicScriptJobBuilder.sh file="${HOME_DIR}/${FILE}"

@@ -117,11 +117,18 @@ function callAPI {
   if [[ $URL != *queryMore* ]]
   then
    curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL -d@"${WORKSPACE}"/tmp.json > "${WORKSPACE}"/out.json
+   export ERROR=$(jq  -r . "${WORKSPACE}"/out.json 2>&1 > /dev/null)
+   if [[ ! -z $ERROR ]]; then 
+	   export ERROR_MESSAGE=`cat "${WORKSPACE}"/out.json` 
+	   export ERROR=251
+	   echoee "$ERROR_MESSAGE"
+	   return 251
+   fi
    export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
    if [[ $ERROR -gt 0 ]]; then 
 	   export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 
-		 echoee "$ERROR_MESSAGE"
-	  return 251
+	   echoee "$ERROR_MESSAGE"
+	   return 251
    fi
  
    if [ ! -z "$exportVariable" ]
@@ -131,6 +138,13 @@ function callAPI {
    fi
   else
    curl -s -X POST -u $authToken -H "${h1}" -H "${h2}" $URL -d${queryToken} > "${WORKSPACE}"/out.json
+   export ERROR=$(jq  -r . "${WORKSPACE}"/out.json 2>&1 > /dev/null)
+   if [[ ! -z $ERROR ]]; then 
+	   export ERROR_MESSAGE=`cat "${WORKSPACE}"/out.json` 
+	   export ERROR=251
+	   echoee "$ERROR_MESSAGE"
+	   return 251
+   fi
    export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
    if [[ $ERROR -gt 0 ]]; then 
 	  export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 
@@ -149,6 +163,13 @@ function getAPI {
 	unset ERROR ERROR_MESSAGE
 	if [ ! -z ${SLEEP_TIMER} ]; then sleep ${SLEEP_TIMER}; fi
   curl -s -X GET -u $authToken -H "${h1}" -H "${h2}" "$URL" > "${WORKSPACE}"/out.json
+  export ERROR=$(jq  -r . "${WORKSPACE}"/out.json 2>&1 > /dev/null)
+   if [[ ! -z $ERROR ]]; then 
+	   export ERROR_MESSAGE=`cat "${WORKSPACE}"/out.json` 
+	   export ERROR=251
+	   echoee "$ERROR_MESSAGE"
+	   return 251
+   fi
   export ERROR=`jq  -r . "${WORKSPACE}"/out.json  |  grep '"@type": "Error"' | wc -l`
   if [[ $ERROR -gt 0 ]]; then 
 	  export ERROR_MESSAGE=`jq -r .message "${WORKSPACE}"/out.json` 

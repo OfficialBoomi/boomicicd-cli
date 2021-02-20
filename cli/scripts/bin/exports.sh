@@ -16,10 +16,11 @@ export regressionTestAuthToken=""
 export gitRepoURL=""
 export gitUserName=""
 export gitUserEmail=""
+export gitCommitPath="/tree/master/"
 export sonarHostURL=""
 export sonarHostToken=""
 export sonarProjectKey="BoomiSonar"
-export gitRepoName="boomi-components" # Top level folder of the GIT REPO
+export gitRepoName="BoomiComponents" # Top level folder of the GIT REPO
 export sonarRulesFile="conf/BoomiSonarRules.xml"
 
 # Keys that can change

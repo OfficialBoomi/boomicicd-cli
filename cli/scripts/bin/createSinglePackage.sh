@@ -11,7 +11,7 @@ then
 fi
 
 # This is a trick to remove special characters in the value
-notes="$(<<< "$notes" sed -e 's`[\\/.*^$&`\\]`\\&`g')"
+notes="$(<<< "$notes" sed -e 's`[\\/^$&`\\]`\\&`g')"
 
 folder="${WORKSPACE}/${extractComponentXmlFolder}"
 saveNotes="${notes}"

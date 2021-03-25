@@ -25,5 +25,5 @@ git commit -m "${notes}"
 #git tag -a "${tag}" -m "${notes}"
 git push 
 
-cd ${SCRIPTS_FOLDER}
+cd "${SCRIPTS_FOLDER}"
 rm -rf  "${gitRepoName}"  "${baseFolder}"

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 source bin/common.sh
 
 # get atom id of the by atom name

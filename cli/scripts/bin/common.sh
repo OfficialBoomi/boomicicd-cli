@@ -49,6 +49,13 @@ function inputs {
     fi
    done
 
+   # Check credentials
+   if [[  ${authToken} != BOOMI_TOKEN.* ]]  
+   then
+   	echoee "Boomi platform authentication token is not valid. Please check https://help.boomi.com/bundle/integration/page/int-AtomSphere_API_Tokens_page.html"
+	return 255
+   fi
+
 	if [ "${VERBOSE}" == "true" ]
 	then
 		echovv "Executing script: ${BASH_SOURCE[1]} with arguments"

@@ -7,7 +7,7 @@
          <repositoryKey>xml</repositoryKey>
          <key>Components_Shall_Not_Start_With_New</key>
          <type>CODE_SMELL</type>
-         <priority>MAJOR</priority>
+         <priority>MINOR</priority>
          <name>Components Shall Not Start With New</name>
          <templateKey>XPathCheck</templateKey>
          <description>Component names must not start with "New " which is Boomi"s default. They should be named to have a accurate description.</description>
@@ -30,7 +30,7 @@
          <repositoryKey>xml</repositoryKey>
          <key>Description_Must_Not_Be_Empty</key>
          <type>CODE_SMELL</type>
-         <priority>MAJOR</priority>
+         <priority>MINOR</priority>
          <name>Description Must Not Be Empty</name>
          <templateKey>XPathCheck</templateKey>
          <description>Process description must be set</description>
@@ -98,7 +98,7 @@
       <rule>
          <repositoryKey>xml</repositoryKey>
          <key>Password_must_be_extensible</key>
-         <type>CODE_SMELL</type>
+         <type>BUG</type>
          <priority>MAJOR</priority>
          <name>Password must be extensible</name>
          <templateKey>XPathCheck</templateKey>
@@ -121,7 +121,7 @@
       <rule>
          <repositoryKey>xml</repositoryKey>
          <key>URL_Must_be_Extensible</key>
-         <type>CODE_SMELL</type>
+         <type>BUG</type>
          <priority>MAJOR</priority>
          <name>URL must be extensible</name>
          <templateKey>XPathCheck</templateKey>
@@ -144,7 +144,7 @@
       <rule>
          <repositoryKey>xml</repositoryKey>
          <key>User_name_must_be_extensible</key>
-         <type>CODE_SMELL</type>
+         <type>BUG</type>
          <priority>MAJOR</priority>
          <name>User name must be extensible</name>
          <templateKey>XPathCheck</templateKey>
@@ -161,6 +161,98 @@
             <parameter>
                <key>message</key>
                <value>Connection property "user" must be extensible. @overrideable must be "true"</value>
+            </parameter>
+         </parameters>
+      </rule>
+      <rule>
+         <repositoryKey>xml</repositoryKey>
+         <key>AtomQueue_Has_NoMinConnections</key>
+         <type>BUG</type>
+         <priority>MAJOR</priority>
+         <name>AtomQ Listener Connections</name>
+         <templateKey>XPathCheck</templateKey>
+         <description>AtomQ Listener has MaxConnections set to O</description>
+         <parameters>
+            <parameter>
+               <key>filePattern</key>
+               <value>**/**.xml</value>
+            </parameter>
+            <parameter>
+               <key>expression</key>
+               <value>/Component/object/Operation/Configuration/QueueGetAction[@maxConcurrentExecutions='0']</value>
+            </parameter>
+            <parameter>
+               <key>message</key>
+               <value>AtomQ Listener shall not have 0 as max connections</value>
+            </parameter>
+         </parameters>
+      </rule>
+      <rule>
+         <repositoryKey>xml</repositoryKey>
+         <key>AtomQueue_Has_NoDLQ</key>
+         <type>BUG</type>
+         <priority>MINOR</priority>
+         <name>AtomQ Dead Letter Queue</name>
+         <templateKey>XPathCheck</templateKey>
+         <description>AtomQ does not have a Dead Letter Queue</description>
+         <parameters>
+            <parameter>
+               <key>filePattern</key>
+               <value>**/**.xml</value>
+            </parameter>
+            <parameter>
+               <key>expression</key>
+               <value>/Component/object/Operation/Configuration/QueueGetAction[@deadLetterQueue='false']</value>
+            </parameter>
+            <parameter>
+               <key>message</key>
+               <value>AtomQ Listener should have a Dead Letter Queue</value>
+            </parameter>
+         </parameters>
+      </rule>
+      <rule>
+         <repositoryKey>xml</repositoryKey>
+         <key>JMS_Has_NoMinConnections</key>
+         <type>BUG</type>
+         <priority>MAJOR</priority>
+         <name>JMS Listener Connections</name>
+         <templateKey>XPathCheck</templateKey>
+         <description>JMS Listener has MaxConnections set to O</description>
+         <parameters>
+            <parameter>
+               <key>filePattern</key>
+               <value>**/**.xml</value>
+            </parameter>
+            <parameter>
+               <key>expression</key>
+               <value>/Component/object/Operation/Configuration/JMSGetAction[@maxConcurrentExecutions='0']</value>
+            </parameter>
+            <parameter>
+               <key>message</key>
+               <value>JMS Listener shall not have 0 as max connections</value>
+            </parameter>
+         </parameters>
+      </rule>
+      <rule>
+         <repositoryKey>xml</repositoryKey>
+         <key>GeneralModeListener</key>
+         <type>BUG</type>
+         <priority>MINOR</priority>
+         <name>General Model Listener Process</name>
+         <templateKey>XPathCheck</templateKey>
+         <description>Should the Listener Process run in Low Latency Mode instead of General Mode</description>
+         <parameters>
+            <parameter>
+               <key>filePattern</key>
+               <value>**/**.xml</value>
+            </parameter>
+            <parameter>
+               <key>expression</key>
+               <value>/Component/object/process/shapes/shape/configuration/connectoraction[@actionType='Listen']/../../../../../process[@workload='general']</value>
+            </parameter>
+            <parameter>
+               <key>message</key>
+               <value>Process with a Listener start shape is running can run in Low Latency Mode</value>
             </parameter>
          </parameters>
       </rule>

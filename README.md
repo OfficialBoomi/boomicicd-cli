@@ -71,6 +71,7 @@ Clone the scripts folder on to a Unix Machine. The scripts folder contains the f
         
 ## Run your first script
 
+        $ source bin/exports.sh
         $ source bin/publishAtom.sh > index.html
     
 ## List of Interfaces

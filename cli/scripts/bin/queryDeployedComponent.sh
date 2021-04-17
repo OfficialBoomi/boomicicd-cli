@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -e 
 source bin/common.sh
 # get atom id of the by atom name
 # mandatory arguments

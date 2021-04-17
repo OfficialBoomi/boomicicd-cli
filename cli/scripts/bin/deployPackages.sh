@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 source bin/common.sh
 
 # mandatory arguments

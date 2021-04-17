@@ -14,13 +14,13 @@ GIT_COMMIT=commit_id
 # This is the name of the stage or environment for this script. This is required to prevent a job in Development stage run in production
 JOB_ENV="${env}"
 unset env
-
+cd "${conf_folder}"
 for file in $(git diff --name-only --diff-filter=AM HEAD~1 $GIT_COMMIT | grep .conf)
 do
  fileName=$(echo "${file}" | sed -e 's/^.*\///g' -e 's/\.conf.*$//g')
  echoi "Executing configurations for file ${file}." 
  count=1
- for row in $(cat "${conf_folder}/${file}" | jq -r '.pipelines[] | @base64');
+ for row in $(cat "${file}" | jq -r '.pipelines[] | @base64');
   do
    PROP_FILE="/tmp/${fileName}_${count}.sh"
    rm -rf "${PROP_FILE}"

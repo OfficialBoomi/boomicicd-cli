@@ -48,13 +48,13 @@ Clone the scripts folder on to a Unix Machine. The scripts folder contains the f
         $ export baseURL=https://api.boomi.com/api/rest/v1/$accountId
         $ export WORKSPACE=$(pwd)
                
-        # Git stuff
-        $ export gitRepoURL=""
-        $ export gitUserName=""
-        $ export gitUserEmail=""
-        $ export gitRepoName="boomi-components" # Top level folder of the GIT REPO
-        $ export gitOption="CLONE" # This clones the repo; else default is to create a release tag. Check gitPush.sh file
-        $ export gitCommitPath="/tree/master/" # For Azure Repos use this "?version=GBmaster&path=" this is used in code review report to construct the path
+        # Git Component stuff -> This is where the component xmls will be stored
+        $ export gitComponentRepoURL=""
+        $ export gitComponentUserName=""
+        $ export gitComponentUserEmail=""
+        $ export gitComponentRepoName="boomi-components" # Top level folder of the GIT REPO
+        $ export gitComponentOption="CLONE" # This clones the repo; else default is to create a release tag. Check gitPush.sh file
+        $ export gitComponentCommitPath="/tree/master/" # For Azure Repos use this "?version=GBmaster&path=" this is used in code review report to construct the path
         
         
         # Sonar stuff

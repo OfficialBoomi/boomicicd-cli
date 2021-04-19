@@ -13,17 +13,17 @@ then
 fi						
 
 
-git config --global user.email "${gitUserEmail}"
-git config --global user.name  "${gitUserName}"
+git config --global user.email "${gitComponentUserEmail}"
+git config --global user.name  "${gitComponentUserName}"
 
 
-git clone "${gitRepoURL}"
-cp -R "${baseFolder}"/* "${gitRepoName}"
-cd "${gitRepoName}"
+git clone "${gitComponentRepoURL}"
+cp -R "${baseFolder}"/* "${gitComponentRepoName}"
+cd "${gitComponentRepoName}"
 git add .
 git commit -m "${notes}"
 #git tag -a "${tag}" -m "${notes}"
 git push 
 
-cd ${SCRIPTS_FOLDER}
-rm -rf  "${gitRepoName}"  "${baseFolder}"
+cd "${SCRIPTS_FOLDER}"
+rm -rf  "${gitComponentRepoName}"  "${baseFolder}"

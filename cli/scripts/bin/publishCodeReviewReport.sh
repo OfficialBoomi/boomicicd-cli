@@ -8,16 +8,16 @@ source bin/common.sh
 ARGUMENTS=(COMPONENT_LIST_FILE)
 inputs "$@"
 
-if [ -z "${gitCommitPath}" ]
+if [ -z "${gitComponentCommitPath}" ]
 then
-    gitCommitPath="/tree/master/"
+    gitComponentCommitPath="/tree/master/"
 fi
 
 REPORT_TITLE="Boomi Code Review Artifacts"
 REPORT_HEADERS=("#" "Component ID" "Component Name")
 # convert the 
-httpRepoURL=$(echo ${gitRepoURL} | sed -e  's/:/\//g' -e 's/^.*@/https:\/\//' -e 's/\.git//')
-httpRepoURL="$httpRepoURL$gitCommitPath"
+httpRepoURL=$(echo ${gitComponentRepoURL} | sed -e  's/:/\//g' -e 's/^.*@/https:\/\//' -e 's/\.git//')
+httpRepoURL="$httpRepoURL$gitComponentCommitPath"
 printReportHead
 mapfile -t <  <(cut -d '|' -f1 "${COMPONENT_LIST_FILE}") componentIds
 mapfile -t <  <(cut -d '|' -f2 "${COMPONENT_LIST_FILE}") componentNames

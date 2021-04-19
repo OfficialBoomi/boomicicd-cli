@@ -16,11 +16,11 @@ fi
 cd "${baseFolder}"
 
 git init
-git config --global user.email "${gitUserEmail}"
-git config --global user.name  "${gitUserName}"
-git remote add origin "${gitRepoURL}"
+git config --global user.email "${gitComponentUserEmail}"
+git config --global user.name  "${gitComponentUserName}"
+git remote add origin "${gitComponentRepoURL}"
 git add .
 git commit -m "${tag}"
 git tag -a "${tag}" -m "${notes}"
 git push --set-upstream origin "${tag}"
-cd ${SCRIPTS_FOLDER}
+cd "${SCRIPTS_FOLDER}"

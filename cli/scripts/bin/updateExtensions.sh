@@ -5,7 +5,7 @@ source bin/common.sh
 # mandatory arguments
 ARGUMENTS=(extensionJson)
 OPT_ARGUMENTS=(envId env)
-id=result[0].id
+
 
 inputs "$@"
 
@@ -47,14 +47,16 @@ while IFS= read -r line
         if [[ "$line" == *"valueFrom"* ]]
         then
                 valueText=$(echo "$line" | sed -e 's/\"//g' -e 's/,//g' -e 's/^.*:\s\+//' -e 's/\s+.*$//g')
-                echov $valueText
-                getValueFrom "${valueText}"
-                echo "$line" | sed -e "s/$valueText/$extensionValue/" -e 's/valueFrom/value/' >> "${JSON_FILE}"
+                # Since in AZURE all variables are upper case I need to do this trick.
+                getValueFrom "${valueText^^}"
+                extensionValue="$(<<< "$extensionValue" sed -e 's`[\\/.*^$&`\\]`\\&`g')"
+                echov "Replacing variable $valueText with $extensionValue in $line"
+                echo "$line" | sed -e "s/$valueText/$extensionValue/" -e "s/valueFrom/value/" >> "${JSON_FILE}"
         else
                 echo "$line" >> "${JSON_FILE}"
         fi
  done < "$TMP_JSON_FILE"
-
+cat "${JSON_FILE}"
 URL=$baseURL/EnvironmentExtensions/${envId}/update
  
 callAPI

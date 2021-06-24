@@ -43,7 +43,7 @@ inputs "$@"
 #JENKINS_CALLBACK_URL=$4
 #JOB_BASE_NAME=$5
 JOB_CONTEXT="${JOB_BASE_NAME// /_}"
-BUILD_NUMBER=$(echo "${JENKINS_CALLBACK_URL}" | sed -E 's/^.*\/(.*)\/console/\1/')
+BUILD_NUMBER=echo "${JENKINS_CALLBACK_URL}" | sed -E 's/^.*\/(.*)\/console/\1/'
 #state=$6
 if [ ! -z "${GIT_COMMIT}" ] && [ ! -z "${GIT_API_URL}" ]
  then
@@ -52,7 +52,7 @@ if [ ! -z "${GIT_COMMIT}" ] && [ ! -z "${GIT_API_URL}" ]
 	-H "Accept: application/json" \
 	-H "Content-Type: application/json" \
 	-X POST \
-	-d "{\"state\": \"${STATE}\",\"context\": \"${JOB_CONTEXT}\", \"description\": \"Jenkins Build: ${BUILD_NUMBER}\", \"target_url\": \"$JENKINS_CALLBACK_URL\"}"
+	-d "{\"state\": \"${STATE}\",\"context\": \"${JOB_CONTEXT}\", \"description\": \"Jenkins: ${JOB_CONTEXT}_${BUILD_NUMBER}\", \"target_url\": \"$JENKINS_CALLBACK_URL\"}"
 	echo "GIT_API is ${GIT_API_URL}"
  fi
 

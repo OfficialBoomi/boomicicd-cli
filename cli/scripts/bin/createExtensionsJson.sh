@@ -39,11 +39,11 @@ do
 	 			_g=$(( f - 1 ))
 				if [[ $fieldId == "password" ]]
 				then
-					useEncryption="true"
-	 		  	json=$(echo ${json} | jq --arg field $_g --arg id "${fieldId}" --arg connection_arg ${l} --arg useEncryption ${useEncryption} '.extensionJson.connections.connection[$connection_arg|tonumber].field[$field|tonumber]  |= . + {"@type": "field", "id": $id, "value": "#{}", "usesEncryption": $useEncryption, "useDefault": false}')
-		  	else
-			  	useEncryption="false"
-	 		  	json=$(echo ${json} | jq --arg field $_g --arg id "${fieldId}" --arg connection_arg ${l} --arg useEncryption ${useEncryption} '.extensionJson.connections.connection[$connection_arg|tonumber].field[$field|tonumber]  |= . + {"@type": "field", "id": $id, "value": "", "usesEncryption": $useEncryption, "useDefault": false}')
+                 useEncryption="true"
+	 		  	 json=$(echo ${json} | jq --arg field $_g --arg id "${fieldId}" --arg connection_arg ${l} --arg useEncryption ${useEncryption} '.extensionJson.connections.connection[$connection_arg|tonumber].field[$field|tonumber]  |= . + {"@type": "field", "id": $id, "value": "#{}#", "usesEncryption": $useEncryption, "useDefault": false}')
+		  	    else
+			  	 useEncryption="false"
+	 		  	 json=$(echo ${json} | jq --arg field $_g --arg id "${fieldId}" --arg connection_arg ${l} --arg useEncryption ${useEncryption} '.extensionJson.connections.connection[$connection_arg|tonumber].field[$field|tonumber]  |= . + {"@type": "field", "id": $id, "value": "", "usesEncryption": $useEncryption, "useDefault": false}')
 				fi
 			done
 			l=$(( l + 1 ))

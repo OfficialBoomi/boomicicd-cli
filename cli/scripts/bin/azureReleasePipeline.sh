@@ -13,13 +13,13 @@ export accountName="${ACCOUNTNAME}"
 export accountId=${ACCOUNTID}
 # export authToken=${authToken} # Passed in as environment variable authToken=$(authToken)
 # export gitComponentRepoURL="${gitComponentRepoURL}" # Passed in as environment variable
-export gitComponentUserName="${GITUSERNAME}"
-export gitComponentUserEmail="${GITUSEREMAIL}"
+export gitComponentUserName="${GITCOMPONENTUSERNAME}"
+export gitComponentUserEmail="${GITCOMPONENTUSEREMAIL}"
 export sonarHostURL="${SONARHOSTURL}"
 # export sonarHostToken="${sonarHostToken}" # Passed in as environment variable
 export sonarProjectKey="${SONARPROJECTKEY}"
-export gitComponentRepoName="${GITREPONAME}" # Top level folder of the GIT REPO
-export gitComponentCommitPath="${GITCOMMITPATH}" # export gitComponentCommitPath="?version=GBmaster&path=" this is used in code review report 
+export gitComponentRepoName="${GITCOMPONENTREPONAME}" # Top level folder of the GIT REPO
+export gitComponentCommitPath="${GITCOMPONENTCOMMITPATH}" # export gitComponentCommitPath="?version=GBmaster&path=" this is used in code review report 
 export sonarRulesFile="${SONARRULESFILE}"
 
 # Keys that can change

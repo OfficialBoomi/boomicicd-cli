@@ -38,8 +38,6 @@ pool:
 steps:
 
 - script: |
-    # Don't have to do this if the image comes preloaded with this package
-    sudo apt-get install -y libxml2-utils
     cd cli/scripts
     # This set the variables used in Azure DevOps pipeline.
     # Mostly constants

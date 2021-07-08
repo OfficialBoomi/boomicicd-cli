@@ -167,7 +167,7 @@
               "condition": "succeeded()",
               "inputs": {
                 "targetType": "filePath",
-                "filePath": "$(System.DefaultWorkingDirectory)/$(cliRepoName)/cli/scripts/bin/azureReleasePipeline.sh",
+                "filePath": "$(System.DefaultWorkingDirectory)/$(gitCLIRepoName)/cli/scripts/bin/azureReleasePipeline.sh",
                 "arguments": "",
                 "script": "# Write your commands here\n\necho 'Hello world'\n",
                 "workingDirectory": "",
@@ -387,7 +387,7 @@
               "condition": "succeeded()",
               "inputs": {
                 "targetType": "filePath",
-                "filePath": "$(System.DefaultWorkingDirectory)/$(cliRepoName)/cli/scripts/bin/azureReleasePipeline.sh",
+                "filePath": "$(System.DefaultWorkingDirectory)/$(gitCLIRepoName)/cli/scripts/bin/azureReleasePipeline.sh",
                 "arguments": "",
                 "script": "# Write your commands here\n\necho 'Hello world'\n",
                 "workingDirectory": "",
@@ -607,7 +607,7 @@
               "condition": "succeeded()",
               "inputs": {
                 "targetType": "filePath",
-                "filePath": "$(System.DefaultWorkingDirectory)/$(cliRepoName)/cli/scripts/bin/azureReleasePipeline.sh",
+                "filePath": "$(System.DefaultWorkingDirectory)/$(gitCLIRepoName)/cli/scripts/bin/azureReleasePipeline.sh",
                 "arguments": "",
                 "script": "# Write your commands here\n\necho 'Hello world'\n",
                 "workingDirectory": "",
@@ -821,7 +821,7 @@
               "condition": "succeeded()",
               "inputs": {
                 "targetType": "filePath",
-                "filePath": "$(System.DefaultWorkingDirectory)/$(cliRepoName)/cli/scripts/bin/azureReleasePipeline.sh",
+                "filePath": "$(System.DefaultWorkingDirectory)/$(gitCLIRepoName)/cli/scripts/bin/azureReleasePipeline.sh",
                 "arguments": "",
                 "script": "# Write your commands here\n\necho 'Hello world'\n",
                 "workingDirectory": "",

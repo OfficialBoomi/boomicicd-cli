@@ -31,7 +31,7 @@ do
 		 export VIOLATIONS_FOUND="true"
 		 vPriority="`cat "${sonarRulesFile}" | xmllint -xpath 'profile/rules/rule['$i']/priority/text()' -`" ;
 		 vType="`cat "${sonarRulesFile}" | xmllint -xpath 'profile/rules/rule['$i']/type/text()' -`" ;
-		 vName=`cat "${sonarRulesFile}" | xmllint -xpath 'profile/rules/rule['$i']/name/text()' -` ;
+		 vName=`cat "${sonarRulesFile}" | xmllint -xpath 'profile/rules/rule['$i']/description/text()' -` ;
 		 h=$(( $h + 1 ));
 		 printReportRow "${h}" "${componentId}" "${componentName}" "${componentVersion}" "${componentType}" "${vName}" "${vType}" "${vPriority}" ;
    fi

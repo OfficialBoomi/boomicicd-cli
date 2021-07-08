@@ -13,20 +13,20 @@ export accountName=""
 export accountId=""
 export authToken=""
 export regressionTestAuthToken=""
-export gitRepoURL=""
-export gitUserName=""
-export gitUserEmail=""
-export gitCommitPath="/tree/master/"
+export gitComponentRepoURL=""
+export gitComponentUserName=""
+export gitComponentUserEmail=""
+export gitComponentCommitPath="/tree/master/"
 export sonarHostURL=""
 export sonarHostToken=""
 export sonarProjectKey="BoomiSonar"
-export gitRepoName="BoomiComponents" # Top level folder of the GIT REPO
+export gitComponentRepoName="BoomiComponents" # Top level folder of the GIT REPO
 export sonarRulesFile="conf/BoomiSonarRules.xml"
 
 # Keys that can change
 export VERBOSE="false" # Bash verbose output; set to true only for testing, will slow execution.
 export SLEEP_TIMER=0.2 # Delays curl request to the platform to set the rate under 5 requests/second
-export gitOption="CLONE" # This clones the repo; else default is to create a release tag. Check gitPush.sh file
+export gitComponentOption="CLONE" # This clones the repo; else default is to create a release tag. Check gitPush.sh file
 export SONAR_HOST=""  # If sonar scanner is installed locally then will use the local sonar scanner. Check the sonarScanner.sh file
 
 # Derived keys

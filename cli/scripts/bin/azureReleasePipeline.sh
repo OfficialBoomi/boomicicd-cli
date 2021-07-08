@@ -12,20 +12,20 @@ export h2="${H2}"
 export accountName="${ACCOUNTNAME}"
 export accountId=${ACCOUNTID}
 # export authToken=${authToken} # Passed in as environment variable authToken=$(authToken)
-# export gitRepoURL="${gitRepoURL}" # Passed in as environment variable
-export gitUserName="${GITUSERNAME}"
-export gitUserEmail="${GITUSEREMAIL}"
+# export gitComponentRepoURL="${gitComponentRepoURL}" # Passed in as environment variable
+export gitComponentUserName="${GITCOMPONENTUSERNAME}"
+export gitComponentUserEmail="${GITCOMPONENTUSEREMAIL}"
 export sonarHostURL="${SONARHOSTURL}"
 # export sonarHostToken="${sonarHostToken}" # Passed in as environment variable
 export sonarProjectKey="${SONARPROJECTKEY}"
-export gitRepoName="${GITREPONAME}" # Top level folder of the GIT REPO
-export gitCommitPath="${GITCOMMITPATH}" # export gitCommitPath="?version=GBmaster&path=" this is used in code review report 
+export gitComponentRepoName="${GITCOMPONENTREPONAME}" # Top level folder of the GIT REPO
+export gitComponentCommitPath="${GITCOMPONENTCOMMITPATH}" # export gitComponentCommitPath="?version=GBmaster&path=" this is used in code review report 
 export sonarRulesFile="${SONARRULESFILE}"
 
 # Keys that can change
 export VERBOSE="${VERBOSE}" # Bash verbose output; set to true only for testing, will slow execution.
 export SLEEP_TIMER="${SLEEP_TIMER}" # Delays curl request to the platform to set the rate under 5 requests/second
-export gitOption="${GITOPTION}" # This clones the repo; else default is to create a release tag. Check gitPush.sh file
+export gitComponentOption="${GITOPTION}" # This clones the repo; else default is to create a release tag. Check gitPush.sh file
 export SONAR_HOST=""  # If sonar scanner is installed locally then will use the local sonar scanner. Check the sonarScanner.sh file
 
 # Derived keys
@@ -33,9 +33,10 @@ export baseURL=https://api.boomi.com/api/rest/v1/$accountId
 export regressionTestURL="${REGRESSIONTESTURL}" # URL for regression test suite framework.
 echo "Base URL is ${baseURL}"
 
-HOME_DIR="${SYSTEM_ARTIFACTSDIRECTORY}/${RELEASE_PRIMARYARTIFACTSOURCEALIAS}"
-echo "HOME DIR is ${HOME_DIR}"
-cd "${HOME_DIR}/cli/scripts"
+CLI_DIR="${SYSTEM_ARTIFACTSDIRECTORY}/${GITCLIREPONAME}"
+RELEASE_DIR="${SYSTEM_ARTIFACTSDIRECTORY}/${GITRELEASEREPONAME}"
+echo "CLI DIR is ${CLI_DIR}"
+cd "${CLI_DIR}/cli/scripts"
 export WORKSPACE="$(pwd)"
-echo "Executing script for file=${FILE} in WORKSPACE ${WORKSPACE}."
-bin/dynamicScriptJobBuilder.sh file="${HOME_DIR}/${FILE}"
+echo "Executing script for file=${RELEASE_DIR}/${FILE} in WORKSPACE ${WORKSPACE}."
+bin/dynamicScriptJobBuilder.sh file="${RELEASE_DIR}/${FILE}"

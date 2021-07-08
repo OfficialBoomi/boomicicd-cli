@@ -35,6 +35,7 @@ function call_job {
   curlString=$(echo "curl -X POST -u \"$JENKINS_USER:$JENKINS_TOKEN\" -H \"${CRUMBS}\" ${PARAMS} ${JOB_URL}")
   eval ${curlString}
 }
+
 # Main.
 for file in $(git diff --name-only --diff-filter=AM HEAD~1 $GIT_COMMIT | grep .conf)
 do
@@ -43,29 +44,24 @@ do
  count=1
  for row in $(cat "${file}" | jq -r '.pipelines[] | @base64');
  do
- 	PROP_FILE="/tmp/${fileName}_${count}.sh"
- 	rm -rf "${PROP_FILE}"
-    #json=$(echo ${row} | base64 --decode | jq -r 'to_entries' | jq --arg count "$count" '. + [{"key": "count", "value": $count}]') 
     json=$(echo ${row} | base64 --decode | jq -r 'to_entries' | \
-       jq --arg count "$count" '. + [{"key": "count", "value": $count}]' | \
-       jq --arg GIT_COMMIT "$GIT_COMMIT" '. + [{"key": "GIT_COMMIT", "value": $GIT_COMMIT}]')
-   #echo "JSON is ${json}"
- 	
-    echo "${json}" | jq -r 'map("export \(.key)=\(.value|tostring|@sh)") | .[]' > "${PROP_FILE}"
-    if [ -s $PROP_FILE ]
- 	then 
-		chmod +x ${PROP_FILE}
-		source ${PROP_FILE}
-		
-		# This check ensure that jobs are triggered for only the allowed env. 
-		# This will prevent a development job to trigger builds in production.
-		if [ ${env} == "${JOB_ENV}" ]
-		then
-    	 call_job "${job}" "${json}" 
-		else
-		 echo "Ignoring job ${job} for env ${env} as it does not match the JOB_ENV ${JOB_ENV}."
-	    fi
-	 fi	
+      	jq --arg count "$count" '. + [{"key": "count", "value": $count}]' | \
+     	jq --arg GIT_COMMIT "$GIT_COMMIT" '. + [{"key": "GIT_COMMIT", "value": $GIT_COMMIT}]')
+ 	job=$(echo $json | jq -r '.[] |  select(.key | contains("job")).value')	
+	env=$(echo $json | jq -r '.[] |  select(.key | contains("env")).value')
+	if [ -z "${env}"  ]
+	then
+		env="${JOB_ENV}"
+		json=$(echo ${json} | jq --arg env "$env" '. + [{"key": "env", "value": $env}]')
+	fi	
+	# This check ensure that jobs are triggered for only the allowed env. 
+	# This will prevent a development job to trigger builds in production.
+	if [ ${env} == "${JOB_ENV}" ]
+	then
+     call_job "${job}" "${json}" 
+	else
+	 echo "Ignoring job ${job} for env ${env} as it does not match the JOB_ENV ${JOB_ENV}."
+	fi
 	count=$(( count + 1 ))
  done
 done

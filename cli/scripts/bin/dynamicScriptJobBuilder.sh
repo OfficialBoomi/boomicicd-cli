@@ -17,7 +17,7 @@ unset env
 
 fileName=$(echo "${file}" | sed -e 's/^.*\///g' -e 's/\.conf.*$//g')
 echoi "Executing configurations for file ${file}."
-
+notes="${BUILD_PROJECTNAME}_${RELEASE_RELEASENAME}_${BUILD_BUILDNUMBER}: ${notes}"
 count=1
  for row in $(cat "${file}" | jq -r '.pipelines[] | @base64');
   do
@@ -27,16 +27,24 @@ count=1
    
      job=$(echo $json | jq -r '.[] |  select(.key | contains("job")).value')
      env=$(echo $json | jq -r '.[] |  select(.key | contains("env")).value')
-	
+	 
+	 # Automatically tag azure build info in Boomi deployment notes 
+	 if [[ ! -z "${BUILD_BUILDNUMBER}" ]]
+	 then
+	 	notes=$(echo $json | jq -r '.[] |  select(.key | contains("notes")).value')
+     	notes="${BUILD_PROJECTNAME}_${RELEASE_RELEASENAME}_${BUILD_BUILDNUMBER}: ${notes}"
+     	json=$(echo ${json} | jq --arg notes "$notes" '. + [{"key": "notes", "value": $notes}]')
+	 fi
+
      # This check ensure that jobs are triggered for only the allowed env.
      # This will prevent a development job to trigger builds in production.
      # If env is null use the JOB ENV as the env
      if [ -z "${env}"  ]
      then
           env="${JOB_ENV}"
-          json=$(echo ${json} | jq --arg env "$env" '. + [{"key": "env", "value": $env}]')           
+          json=$(echo ${json} | jq --arg env "$env" '. + [{"key": "env", "value": $env}]')
+                    
      fi
-
      if [ "${env}" == "${JOB_ENV}" ]
      then
  		   call_script "${job}" "${json}"

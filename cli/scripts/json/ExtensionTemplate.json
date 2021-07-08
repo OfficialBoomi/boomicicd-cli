@@ -1,18 +1,18 @@
 {
-    "@type": "EnvironmentExtensions",
-    "connections": {
-        "@type": "Connections",
-        "connection": [
-            
-        ]
-    },
-		"properties": {
-        "@type": "",
-        "property": [
-        ]
-    },
-	  "environmentId": "[Update ID]",
-	  "partial": "true",
-    "extensionGroupId": "",
-    "id": "[Same as environmentId]"
-}	
+		"job": "Update Environment Extensions",
+		"extensionJson": {
+            "@type": "EnvironmentExtensions",
+                "connections": {
+                "@type": "Connections",
+                "connection": []
+            },
+		        "properties": {
+                "@type": "",
+                "property": []
+            },
+	        "environmentId": "",
+	        "partial": "true",
+            "extensionGroupId": "",
+            "id": ""
+        }	
+}    

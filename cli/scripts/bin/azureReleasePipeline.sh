@@ -33,9 +33,10 @@ export baseURL=https://api.boomi.com/api/rest/v1/$accountId
 export regressionTestURL="${REGRESSIONTESTURL}" # URL for regression test suite framework.
 echo "Base URL is ${baseURL}"
 
-HOME_DIR="${SYSTEM_ARTIFACTSDIRECTORY}/${RELEASE_PRIMARYARTIFACTSOURCEALIAS}"
-echo "HOME DIR is ${HOME_DIR}"
-cd "${HOME_DIR}/cli/scripts"
+CLI_DIR="${SYSTEM_ARTIFACTSDIRECTORY}/${GITCLIREPONAME}"
+RELEASE_DIR="${SYSTEM_ARTIFACTSDIRECTORY}/${GITRELEASEREPONAME}"
+echo "CLI DIR is ${CLI_DIR}"
+cd "${CLI_DIR}/cli/scripts"
 export WORKSPACE="$(pwd)"
-echo "Executing script for file=${FILE} in WORKSPACE ${WORKSPACE}."
-bin/dynamicScriptJobBuilder.sh file="${HOME_DIR}/${FILE}"
+echo "Executing script for file=${RELEASE_DIR}/${FILE} in WORKSPACE ${WORKSPACE}."
+bin/dynamicScriptJobBuilder.sh file="${RELEASE_DIR}/${FILE}"

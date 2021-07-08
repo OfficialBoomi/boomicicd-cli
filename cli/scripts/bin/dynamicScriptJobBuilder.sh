@@ -29,7 +29,7 @@ count=1
      env=$(echo $json | jq -r '.[] |  select(.key | contains("env")).value')
 	 
 	 # Automatically tag azure build info in Boomi deployment notes 
-	 if [ !-z "${BUILD_BUILDNUMBER}" ]
+	 if [[ ! -z "${BUILD_BUILDNUMBER}" ]]
 	 then
 	 	notes=$(echo $json | jq -r '.[] |  select(.key | contains("notes")).value')
      	notes="${BUILD_PROJECTNAME}_${RELEASE_RELEASENAME}_${BUILD_BUILDNUMBER}: ${notes}"

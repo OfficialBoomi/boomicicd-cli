@@ -56,7 +56,7 @@
          <priority>MAJOR</priority>
          <name>Exceptions must Have Params</name>
          <templateKey>XPathCheck</templateKey>
-         <description>Business exception messages does not have parameters defined {1} defined</description>
+         <description>Business exception messages must have parameters defined {1} defined</description>
          <parameters>
             <parameter>
                <key>filePattern</key>
@@ -79,7 +79,7 @@
          <priority>MAJOR</priority>
          <name>Business_Rules error messages must be parameterized</name>
          <templateKey>XPathCheck</templateKey>
-         <description>Businessrules error messages shall have custom parameterized error messages</description>
+         <description>Businessrules error messages must have custom parameterized in the error messages</description>
          <parameters>
             <parameter>
                <key>filePattern</key>
@@ -102,7 +102,7 @@
          <priority>MAJOR</priority>
          <name>Password must be extensible</name>
          <templateKey>XPathCheck</templateKey>
-         <description>Is the password hard coded? The connection property password must be hard coded.</description>
+         <description>Is the password hard coded? The connection property password must be marked as extensible.</description>
          <parameters>
             <parameter>
                <key>filePattern</key>
@@ -148,7 +148,7 @@
          <priority>MAJOR</priority>
          <name>User name must be extensible</name>
          <templateKey>XPathCheck</templateKey>
-         <description>Is user name hard coded? Connection setting User name must be extensible.</description>
+         <description>Is user name hard coded? Connection setting username must be marked as extensible.</description>
          <parameters>
             <parameter>
                <key>filePattern</key>
@@ -171,7 +171,7 @@
          <priority>MAJOR</priority>
          <name>AtomQ Listener Connections</name>
          <templateKey>XPathCheck</templateKey>
-         <description>AtomQ Listener has MaxConnections set to O</description>
+         <description>AtomQ Listener must not have max connections set to O</description>
          <parameters>
             <parameter>
                <key>filePattern</key>
@@ -217,7 +217,7 @@
          <priority>MAJOR</priority>
          <name>JMS Listener Connections</name>
          <templateKey>XPathCheck</templateKey>
-         <description>JMS Listener has MaxConnections set to O</description>
+         <description>JMS Listener must not have max connections set to O</description>
          <parameters>
             <parameter>
                <key>filePattern</key>
@@ -240,7 +240,7 @@
          <priority>MINOR</priority>
          <name>General Model Listener Process</name>
          <templateKey>XPathCheck</templateKey>
-         <description>Should the Listener Process run in Low Latency Mode instead of General Mode</description>
+         <description>A listener Process can run in Low Latency mode instead of General Mode</description>
          <parameters>
             <parameter>
                <key>filePattern</key>

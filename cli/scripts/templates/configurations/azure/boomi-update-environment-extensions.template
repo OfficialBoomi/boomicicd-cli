@@ -6,8 +6,7 @@
          "processName": "Either processName or compnentId must be present",
          "componentId": "ComponentId will replace processName attribute",
          "packageVersion": "Mandatory: e.g. 1.2",
-         "componentType": "Optional:- Must be one one-of: certificate customlibrary flowservice process processroute tpgroup webservice",
-         "componentVersion": "Optional:- If no version is specified the latest version is used as default",
+         "componentType": "Optional:- Must be one one-of: certificate customlibrary flowservice process processroute tpgroup webservice",         
          "notes": "Mandatory: Create Package Template",
          "listenerStatus": "Mandatory must be one of: RUNNING or PAUSED"
         },	

@@ -9,9 +9,7 @@
                     "packageVersion": "Mandatory: All components will be packaged with the same version 1.2",
                     "componentType": "Optional:- Must be one one-of: certificate customlibrary flowservice process processroute tpgroup webservice",
                     "notes": "Mandatory: Create Package Template",
-                    "extractComponentXmlFolder": "Optional: If no folder is present the components are not extracted to store in GIT, codereview or quality checks",
-                    "tag": "Optional: If no tag is present the components are not stored in GIT",
-					"listenerStatus": "Mandatory must be one of: RUNNING or PAUSED"
+                    "listenerStatus": "Mandatory must be one of: RUNNING or PAUSED"
 				}
 ]
 }

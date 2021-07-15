@@ -91,7 +91,8 @@ then
  done
   
   # Create a violations report using sonarqube rules	
-	bin/xpathRulesChecker.sh baseFolder="${packageFolder}" > "${packageFolder}/ViolationsReport_${saveComponentId}.html"
+  # 17 July 21 - @gouldja - Added "source" resolving issue
+	source bin/xpathRulesChecker.sh baseFolder="${packageFolder}" > "${packageFolder}/ViolationsReport_${saveComponentId}.html"
 
 fi
 

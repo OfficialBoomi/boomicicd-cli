@@ -90,8 +90,9 @@ then
     mv "${WORKSPACE}"/${componentIds[$g]}.xml "${packageFolder}/${folderFullPath}" 
  done
   
-  # Create a violations report using sonarqube rules	
-	bin/xpathRulesChecker.sh baseFolder="${packageFolder}" > "${packageFolder}/ViolationsReport_${saveComponentId}.html"
+  # Create a violations report using sonarqube rules
+  # 17 July 21 - @jgould-sonos - Added "source" resolving issue
+	source bin/xpathRulesChecker.sh baseFolder="${packageFolder}" > "${packageFolder}/ViolationsReport_${saveComponentId}.html"
 
 fi
 

@@ -81,7 +81,9 @@ for (( h_ppc=1; h_ppc<=${ProcessPropertyComponents}; h_ppc++ ))
 do
 	
 	ProcessPropertyComponentId=$( echo $componentXML | xmllint -xpath "string(/Component/processOverrides/Overrides/DefinedProcessPropertyOverrides/OverrideableDefinedProcessPropertyComponent[$h]/@componentId)" -)  
-    source bin/queryComponentMetadata.sh componentId=${ProcessPropertyComponentId} componentVersion=""	
+    source bin/queryComponentMetadata.sh componentId=${ProcessPropertyComponentId} 
+    ProcessPropertyComponentId="${componentId}"
+
 	# Get the component name of the ProcessPropertyComponentId
 	ProcessPropertyName="${componentName}"
 	propertyExists=$(echo "${extensionJson}" | jq --arg id ${ProcessPropertyComponentId} '.extensionJson.processproperties.ProcessProperty[] | select(.id == $id)')
@@ -115,7 +117,7 @@ if [ ! -z "${f_addConnection}" ] || [ ! -z "${f_addProperty}" ]  || [i ! -z "${f
  then 
 	export extensionJson="$(echo ${json} | jq . )"
 fi
-echoi "Extensions are $componentXML"
+echoi "Extensions are $extensionsJson"
 
 unset json 
  

@@ -31,7 +31,7 @@ do
 	source bin/queryComponentMetadata.sh componentId=${componentId} componentVersion="" 
   # Add connection only if does not exist in the extensions and the componentName is not null or deleted and if there are fields in the connection
 	if [ -z "${connectionExists}" ] && [ "${componentName}" != null ] && [ ${fields} -gt 0 ]
-  then
+    then
 			json=$(echo ${json} | jq --arg componentName "${componentName}" --arg componentId ${connectionId} --arg connection_arg ${l} '.extensionJson.connections.connection[$connection_arg|tonumber] |= . + {"@type": "Connection", "field": [], "id": $componentId, "name": $componentName}')
   		for (( f=1; f<=${fields}; f++ ))
 			do
@@ -64,20 +64,58 @@ do
   
   # Add property only if does not exist in the extensions
 	if [ -z "${propertyExists}" ] && [ ! -z "${property}" ] && [ "${property}" != null ]
-  then
+    then
 		echov "Adding property ${property} at index $l"
-	  json=$(echo ${json} | jq --arg name ${property} --arg property_arg ${l} '.extensionJson.properties.property[$property_arg|tonumber]  |= . + {"@type": "", "name": $name, "value": ""}')
+	    json=$(echo ${json} | jq --arg name ${property} --arg property_arg ${l} '.extensionJson.properties.property[$property_arg|tonumber]  |= . + {"@type": "", "name": $name, "value": ""}')
 		l=$(( l + 1 ))
 		f_addProperty="true"
 	fi
 done
 
+# Scrape process properties extensions from the component XML
+f_addProcessProperty=""
+index_pp=$(echo ${json} | jq '.extensionJson.processProperties.ProcessProperty | length')
+ProcessPropertyComponents=$( echo $componentXML | xmllint -xpath 'count(/Component/processOverrides/Overrides/DefinedProcessPropertyOverrides/OverrideableDefinedProcessPropertyComponent)' -)
+l_indexpp=$index_pp
+for (( h_ppc=1; h_ppc<=${ProcessPropertyComponents}; h_ppc++ ))
+do
+	
+	ProcessPropertyComponentId=$( echo $componentXML | xmllint -xpath "string(/Component/processOverrides/Overrides/DefinedProcessPropertyOverrides/OverrideableDefinedProcessPropertyComponent[$h]/@componentId)" -)  
+    source bin/queryComponentMetadata.sh componentId=${ProcessPropertyComponentId} componentVersion=""	
+	# Get the component name of the ProcessPropertyComponentId
+	ProcessPropertyName="${componentName}"
+	propertyExists=$(echo "${extensionJson}" | jq --arg id ${ProcessPropertyComponentId} '.extensionJson.processproperties.ProcessProperty[] | select(.id == $id)')
+	echoi "Adding property ${ProcessPropertyName} for ${ProcessPropertyName} at index $l_indexpp PropertyExists ${propertyExists}."
+
+    # Add property only if does not exist in the extensions
+	if [ -z "${propertyExists}" ] && [ ! -z "${ProcessPropertyComponentId}" ] && [ "${ProcessPropertyComponentId}" != null ]
+    then
+
+		echoi "Adding property ${propertyName} for ${ProcessPropertyComponentId} at index $l_indexpp"
+	    json=$(echo ${json} | jq --arg name ${ProcessPropertyName} --arg property_arg ${l_indexpp} --arg id ${ProcessPropertyComponentId} '.extensionJson.processProperties.ProcessProperty[$property_arg|tonumber]  |= . + {"@type": "OverrideProcessProperty", "ProcessPropertyValue": [], "id": $id, "name": $name}')
+		l_indexpp=$(( l_indexpp + 1 ))
+    
+		echov "Mini Extensions post are $json"
+		
+		# Add values for each process property component
+		ProcessPropertyValues=$( echo $componentXML | xmllint -xpath "count(/Component/processOverrides/Overrides/DefinedProcessPropertyOverrides/OverrideableDefinedProcessPropertyComponent[$h_ppc]/OverrideableDefinedProcessPropertyValue)" -)
+		for (( ppv=0; ppv=${ProcessPropertyValues}; ppv++ ))
+		do
+			propertyKey=$(echo ${componentXML} | xmllint -xpath "string(/Component/processOverrides/Overrides/DefinedProcessPropertyOverrides/OverrideableDefinedProcessPropertyComponent[$h_ppc]/OverrideableDefinedProcessPropertyValue[${ppv}]/@key)" -)
+			propertyName=$(echo ${componentXML} | xmllint -xpath "string(/Component/processOverrides/Overrides/DefinedProcessPropertyOverrides/OverrideableDefinedProcessPropertyComponent[$h_ppc]/OverrideableDefinedProcessPropertyValue[${ppv}]/@name)" -)
+	    	json=$(echo ${json} | jq --arg name ${propertyName} --arg ppc_arg ${l_indexpp} --arg key ${propertyKey} --arg ppv_arg ${ppv} '.extensionJson.processProperties.ProcessProperty[$ppc_arg|tonumber].ProcessPropertyValue[$ppv_arg|tonumber]  |= . + {@type": "ProcessPropertyValue", "label": $name, "key": $key, "value": "", "encryptedValueSet": "false", "useDefault", "true"}')
+		done
+		f_addProcessProperty="true"
+	fi
+
+done
 
 # export extension if there are atleast one field
-if [ ! -z "${f_addConnection}" ] || [ ! -z "${f_addProperty}" ]  
+if [ ! -z "${f_addConnection}" ] || [ ! -z "${f_addProperty}" ]  || [i ! -z "${f_addProcessProperty}" ]  
  then 
 	export extensionJson="$(echo ${json} | jq . )"
 fi
+echoi "Extensions are $componentXML"
 
 unset json 
  

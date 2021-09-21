@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bns:Component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bns="http://api.platform.boomi.com/" folderFullPath="Boomi_AjayNatarajan/training/boomi_world_2019" componentId="503a7c9a-f462-421a-ba88-83685cc4ee43" version="1" name="Atom Extension Queue" type="queue" createdDate="2021-07-07T17:20:48Z" createdBy="ajay.natarajan@dell.com" modifiedDate="2021-07-07T17:20:48Z" modifiedBy="ajay.natarajan@dell.com" deleted="false" currentVersion="true" folderName="boomi_world_2019" folderId="RjoyNzg2OTk5">
+  <bns:encryptedValues/>
+  <bns:description/>
+  <bns:object>
+    <QueueModel xmlns="">
+      <Name>Atom Extension Queue</Name>
+      <Type>queue</Type>
+    </QueueModel>
+  </bns:object>
+</bns:Component>

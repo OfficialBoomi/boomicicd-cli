@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bns:Component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bns="http://api.platform.boomi.com/" folderFullPath="Boomi_AjayNatarajan/Energy" componentId="40d1a324-8aea-4cac-a691-b221fd23fa42" version="1" name="Common Properties" type="processproperty" createdDate="2020-05-12T13:46:26Z" createdBy="ajay.natarajan@dell.com" modifiedDate="2020-05-12T13:46:26Z" modifiedBy="ajay.natarajan@dell.com" deleted="false" currentVersion="true" folderName="Energy" folderId="RjoyODYxNzQx" copiedFromComponentId="892e1411-9fb4-49ae-89e5-f2aec051fa64" copiedFromComponentVersion="7">
+  <bns:encryptedValues/>
+  <bns:description/>
+  <bns:object>
+    <DefinedProcessProperties xmlns="">
+      <definedProcessProperty key="7ba20d3b-b2b6-435a-ab00-6d082868421b">
+        <helpText/>
+        <label>Environment</label>
+        <type>string</type>
+        <defaultValue>TEST</defaultValue>
+        <allowedValues/>
+        <persisted>false</persisted>
+      </definedProcessProperty>
+    </DefinedProcessProperties>
+  </bns:object>
+</bns:Component>

@@ -6,9 +6,13 @@
                 "@type": "Connections",
                 "connection": []
             },
-		        "properties": {
-                "@type": "",
-                "property": []
+			 "processProperties" : {
+			 "@type" : "OverrideProcessProperties",
+			 "ProcessProperty" : []
+			},
+		     "properties": {
+             "@type": "",
+             "property": []
             },
 	        "environmentId": "",
 	        "partial": "true",

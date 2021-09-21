@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bns:Component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bns="http://api.platform.boomi.com/" folderFullPath="Boomi_AjayNatarajan/training/boomi_world_2019" componentId="8c110a2b-4f07-4b47-a871-0a20475f8214" version="1" name="Extension Test Send HTTP Client Connector Operation" type="connector-action" subType="http" createdDate="2021-06-24T14:02:27Z" createdBy="ajay.natarajan@dell.com" modifiedDate="2021-06-24T14:02:27Z" modifiedBy="ajay.natarajan@dell.com" deleted="false" currentVersion="true" folderName="boomi_world_2019" folderId="RjoyNzg2OTk5" copiedFromComponentId="e6148be6-badd-4245-b72f-c922b93a2ede" copiedFromComponentVersion="7">
+  <bns:encryptedValues/>
+  <bns:description/>
+  <bns:object>
+    <Operation xmlns="">
+      <Archiving directory="" enabled="false"/>
+      <Configuration>
+        <HttpSendAction dataContentType="text/plain" followRedirects="false" methodType="POST" mimePassthrough="false" requestProfileType="NONE" responseProfileType="NONE" returnErrors="false" returnMimeResponse="false" returnResponses="false">
+          <requestHeaders/>
+          <pathElements/>
+          <responseHeaderMapping/>
+          <reflectHeaders/>
+        </HttpSendAction>
+      </Configuration>
+      <Tracking>
+        <TrackedFields/>
+      </Tracking>
+      <Caching/>
+    </Operation>
+  </bns:object>
+</bns:Component>

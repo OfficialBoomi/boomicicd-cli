@@ -1,6 +1,6 @@
 # Command Line Interface reference implementation for Boomi CI/CD
 
-The CLI utility wraps calls to [Boomi Atomsphere APIs](https://help.boomi.com/bundle/integration/page/r-atm-AtomSphere_API_6730e8e4-b2db-4e94-a653-82ae1d05c78e.html). Handles input and output JSON files and performance orchestration for deploying and managing Boomi runtimes, components and metadata required for CI/CD. 
+The CLI utility wraps calls to [Boomi Atomsphere APIs](https://help.boomi.com/bundle/developer_apis/page/r-atm-AtomSphere_API.html). Handles input and output JSON files and performance orchestration for deploying and managing Boomi runtimes, components and metadata required for CI/CD. 
   
 ## Pre-requistes
   - The CLI utility currently runs on any Unix OS and invokes BASH shell scripts

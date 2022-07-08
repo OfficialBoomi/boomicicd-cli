@@ -43,12 +43,12 @@ else
  JSON_FILE="${JSON_FILE}ComponentName"
 fi
 
-if [ ! -z "${componentType}" ]
+if [[ ! -z "${componentType}" && "${componentType}" != "null" ]]
 then 
  JSON_FILE="${JSON_FILE}ComponentType"
 fi
 
-if [ ! -z "${componentVersion}" ]
+if [[ ! -z "${componentVersion}" && "${componentVersion}" != "null" ]]
 then 
 	if [ ! -z "${componentId}" ]
 	then

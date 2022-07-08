@@ -86,7 +86,7 @@ do
 
 	# Get the component name of the ProcessPropertyComponentId
 	ProcessPropertyName="${componentName}"
-	propertyExists=$(echo "${extensionJson}" | jq --arg id ${ProcessPropertyComponentId} '.extensionJson.processproperties.ProcessProperty[] | select(.id == $id)')
+	propertyExists=$(echo "${extensionJson}" | jq --arg id ${ProcessPropertyComponentId} '.extensionJson.processProperties.ProcessProperty[] | select(.id == $id)')
 	echov "Adding Process Properties for ${ProcessPropertyName} at index $l_indexpp."
 
     # Add property only if does not exist in the extensions

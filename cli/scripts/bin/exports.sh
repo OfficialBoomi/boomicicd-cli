@@ -9,9 +9,10 @@ export WORKSPACE=`pwd`
 # The following credentials can be stored in parameter store and retrieved dynamically 
 # Example to retrieve form an AWS store "$(aws ssm get-parameter --region xx --with-decryption --output text --query Parameter.Value --name /Parameter.name)
 
-export accountName=""
-export accountId=""
-export authToken=""
+export accountName="Veeva Systems Inc, Partner Account-OEM"
+export accountId="veevasystemsincpartneracc-QY09T0"
+export authToken="BOOMI_TOKEN.rajanikanth.lakkoju@contractor.veeva.com:fc4e164d-3c93-4bd2-abfe-6b68bd914730"
+export regressionTestAuthToken=""
 export regressionTestAuthToken=""
 export gitComponentRepoURL=""
 export gitComponentUserName=""
